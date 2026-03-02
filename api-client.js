@@ -590,6 +590,115 @@
     }, opts);
   };
 
+  DocumentControlApi.prototype.loanOptions = function (opts) {
+    var cached = (opts && opts.forceRefresh) ? null : this._cacheRead('loan.options', 10 * 60 * 1000);
+    if (cached && cached.success) return Promise.resolve(cached);
+
+    var self = this;
+    return this.call('loan.options', {
+      deviceKey: this.defaultDeviceKey,
+      clientIpKey: this.defaultIpKey
+    }, opts).then(function (res) {
+      if (res && res.success) self._cacheWrite('loan.options', res);
+      return res;
+    });
+  };
+
+  DocumentControlApi.prototype.loanLookupDoc = function (docNoSdh, opts) {
+    return this.call('loan.lookup_doc', {
+      deviceKey: this.defaultDeviceKey,
+      clientIpKey: this.defaultIpKey,
+      docNoSdh: safeTrim(docNoSdh || '')
+    }, opts);
+  };
+
+  DocumentControlApi.prototype.loanList = function (params, opts) {
+    params = params || {};
+    return this.call('loan.list', {
+      deviceKey: this.defaultDeviceKey,
+      clientIpKey: this.defaultIpKey,
+      page: Number(params.page || 1),
+      itemsPerPage: Number(params.itemsPerPage || 20),
+      searchQuery: safeTrim(params.searchQuery || '')
+    }, opts);
+  };
+
+  DocumentControlApi.prototype.loanDetail = function (recordId, opts) {
+    return this.call('loan.detail', {
+      deviceKey: this.defaultDeviceKey,
+      clientIpKey: this.defaultIpKey,
+      recordId: safeTrim(recordId || '')
+    }, opts);
+  };
+
+  DocumentControlApi.prototype.loanCreate = function (formData, opts) {
+    return this.call('loan.create', {
+      deviceKey: this.defaultDeviceKey,
+      clientIpKey: this.defaultIpKey,
+      formData: formData || {}
+    }, opts);
+  };
+
+  DocumentControlApi.prototype.loanUpdate = function (recordId, formData, opts) {
+    return this.call('loan.update', {
+      deviceKey: this.defaultDeviceKey,
+      clientIpKey: this.defaultIpKey,
+      recordId: safeTrim(recordId || ''),
+      formData: formData || {}
+    }, opts);
+  };
+
+  DocumentControlApi.prototype.loanStorageOptions = function (opts) {
+    var cached = (opts && opts.forceRefresh) ? null : this._cacheRead('loan.storage.options', 10 * 60 * 1000);
+    if (cached && cached.success) return Promise.resolve(cached);
+
+    var self = this;
+    return this.call('loan.storage.options', {
+      deviceKey: this.defaultDeviceKey,
+      clientIpKey: this.defaultIpKey
+    }, opts).then(function (res) {
+      if (res && res.success) self._cacheWrite('loan.storage.options', res);
+      return res;
+    });
+  };
+
+  DocumentControlApi.prototype.checkLoanStorageEligibility = function (recordId, opts) {
+    var normalizedId = safeTrim(recordId || '');
+    return this.call('loan.storage.check_eligibility', {
+      deviceKey: this.defaultDeviceKey,
+      clientIpKey: this.defaultIpKey,
+      recordId: normalizedId,
+      id: normalizedId,
+      docId: normalizedId
+    }, opts);
+  };
+
+  DocumentControlApi.prototype.saveLoanStorageData = function (recordId, newLoc, userName, fiscalYear, opts) {
+    var realFiscal = fiscalYear;
+    var realOpts = opts;
+    if (realFiscal && typeof realFiscal === 'object' && !Array.isArray(realFiscal)) {
+      realOpts = realFiscal;
+      realFiscal = '';
+    }
+    return this.call('loan.storage.save_data', {
+      deviceKey: this.defaultDeviceKey,
+      clientIpKey: this.defaultIpKey,
+      recordId: safeTrim(recordId || ''),
+      newLoc: safeTrim(newLoc || ''),
+      userName: safeTrim(userName || ''),
+      fiscalYear: safeTrim(realFiscal || '')
+    }, realOpts);
+  };
+
+  DocumentControlApi.prototype.saveLoanDocumentsToStorage = function (items, userName, opts) {
+    return this.call('loan.storage.save_documents', {
+      deviceKey: this.defaultDeviceKey,
+      clientIpKey: this.defaultIpKey,
+      items: Array.isArray(items) ? items : [],
+      userName: safeTrim(userName || '')
+    }, opts);
+  };
+
   DocumentControlApi.prototype.docCreate = function (formData, opts) {
     return this.call('doc.create', {
       deviceKey: this.defaultDeviceKey,

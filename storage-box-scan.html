@@ -758,6 +758,31 @@
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 0 0 999px rgba(2, 6, 23, 0.4), 0 0 30px rgba(14, 165, 233, 0.34);
     }
 
+    /* Ensure every actionable control in scan page shows clickable cursor */
+    .boxscan-page button,
+    .boxscan-page .hero-btn,
+    .boxscan-page .scanner-btn,
+    .boxscan-page .queue-save-btn,
+    .boxscan-page .queue-clear-btn,
+    .boxscan-page .queue-remove-btn,
+    .boxscan-page select,
+    .swal2-container.scan-success-backdrop .swal2-actions .swal2-styled,
+    .swal2-container.scan-success-backdrop .swal2-select {
+      cursor: pointer !important;
+    }
+
+    .boxscan-page button:disabled,
+    .boxscan-page .hero-btn:disabled,
+    .boxscan-page .scanner-btn:disabled,
+    .boxscan-page .queue-save-btn:disabled,
+    .boxscan-page .queue-clear-btn:disabled,
+    .boxscan-page .queue-remove-btn:disabled,
+    .boxscan-page select:disabled,
+    .swal2-container.scan-success-backdrop .swal2-actions .swal2-styled:disabled,
+    .swal2-container.scan-success-backdrop .swal2-select:disabled {
+      cursor: not-allowed !important;
+    }
+
     body.dark-mode .scan-guide-corner {
       border-color: #e0f2fe;
     }
@@ -930,8 +955,8 @@
       <div class="boxscan-hero">
         <div class="boxscan-hero-head">
           <div>
-            <h1 class="boxscan-title">สแกนเอกสารเข้ากล่องจัดเก็บ</h1>
-            <p class="boxscan-sub">สแกน QR เอกสารและจัดคิวบันทึกเป็นรอบ เลือกปีงบประมาณและกล่องที่ต้องการก่อนบันทึก</p>
+            <h1 id="scanPageTitle" class="boxscan-title">สแกนเอกสารเข้ากล่องจัดเก็บ</h1>
+            <p id="scanPageSubtitle" class="boxscan-sub">สแกน QR เอกสารและจัดคิวบันทึกเป็นรอบ เลือกปีงบประมาณและกล่องที่ต้องการก่อนบันทึก</p>
           </div>
           <div class="hero-actions">
             <button id="btnBack" type="button" class="hero-btn"><i class="bi bi-arrow-left"></i>กลับ</button>
@@ -995,6 +1020,9 @@
       'use strict';
 
       var C = window.DocFrontendCommon;
+      var q = C.parseQuery();
+      var scanScope = C.safeTrim((q.scope || '').toLowerCase() || '');
+      var isLoanScope = scanScope === 'loan';
 
       var state = {
         settings: null,
@@ -1020,6 +1048,8 @@
         mainWrap: document.getElementById('mainWrap'),
         btnBack: document.getElementById('btnBack'),
         btnReload: document.getElementById('btnReload'),
+        scanPageTitle: document.getElementById('scanPageTitle'),
+        scanPageSubtitle: document.getElementById('scanPageSubtitle'),
         scanStatus: document.getElementById('scanStatus'),
         statusMessage: document.getElementById('statusMessage'),
         cameraAutoHint: document.getElementById('cameraAutoHint'),
@@ -1043,6 +1073,40 @@
 
       function hideError() {
         showError('');
+      }
+
+      var initLoadTicket = null;
+      function beginInitLoading(message) {
+        if (typeof window.beginPageLoading === 'function') {
+          initLoadTicket = window.beginPageLoading(message || 'กำลังโหลดข้อมูล...');
+          return;
+        }
+        if (typeof window.showPageLoader === 'function') {
+          window.showPageLoader(message || 'กำลังโหลดข้อมูล...', false);
+        }
+      }
+
+      function endInitLoading() {
+        if (initLoadTicket && typeof window.endPageLoading === 'function') {
+          window.endPageLoading(initLoadTicket);
+          initLoadTicket = null;
+          return;
+        }
+        if (typeof window.hidePageLoader === 'function') {
+          window.hidePageLoader(false);
+        }
+      }
+
+      function applyScopeTexts() {
+        if (isLoanScope) {
+          document.title = 'สแกนจัดเก็บเอกสารเงินยืม';
+          if (els.scanPageTitle) els.scanPageTitle.textContent = 'สแกนจัดเก็บเอกสารเงินยืม';
+          if (els.scanPageSubtitle) {
+            els.scanPageSubtitle.textContent = 'สแกน QR/รหัสเอกสารเงินยืม แล้วเลือกปีงบประมาณและสถานที่จัดเก็บจากรายการกล่องเงินยืม';
+          }
+          return;
+        }
+        document.title = 'สแกนเอกสารเข้ากล่องจัดเก็บ';
       }
 
       function escHtml(value) {
@@ -1138,13 +1202,17 @@
       function getBoxesForFiscal(fiscalYear) {
         var fy = C.safeTrim(fiscalYear || '');
         var allBoxes = (state.storageMaster && Array.isArray(state.storageMaster.allBoxes)) ? state.storageMaster.allBoxes : [];
-        if (allBoxes.length) return allBoxes;
+        if (!allBoxes.length && state.storageMaster && Array.isArray(state.storageMaster.boxes)) {
+          allBoxes = state.storageMaster.boxes;
+        }
 
         var map = (state.storageMaster && state.storageMaster.boxesByFiscalYear && typeof state.storageMaster.boxesByFiscalYear === 'object')
           ? state.storageMaster.boxesByFiscalYear
           : {};
 
         if (fy && Array.isArray(map[fy]) && map[fy].length) return map[fy];
+        if (!fy && allBoxes.length) return allBoxes;
+        if (fy && allBoxes.length) return allBoxes;
         if (Array.isArray(map.__all__) && map.__all__.length) return map.__all__;
 
         var out = [];
@@ -1359,11 +1427,18 @@
 
         for (var i = 0; i < state.queue.length; i++) {
           var item = state.queue[i] || {};
+          var queueMeta = '';
+          var queueFiscal = C.safeTrim(item.fiscalYear || '');
+          if (queueFiscal) {
+            queueMeta = 'ปี: ' + escHtml(queueFiscal) + ' | กล่อง: ' + escHtml(item.boxId || '-') + ' | ' + escHtml(item.timeText || '-');
+          } else {
+            queueMeta = 'กล่อง: ' + escHtml(item.boxId || '-') + ' | ' + escHtml(item.timeText || '-');
+          }
           html += '<div class="recent-item">';
           html += '<div class="recent-top">';
           html += '<div>';
           html += '<div class="recent-title">ID: ' + escHtml(item.docId || '-') + '</div>';
-          html += '<div class="recent-meta">ปี: ' + escHtml(item.fiscalYear || '-') + ' | กล่อง: ' + escHtml(item.boxId || '-') + ' | ' + escHtml(item.timeText || '-') + '</div>';
+          html += '<div class="recent-meta">' + queueMeta + '</div>';
           html += '</div>';
           html += '<button type="button" class="queue-remove-btn" data-remove-index="' + i + '"><i class="bi bi-x-lg"></i>ยกเลิก</button>';
           html += '</div>';
@@ -1440,11 +1515,109 @@
         });
       }
 
+      function showSaveResultPopup(icon, title, text) {
+        try { Swal.close(); } catch (_e) {}
+        return Swal.fire({
+          icon: icon || 'info',
+          title: C.safeText(title || ''),
+          text: C.safeText(text || ''),
+          allowOutsideClick: false,
+          customClass: {
+            container: 'scan-success-backdrop',
+            popup: 'scan-success-popup',
+            title: 'scan-success-title',
+            htmlContainer: 'scan-success-html'
+          }
+        });
+      }
+
       async function showStoragePopup(docId) {
+        if (isLoanScope) {
+          var loanYears = getFiscalYears();
+          var loanBoxes = getBoxesForFiscal('');
+          if (!loanYears.length) {
+            throw new Error('ไม่พบข้อมูลปีงบประมาณของทะเบียนเงินยืม (กรุณาตรวจสอบชีตข้อมูลคอลัมน์ C)');
+          }
+          if (!loanBoxes.length) {
+            throw new Error('ไม่พบข้อมูลสถานที่จัดเก็บของทะเบียนเงินยืม (กรุณาตรวจสอบชีตข้อมูลคอลัมน์ B)');
+          }
+
+          var loanResult = await Swal.fire({
+            title: 'เลือกปีงบประมาณและสถานที่จัดเก็บ',
+            html: '<div class="scan-storage-form">'
+              + '<label class="scan-storage-label">ปีงบประมาณ</label>'
+              + '<select id="swalFiscal" class="swal2-select scan-storage-select"></select>'
+              + '<label class="scan-storage-label">สถานที่จัดเก็บ</label>'
+              + '<select id="swalBox" class="swal2-select scan-storage-select"></select>'
+              + '</div>',
+            showCancelButton: true,
+            confirmButtonText: 'เพิ่มเข้ารายการ',
+            cancelButtonText: 'ยกเลิก',
+            allowOutsideClick: false,
+            customClass: {
+              container: 'scan-success-backdrop',
+              popup: 'scan-storage-popup',
+              title: 'scan-storage-title',
+              htmlContainer: 'scan-storage-html'
+            },
+            didOpen: function () {
+              var popup = Swal.getPopup();
+              if (!popup) return;
+              var fyEl = popup.querySelector('#swalFiscal');
+              var boxEl = popup.querySelector('#swalBox');
+              if (!fyEl || !boxEl) return;
+
+              fyEl.innerHTML = '';
+              for (var y = 0; y < loanYears.length; y++) {
+                var fiscalYear = C.safeTrim(loanYears[y] || '');
+                if (!fiscalYear) continue;
+                var yOpt = document.createElement('option');
+                yOpt.value = fiscalYear;
+                yOpt.textContent = fiscalYear;
+                fyEl.appendChild(yOpt);
+              }
+
+              boxEl.innerHTML = '';
+              for (var b = 0; b < loanBoxes.length; b++) {
+                var boxName = C.safeTrim(loanBoxes[b] || '');
+                if (!boxName) continue;
+                var bOpt = document.createElement('option');
+                bOpt.value = boxName;
+                bOpt.textContent = boxName;
+                boxEl.appendChild(bOpt);
+              }
+            },
+            preConfirm: function () {
+              var popup = Swal.getPopup();
+              if (!popup) return false;
+              var fyEl = popup.querySelector('#swalFiscal');
+              var boxEl = popup.querySelector('#swalBox');
+              var fiscal = fyEl ? C.safeTrim(fyEl.value || '') : '';
+              var box = boxEl ? C.safeTrim(boxEl.value || '') : '';
+              if (!fiscal) {
+                Swal.showValidationMessage('กรุณาเลือกปีงบประมาณ');
+                return false;
+              }
+              if (!box) {
+                Swal.showValidationMessage('กรุณาเลือกสถานที่จัดเก็บ');
+                return false;
+              }
+              return {
+                fiscalYear: fiscal,
+                boxId: box,
+                docId: docId
+              };
+            }
+          });
+
+          if (!loanResult || !loanResult.isConfirmed || !loanResult.value) return null;
+          return loanResult.value;
+        }
+
         var years = getFiscalYears();
 
         if (!years.length) {
-          throw new Error('ไม่พบข้อมูลกล่องเอกสารในระบบ (กรุณาตรวจสอบข้อมูลคอลัมน์ A/B)');
+          throw new Error('ไม่พบข้อมูลกล่องเอกสารในระบบ (กรุณาตรวจสอบข้อมูลคอลัมน์ A/C)');
         }
 
         var result = await Swal.fire({
@@ -1634,7 +1807,9 @@
         }
 
         try {
-          var checkRes = await state.api.checkStorageEligibility(docId, { noPageLoader: true });
+          var checkRes = isLoanScope
+            ? await state.api.checkLoanStorageEligibility(docId, { noPageLoader: true })
+            : await state.api.checkStorageEligibility(docId, { noPageLoader: true });
           if (!checkRes || checkRes.success === false) {
             throw new Error((checkRes && checkRes.error) ? checkRes.error : 'ไม่สามารถจัดเก็บเอกสารนี้ได้');
           }
@@ -1831,11 +2006,19 @@
 
         var payload = [];
         for (var i = 0; i < state.queue.length; i++) {
-          payload.push({
-            docId: state.queue[i].docId,
-            boxId: state.queue[i].boxId,
-            fiscalYear: state.queue[i].fiscalYear
-          });
+          if (isLoanScope) {
+            payload.push({
+              docId: state.queue[i].docId,
+              boxId: state.queue[i].boxId,
+              fiscalYear: state.queue[i].fiscalYear
+            });
+          } else {
+            payload.push({
+              docId: state.queue[i].docId,
+              boxId: state.queue[i].boxId,
+              fiscalYear: state.queue[i].fiscalYear
+            });
+          }
         }
 
         state.saving = true;
@@ -1846,7 +2029,9 @@
 
         try {
           var userName = C.safeTrim((state.user && (state.user.displayName || state.user.username)) || '');
-          var resp = await state.api.saveDocumentsToBox(payload, '', userName, { noPageLoader: true });
+          var resp = isLoanScope
+            ? await state.api.saveLoanDocumentsToStorage(payload, userName, { noPageLoader: true })
+            : await state.api.saveDocumentsToBox(payload, '', userName, { noPageLoader: true });
 
           var results = (resp && Array.isArray(resp.results)) ? resp.results : [];
 
@@ -1881,14 +2066,14 @@
 
           if (!state.queue.length) {
             setStatusMessage('บันทึกสำเร็จทั้งหมด ' + okCount + ' รายการ');
-            Swal.fire('บันทึกสำเร็จ', 'บันทึกเอกสาร ' + okCount + ' รายการเรียบร้อย', 'success');
+            await showSaveResultPopup('success', 'บันทึกสำเร็จ', 'บันทึกเอกสาร ' + okCount + ' รายการเรียบร้อย');
           } else {
             var firstErr = C.safeTrim((state.queue[0] && state.queue[0].error) || '');
             var detail = 'สำเร็จ ' + okCount + ' รายการ / ไม่สำเร็จ ' + state.queue.length + ' รายการ';
             if (firstErr) detail += '\nตัวอย่างข้อผิดพลาด: ' + firstErr;
 
             setStatusMessage(detail);
-            Swal.fire('บันทึกบางรายการไม่สำเร็จ', detail, 'warning');
+            await showSaveResultPopup('warning', 'บันทึกบางรายการไม่สำเร็จ', detail);
           }
 
           setStatus(state.isScanning ? 'กำลังสแกน...' : 'พร้อมเริ่มสแกน', state.isScanning ? 'active' : 'idle');
@@ -1896,7 +2081,7 @@
           var msg = (err && err.message) ? err.message : 'เกิดข้อผิดพลาด';
           setStatus('บันทึกไม่สำเร็จ', 'error');
           setStatusMessage('ข้อผิดพลาด: ' + msg);
-          Swal.fire('เกิดข้อผิดพลาด', msg, 'error');
+          await showSaveResultPopup('error', 'เกิดข้อผิดพลาด', msg);
         } finally {
           state.saving = false;
           state.busy = false;
@@ -1907,7 +2092,7 @@
       async function initData() {
         var responses = await Promise.all([
           state.api.me(),
-          state.api.storageOptions()
+          (isLoanScope ? state.api.loanStorageOptions({ forceRefresh: true }) : state.api.storageOptions({ forceRefresh: true }))
         ]);
 
         var meRes = responses[0] || {};
@@ -1944,58 +2129,65 @@
       }
 
       async function init() {
+        beginInitLoading('กำลังโหลดหน้าสแกนเอกสาร...');
         try {
-          state.settings = C.ensureSettingsOrThrow();
-          state.api = C.createApiClient(state.settings);
-        } catch (_e) {
-          showError('กรุณาตั้งค่า scriptUrl และ deviceKey ที่หน้า index ก่อน');
-          return;
-        }
+          try {
+            state.settings = C.ensureSettingsOrThrow();
+            state.api = C.createApiClient(state.settings);
+          } catch (_e) {
+            showError('กรุณาตั้งค่า scriptUrl และ deviceKey ที่หน้า index ก่อน');
+            return;
+          }
 
-        els.btnBack.addEventListener('click', function () {
-          C.redirect('index.html');
-        });
+          applyScopeTexts();
 
-        els.btnReload.addEventListener('click', function () {
-          window.location.reload();
-        });
+          els.btnBack.addEventListener('click', function () {
+            C.redirect(isLoanScope ? 'loan-index.html' : 'index.html');
+          });
 
-        els.startBtn.addEventListener('click', function () {
-          toggleScanner();
-        });
+          els.btnReload.addEventListener('click', function () {
+            window.location.reload();
+          });
 
-        els.stopBtn.addEventListener('click', function () {
-          toggleScanner();
-        });
+          els.startBtn.addEventListener('click', function () {
+            toggleScanner();
+          });
 
-        els.saveQueueBtn.addEventListener('click', function () {
-          saveQueue();
-        });
+          els.stopBtn.addEventListener('click', function () {
+            toggleScanner();
+          });
 
-        els.clearQueueBtn.addEventListener('click', function () {
-          clearQueue();
-        });
+          els.saveQueueBtn.addEventListener('click', function () {
+            saveQueue();
+          });
 
-        window.addEventListener('beforeunload', function () {
-          teardownScanner();
-        });
+          els.clearQueueBtn.addEventListener('click', function () {
+            clearQueue();
+          });
 
-        try {
-          var ok = await initData();
-          if (!ok) return;
+          window.addEventListener('beforeunload', function () {
+            teardownScanner();
+          });
 
-          hideError();
-          renderQueue();
-          refreshButtons();
-          setStatus('พร้อมเริ่มสแกน', 'idle');
-          setStatusMessage('');
-          setScanningVisual(false);
-          els.mainWrap.classList.remove('hidden');
+          try {
+            var ok = await initData();
+            if (!ok) return;
 
-          reloadCameraList(true).catch(function () {});
-        } catch (err) {
-          showError((err && err.message) ? err.message : 'โหลดหน้าสแกนไม่สำเร็จ');
-          els.mainWrap.classList.add('hidden');
+            hideError();
+            renderQueue();
+            refreshButtons();
+            setStatus('พร้อมเริ่มสแกน', 'idle');
+            setStatusMessage('');
+            setScanningVisual(false);
+            els.mainWrap.classList.remove('hidden');
+
+            reloadCameraList(true).catch(function () {});
+          } catch (err) {
+            showError((err && err.message) ? err.message : 'โหลดหน้าสแกนไม่สำเร็จ');
+            els.mainWrap.classList.add('hidden');
+          }
+        } finally {
+          endInitLoading();
         }
       }
 

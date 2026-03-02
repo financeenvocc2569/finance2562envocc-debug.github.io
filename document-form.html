@@ -758,6 +758,28 @@
         els.errBox.classList.add('show');
       }
 
+      var initLoadTicket = null;
+      function beginInitLoading(message) {
+        if (typeof window.beginPageLoading === 'function') {
+          initLoadTicket = window.beginPageLoading(message || 'กำลังโหลดข้อมูล...');
+          return;
+        }
+        if (typeof window.showPageLoader === 'function') {
+          window.showPageLoader(message || 'กำลังโหลดข้อมูล...', false);
+        }
+      }
+
+      function endInitLoading() {
+        if (initLoadTicket && typeof window.endPageLoading === 'function') {
+          window.endPageLoading(initLoadTicket);
+          initLoadTicket = null;
+          return;
+        }
+        if (typeof window.hidePageLoader === 'function') {
+          window.hidePageLoader(false);
+        }
+      }
+
       function updateBrowserTitle(idValue) {
         var id = C.safeTrim(idValue || '');
         var page = '';
@@ -1294,49 +1316,54 @@
       }
 
       async function init() {
-        if (isEdit && !editId) {
-          C.redirect('not-found.html', {
-            message: 'ไม่พบเอกสาร',
-            detail: '',
-            back: 'index.html'
-          }, true);
-          return;
-        }
-
+        beginInitLoading('กำลังโหลดข้อมูลฟอร์ม...');
         try {
-          state.settings = C.ensureSettingsOrThrow();
-          state.api = C.createApiClient(state.settings);
-        } catch (_e) {
-          showError('กรุณาตั้งค่า scriptUrl และ deviceKey ที่หน้า index ก่อน');
-          return;
-        }
-
-        fillTimeOptions();
-        setupHeader();
-        bindEvents();
-        setSaving(false);
-
-        try {
-          var ok = await initData();
-          if (!ok) return;
-
-          fillOptions();
-
-          if (isEdit && state.doc) {
-            setFormData(state.doc);
-          } else {
-            updateReceiveNo();
-            setDefaultDates();
-            if (isCopy && state.copyDoc) {
-              setCopyFormData(state.copyDoc);
-            }
+          if (isEdit && !editId) {
+            C.redirect('not-found.html', {
+              message: 'ไม่พบเอกสาร',
+              detail: '',
+              back: 'index.html'
+            }, true);
+            return;
           }
 
-          togglePlanFields();
-          refreshDateDisplays();
-          els.mainCard.style.display = 'block';
-        } catch (err) {
-          showError((err && err.message) ? err.message : 'โหลดข้อมูลฟอร์มไม่สำเร็จ');
+          try {
+            state.settings = C.ensureSettingsOrThrow();
+            state.api = C.createApiClient(state.settings);
+          } catch (_e) {
+            showError('กรุณาตั้งค่า scriptUrl และ deviceKey ที่หน้า index ก่อน');
+            return;
+          }
+
+          fillTimeOptions();
+          setupHeader();
+          bindEvents();
+          setSaving(false);
+
+          try {
+            var ok = await initData();
+            if (!ok) return;
+
+            fillOptions();
+
+            if (isEdit && state.doc) {
+              setFormData(state.doc);
+            } else {
+              updateReceiveNo();
+              setDefaultDates();
+              if (isCopy && state.copyDoc) {
+                setCopyFormData(state.copyDoc);
+              }
+            }
+
+            togglePlanFields();
+            refreshDateDisplays();
+            els.mainCard.style.display = 'block';
+          } catch (err) {
+            showError((err && err.message) ? err.message : 'โหลดข้อมูลฟอร์มไม่สำเร็จ');
+          }
+        } finally {
+          endInitLoading();
         }
       }
 

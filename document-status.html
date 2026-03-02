@@ -959,6 +959,28 @@
         els.errBox.classList.add('show');
       }
 
+      var initLoadTicket = null;
+      function beginInitLoading(message) {
+        if (typeof window.beginPageLoading === 'function') {
+          initLoadTicket = window.beginPageLoading(message || 'กำลังโหลดข้อมูล...');
+          return;
+        }
+        if (typeof window.showPageLoader === 'function') {
+          window.showPageLoader(message || 'กำลังโหลดข้อมูล...', false);
+        }
+      }
+
+      function endInitLoading() {
+        if (initLoadTicket && typeof window.endPageLoading === 'function') {
+          window.endPageLoading(initLoadTicket);
+          initLoadTicket = null;
+          return;
+        }
+        if (typeof window.hidePageLoader === 'function') {
+          window.hidePageLoader(false);
+        }
+      }
+
       function updateBrowserTitle(idValue) {
         var id = C.safeTrim(idValue || '');
         var page = id ? ('เปลี่ยนสถานะเอกสาร • ' + id) : 'เปลี่ยนสถานะเอกสาร';
@@ -1630,31 +1652,36 @@
       }
 
       async function init() {
-        if (!docId) {
-          C.redirect('not-found.html', {
-            message: 'ไม่พบเอกสาร',
-            detail: '',
-            back: 'index.html'
-          }, true);
-          return;
-        }
-
+        beginInitLoading('กำลังโหลดหน้าจัดการสถานะ...');
         try {
-          state.settings = C.ensureSettingsOrThrow();
-          state.api = C.createApiClient(state.settings);
-        } catch (_e) {
-          showError('กรุณาตั้งค่า scriptUrl และ deviceKey ที่หน้า index ก่อน');
-          return;
-        }
+          if (!docId) {
+            C.redirect('not-found.html', {
+              message: 'ไม่พบเอกสาร',
+              detail: '',
+              back: 'index.html'
+            }, true);
+            return;
+          }
 
-        bindEvents();
-        updateBrowserTitle(docId);
-        setSaving(false);
+          try {
+            state.settings = C.ensureSettingsOrThrow();
+            state.api = C.createApiClient(state.settings);
+          } catch (_e) {
+            showError('กรุณาตั้งค่า scriptUrl และ deviceKey ที่หน้า index ก่อน');
+            return;
+          }
 
-        try {
-          await loadData();
-        } catch (err) {
-          showError((err && err.message) ? err.message : 'โหลดหน้าจัดการสถานะไม่สำเร็จ');
+          bindEvents();
+          updateBrowserTitle(docId);
+          setSaving(false);
+
+          try {
+            await loadData();
+          } catch (err) {
+            showError((err && err.message) ? err.message : 'โหลดหน้าจัดการสถานะไม่สำเร็จ');
+          }
+        } finally {
+          endInitLoading();
         }
       }
 

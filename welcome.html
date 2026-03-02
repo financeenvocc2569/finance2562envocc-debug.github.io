@@ -175,6 +175,10 @@
       margin-top: 14px;
     }
 
+    .welcome-actions-sub {
+      margin-top: 10px;
+    }
+
     .welcome-btn {
       border: none;
       font: inherit;
@@ -199,6 +203,23 @@
     }
 
     .welcome-btn-primary:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.04);
+    }
+
+    .welcome-btn-loan {
+      height: 50px;
+      padding: 0 22px;
+      border-radius: 999px;
+      font-weight: 900;
+      font-size: 0.98rem;
+      background: linear-gradient(180deg, #40cf93 0%, #22c55e 56%, #16974d 100%);
+      border: 1px solid rgba(21, 128, 61, 0.52);
+      color: #fff;
+      box-shadow: 0 20px 48px rgba(22, 163, 74, 0.28);
+    }
+
+    .welcome-btn-loan:hover {
       transform: translateY(-1px);
       filter: brightness(1.04);
     }
@@ -229,6 +250,12 @@
 
     body.dark-mode .welcome-btn-secondary:hover {
       background: rgba(22, 30, 44, 0.88);
+    }
+
+    body.dark-mode .welcome-btn-loan {
+      background: linear-gradient(180deg, #2cb66f 0%, #179855 56%, #116f3f 100%);
+      border-color: rgba(74, 222, 128, 0.46);
+      box-shadow: 0 20px 44px rgba(7, 38, 22, 0.52);
     }
 
     .state-error {
@@ -309,6 +336,7 @@
       }
 
       .welcome-btn-primary,
+      .welcome-btn-loan,
       .welcome-btn-secondary {
         width: 100%;
         height: 50px;
@@ -343,10 +371,13 @@
       <h1 class="welcome-title">ยินดีต้อนรับเข้าสู่ระบบ</h1>
       <div class="welcome-name" id="welcomeName">-</div>
       <div class="welcome-position" id="welcomePosition">ผู้ใช้งานระบบ</div>
-      <p class="welcome-note">กรุณากดปุ่มด้านล่างเพื่อเข้าสู่หน้าเอกสาร</p>
+      <p class="welcome-note">กรุณาเลือกทะเบียนคุมที่ต้องการใช้งาน</p>
       <div id="stateError" class="state-error"></div>
       <div class="welcome-actions">
-        <button id="btnDashboard" type="button" class="welcome-btn welcome-btn-primary"><i class="bi bi-speedometer2"></i>เข้าสู่หน้าเอกสาร</button>
+        <button id="btnMainRegister" type="button" class="welcome-btn welcome-btn-primary"><i class="bi bi-folder2-open"></i>ทะเบียนคุมเอกสาร</button>
+        <button id="btnLoanRegister" type="button" class="welcome-btn welcome-btn-loan"><i class="bi bi-wallet2"></i>ทะเบียนคุมเงินยืม</button>
+      </div>
+      <div class="welcome-actions welcome-actions-sub">
         <button id="btnLogout" type="button" class="welcome-btn welcome-btn-secondary"><i class="bi bi-box-arrow-right"></i>ออกจากระบบ</button>
       </div>
     </div>
@@ -361,6 +392,7 @@
       'use strict';
 
       var C = window.DocFrontendCommon;
+      var REGISTER_SELECTION_KEY = 'docControlSelectedRegisterV1';
       var state = {
         settings: null,
         api: null,
@@ -372,7 +404,8 @@
         welcomeName: document.getElementById('welcomeName'),
         welcomePosition: document.getElementById('welcomePosition'),
         stateError: document.getElementById('stateError'),
-        btnDashboard: document.getElementById('btnDashboard'),
+        btnMainRegister: document.getElementById('btnMainRegister'),
+        btnLoanRegister: document.getElementById('btnLoanRegister'),
         btnLogout: document.getElementById('btnLogout')
       };
 
@@ -404,11 +437,28 @@
         }
       }
 
-      function goDashboard() {
+      function rememberRegisterSelection(registerName) {
+        var value = C.safeTrim(registerName || '').toLowerCase();
+        if (value !== 'main' && value !== 'loan') return;
+        try { sessionStorage.setItem(REGISTER_SELECTION_KEY, value); } catch (_e) {}
+      }
+
+      function clearRegisterSelection() {
+        try { sessionStorage.removeItem(REGISTER_SELECTION_KEY); } catch (_e) {}
+      }
+
+      function goMainRegister() {
+        rememberRegisterSelection('main');
         C.redirect('index.html');
       }
 
+      function goLoanRegister() {
+        rememberRegisterSelection('loan');
+        C.redirect('loan-index.html');
+      }
+
       function goLogout() {
+        clearRegisterSelection();
         if (!state.api) {
           C.redirect('index.html', {}, true);
           return;
@@ -422,7 +472,8 @@
       }
 
       function setBusy(isBusy) {
-        els.btnDashboard.disabled = !!isBusy;
+        els.btnMainRegister.disabled = !!isBusy;
+        els.btnLoanRegister.disabled = !!isBusy;
         els.btnLogout.disabled = !!isBusy;
       }
 
@@ -435,7 +486,8 @@
           return;
         }
 
-        els.btnDashboard.addEventListener('click', goDashboard);
+        els.btnMainRegister.addEventListener('click', goMainRegister);
+        els.btnLoanRegister.addEventListener('click', goLoanRegister);
         els.btnLogout.addEventListener('click', goLogout);
 
         showError('');

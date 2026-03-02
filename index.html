@@ -820,6 +820,36 @@
       font-size: 0.82rem !important;
     }
 
+    #homeTopbar .loan-action-btn {
+      height: 46px !important;
+      padding: 0 16px !important;
+      border-radius: 999px !important;
+      font-size: 0.9rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.005em;
+      cursor: pointer !important;
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.24s ease, border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    #homeTopbar .loan-action-back {
+      background: rgba(255, 255, 255, 0.68) !important;
+      color: #334155 !important;
+      border: 1px solid rgba(148, 163, 184, 0.38) !important;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08) !important;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      #homeTopbar .loan-action-btn:hover {
+        transform: translateY(-2px);
+      }
+
+      #homeTopbar .loan-action-back:hover {
+        background: rgba(255, 255, 255, 0.9) !important;
+        border-color: rgba(59, 130, 246, 0.44) !important;
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.14) !important;
+      }
+    }
+
     body.app-home-page #homeTopbar .dash-search-wrap {
       transition:
         transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -1003,6 +1033,21 @@
       border-color: rgba(248, 113, 113, 0.64) !important;
       color: #fecdd3 !important;
       box-shadow: 0 12px 24px rgba(2, 8, 20, 0.34) !important;
+    }
+
+    body.dark-mode #homeTopbar .loan-action-back {
+      background: rgba(15, 23, 42, 0.68) !important;
+      color: #cbd5e1 !important;
+      border-color: rgba(148, 163, 184, 0.42) !important;
+      box-shadow: 0 10px 20px rgba(2, 8, 20, 0.36) !important;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      body.dark-mode #homeTopbar .loan-action-back:hover {
+        background: rgba(30, 41, 59, 0.86) !important;
+        border-color: rgba(125, 211, 252, 0.46) !important;
+        color: #e2e8f0 !important;
+      }
     }
 
     body.dark-mode .search-panel {
@@ -1452,6 +1497,24 @@
       --stat-grad-b: rgba(30, 41, 59, 0.54);
     }
 
+    #docsList .doc-card.status-pending,
+    #docsList .doc-item.status-pending {
+      --doc-aura-rgb: 245, 158, 11;
+      --doc-aura-strong: 0.2;
+      --doc-aura-soft: 0.1;
+      border-left: 6px solid #d97706 !important;
+    }
+
+    #docsList .doc-card.status-pending .doc-bg-icon,
+    #docsList .doc-item.status-pending .doc-bg-icon {
+      color: rgba(217, 119, 6, 0.32);
+    }
+
+    body.dark-mode #docsList .doc-card.status-pending .doc-bg-icon,
+    body.dark-mode #docsList .doc-item.status-pending .doc-bg-icon {
+      color: rgba(251, 191, 36, 0.4);
+    }
+
     body.dark-mode #statsRow .stat-card.s-inprogress {
       --stat-color: #7dd3fc;
       --stat-icon: rgba(125, 211, 252, 0.26);
@@ -1668,7 +1731,6 @@
             </div>
           </div>
           <div class="dash-user-wrap">
-            <button id="btnOpenSettings" class="btn outline app-settings-btn hidden" type="button">ตั้งค่า API</button>
             <div id="sessionUserChip" class="login-user-chip hidden">
               <div class="session-avatar-wrap">
                 <img id="sessionUserAvatar" class="session-avatar hidden" alt="ผู้ใช้งานระบบ">
@@ -1679,7 +1741,8 @@
                 <div id="sessionUserRole" class="login-user-pos">ยังไม่ได้เข้าสู่ระบบ</div>
               </div>
             </div>
-            <button id="btnLogout" class="btn outline logout-btn hidden" type="button"><i class="bi bi-box-arrow-right me-1"></i>ออกจากระบบ</button>
+            <button id="btnRegisterHub" class="btn outline loan-action-btn loan-action-back" type="button"><i class="bi bi-arrow-left me-1"></i>เลือกทะเบียนคุม</button>
+            <button id="btnOpenSettings" class="btn outline app-settings-btn hidden" type="button">ตั้งค่า API</button>
           </div>
         </div>
         <div class="dash-search-wrap">
@@ -1900,6 +1963,9 @@
 
       var C = window.DocFrontendCommon;
       var DEFAULT_BUDGET_ORDER = ['กองทุน ววน.', 'กองทุนเงินทดแทน', 'เงินบำรุง', 'เงินงบประมาณ'];
+      var REGISTER_SELECTION_KEY = 'docControlSelectedRegisterV1';
+      var REGISTER_MAIN = 'main';
+      var REGISTER_LOAN = 'loan';
       var routeQuery = C.parseQuery();
 
       var state = {
@@ -1940,6 +2006,7 @@
         linkManual: document.getElementById('linkManual'),
         connectStatus: document.getElementById('connectStatus'),
         btnOpenSettings: document.getElementById('btnOpenSettings'),
+        btnRegisterHub: document.getElementById('btnRegisterHub'),
         btnLogout: document.getElementById('btnLogout'),
         settingsCard: document.getElementById('settingsCard'),
         scriptUrl: document.getElementById('scriptUrl'),
@@ -2021,6 +2088,72 @@
         else els.connectStatus.removeAttribute('data-status');
       }
 
+      function getRegisterSelection() {
+        try {
+          return C.safeTrim(sessionStorage.getItem(REGISTER_SELECTION_KEY) || '').toLowerCase();
+        } catch (_e) {
+          return '';
+        }
+      }
+
+      function rememberRegisterSelection(registerName) {
+        var value = C.safeTrim(registerName || '').toLowerCase();
+        if (value !== REGISTER_MAIN && value !== REGISTER_LOAN) return;
+        try { sessionStorage.setItem(REGISTER_SELECTION_KEY, value); } catch (_e) {}
+      }
+
+      function clearRegisterSelection() {
+        try { sessionStorage.removeItem(REGISTER_SELECTION_KEY); } catch (_e) {}
+      }
+
+      function hasExplicitEntryRoute() {
+        if (!routeQuery || typeof routeQuery !== 'object') return false;
+        for (var k in routeQuery) {
+          if (!Object.prototype.hasOwnProperty.call(routeQuery, k)) continue;
+          var key = String(k || '').toLowerCase();
+          if (key === 'dk' || key === 'ipk') continue;
+          var value = C.safeTrim(routeQuery[k] || '');
+          if (!value) continue;
+          return true;
+        }
+        return false;
+      }
+
+      function shouldRedirectToWelcomeChooser() {
+        if (hasExplicitEntryRoute()) return false;
+        var navType = '';
+        try {
+          if (window.performance && typeof window.performance.getEntriesByType === 'function') {
+            var navEntries = window.performance.getEntriesByType('navigation');
+            if (navEntries && navEntries.length && navEntries[0] && navEntries[0].type) {
+              navType = String(navEntries[0].type || '');
+            }
+          }
+        } catch (_e0) {}
+
+        if (!navType) {
+          try {
+            if (window.performance && window.performance.navigation) {
+              if (window.performance.navigation.type === 1) navType = 'reload';
+              else if (window.performance.navigation.type === 2) navType = 'back_forward';
+              else navType = 'navigate';
+            }
+          } catch (_e1) {}
+        }
+
+        if (navType && navType !== 'navigate') return false;
+
+        var ref = C.safeTrim(document.referrer || '');
+        if (!ref) return true;
+        try {
+          var refUrl = new URL(ref, window.location.href);
+          if (refUrl.origin === window.location.origin) return false;
+          return true;
+        } catch (_e2) {
+          return true;
+        }
+      }
+
       function setLoading(isLoading) {
         var disabled = !!isLoading;
         state.loading = disabled;
@@ -2040,7 +2173,8 @@
           els.btnPrev,
           els.btnNext,
           els.jumpPageInline,
-          els.btnAddFab
+          els.btnAddFab,
+          els.btnRegisterHub
         ];
 
         for (var i = 0; i < lockEls.length; i++) {
@@ -2240,6 +2374,9 @@
         if (hasStored) return 'status-stored';
         if (st === 'กำลังดำเนินการ') return 'status-inprogress';
         if (st === 'มอบผู้รับผิดชอบ') return 'status-assigned';
+        if (st !== 'ยกเลิก' && st !== 'อนุมัติแล้วส่งคืนเจ้าของเรื่อง' && st !== 'กำลังดำเนินการ' && st !== 'มอบผู้รับผิดชอบ') {
+          return 'status-pending';
+        }
         return 'status-completed';
       }
 
@@ -2251,6 +2388,9 @@
         if (hasStored) return 'bi-archive-fill';
         if (st === 'กำลังดำเนินการ') return 'bi-hourglass-split';
         if (st === 'มอบผู้รับผิดชอบ') return 'bi-person-check-fill';
+        if (st !== 'ยกเลิก' && st !== 'อนุมัติแล้วส่งคืนเจ้าของเรื่อง' && st !== 'กำลังดำเนินการ' && st !== 'มอบผู้รับผิดชอบ') {
+          return 'bi-clock-history';
+        }
         return 'bi-check-circle-fill';
       }
 
@@ -2711,6 +2851,11 @@
         return state.api.me({ noPageLoader: true }).then(function (res) {
           if (res && res.success && res.user) {
             setLoggedIn(res.user);
+            if (shouldRedirectToWelcomeChooser()) {
+              C.redirect('welcome.html', {}, true);
+              return true;
+            }
+            rememberRegisterSelection(REGISTER_MAIN);
             return loadDocs(false)
               .then(function () { return loadBoxes(); })
               .then(function () { return true; })
@@ -2762,6 +2907,7 @@
             throw new Error(res && res.error ? res.error : 'เข้าสู่ระบบไม่สำเร็จ');
           }
           setLoggedIn(res.user || { username: username });
+          clearRegisterSelection();
           setStatus('เข้าสู่ระบบสำเร็จ', 'ok');
           setLoading(false);
           C.redirect('welcome.html');
@@ -2783,6 +2929,7 @@
         setLoading(true);
         state.api.logout({ loaderMessage: 'กำลังออกจากระบบ...' }).finally(function () {
           setLoading(false);
+          clearRegisterSelection();
           state.page = 1;
           state.totalPages = 1;
           state.totalItems = 0;
@@ -2918,6 +3065,10 @@
         C.redirect('inspection-report.html');
       }
 
+      function goRegisterHub() {
+        C.redirect('welcome.html');
+      }
+
       function initEvents() {
         if (els.btnOpenSettings) {
           els.btnOpenSettings.addEventListener('click', function () {
@@ -2964,6 +3115,12 @@
         if (els.btnLogout) {
           els.btnLogout.addEventListener('click', function () {
             logout();
+          });
+        }
+
+        if (els.btnRegisterHub) {
+          els.btnRegisterHub.addEventListener('click', function () {
+            goRegisterHub();
           });
         }
 
@@ -3220,6 +3377,17 @@
 
         if (mode === 'inspector') {
           C.redirect('inspection-report.html', {}, true);
+          return true;
+        }
+
+        if (mode === 'boxes') {
+          switchTab('boxes');
+          return false;
+        }
+
+        if (mode === 'loan' || mode === 'loanregister') {
+          rememberRegisterSelection(REGISTER_LOAN);
+          C.redirect('loan-index.html', {}, true);
           return true;
         }
 

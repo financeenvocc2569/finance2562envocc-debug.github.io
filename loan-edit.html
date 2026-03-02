@@ -1,0 +1,1488 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>แก้ไขทะเบียนคุมเงินยืม</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="./theme-legacy.css?v=20260221-17">
+  <style>
+    .loan-page {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .loan-top {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .loan-btn {
+      border: 1px solid rgba(148, 163, 184, 0.34);
+      border-radius: 999px;
+      min-height: 40px;
+      padding: 0 14px;
+      font: inherit;
+      font-weight: 760;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: transform 0.2s ease, box-shadow 0.22s ease;
+    }
+
+    .loan-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .loan-btn.primary {
+      color: #fff;
+      border-color: rgba(10, 132, 255, 0.34);
+      background: linear-gradient(180deg, rgba(68, 165, 255, 0.96), rgba(10, 132, 255, 0.96), rgba(0, 113, 227, 0.96));
+      box-shadow: 0 12px 28px rgba(10, 132, 255, 0.26);
+    }
+
+    .loan-btn.green {
+      color: #fff;
+      border-color: rgba(34, 197, 94, 0.34);
+      background: linear-gradient(180deg, rgba(80, 214, 138, 0.95), rgba(48, 209, 88, 0.95), rgba(30, 186, 75, 0.95));
+      box-shadow: 0 12px 28px rgba(34, 197, 94, 0.24);
+    }
+
+    .loan-btn.gray {
+      color: #fff;
+      border-color: rgba(100, 116, 139, 0.32);
+      background: linear-gradient(180deg, rgba(100, 116, 139, 0.94), rgba(71, 85, 105, 0.94));
+      box-shadow: 0 12px 26px rgba(51, 65, 85, 0.22);
+    }
+
+    .loan-btn.outline {
+      color: #0c4a6e;
+      border-color: rgba(10, 132, 255, 0.28);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(228, 242, 255, 0.72));
+      box-shadow: 0 10px 22px rgba(10, 132, 255, 0.14);
+    }
+
+    .loan-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .loan-card {
+      border: 1px solid rgba(148, 163, 184, 0.34);
+      border-radius: 20px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(246, 251, 255, 0.72));
+      box-shadow: 0 20px 38px rgba(15, 23, 42, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.82);
+      overflow: hidden;
+    }
+
+    .loan-card-head {
+      background: linear-gradient(145deg, #66baff 0%, #3196fb 42%, #1f79f0 100%);
+      color: #fff;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .loan-card-title {
+      margin: 0;
+      font-size: 1.08rem;
+      font-weight: 820;
+      line-height: 1.2;
+    }
+
+    .loan-card-sub {
+      margin: 2px 0 0;
+      font-size: 0.84rem;
+      font-weight: 610;
+      opacity: 0.96;
+    }
+
+    .loan-card-body {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+      background: linear-gradient(180deg, rgba(235, 245, 255, 0.32), rgba(235, 245, 255, 0.14));
+    }
+
+    .section {
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: 16px;
+      padding: 10px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(250, 253, 255, 0.72));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.86), 0 8px 20px rgba(15, 23, 42, 0.06);
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: 0.88rem;
+      font-weight: 820;
+      color: var(--text-color);
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .row {
+      display: grid;
+      gap: 8px;
+    }
+
+    .row.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .row.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .field {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-label {
+      margin: 0;
+      font-size: 0.78rem;
+      font-weight: 760;
+      color: var(--text-muted);
+      letter-spacing: 0.01em;
+    }
+
+    .loan-page .form-control,
+    .loan-page .form-select,
+    .loan-page textarea.form-control {
+      width: 100%;
+      height: 46px;
+      min-height: 46px;
+      border-radius: 14px !important;
+      border: 1px solid rgba(148, 163, 184, 0.34) !important;
+      background-color: #ffffff !important;
+      color: var(--text-color);
+      font: inherit;
+      font-size: 0.94rem;
+      line-height: 1.2;
+      padding: 0 14px;
+      font-weight: 600;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.88);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .loan-page .form-select {
+      padding-right: 40px !important;
+      background-image: var(--dd-arrow-light) !important;
+      background-repeat: no-repeat !important;
+      background-position: right 13px center !important;
+      background-size: 14px 14px !important;
+    }
+
+    .loan-page .form-control:focus,
+    .loan-page .form-select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px var(--primary-color-soft);
+    }
+
+    .loan-page .form-control[disabled],
+    .loan-page .form-select[disabled],
+    .loan-page .form-control[readonly],
+    .loan-page .form-select[readonly] {
+      opacity: 1;
+      cursor: not-allowed;
+      border: 1px solid #b8c2cf !important;
+      background: #edf1f6 !important;
+      background-image: none !important;
+      color: #334155 !important;
+      -webkit-text-fill-color: #334155 !important;
+      font-weight: 700;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+    }
+
+    .meeting-textarea.form-control {
+      min-height: 96px !important;
+      height: auto !important;
+      padding: 10px 14px !important;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      overflow: hidden;
+      resize: none;
+      -webkit-appearance: none !important;
+      appearance: none !important;
+      border-radius: 14px !important;
+    }
+
+    body.page-loan-register:not(.dark-mode) .loan-page .auto-text-field.form-control,
+    body.page-loan-register:not(.dark-mode) .loan-page .auto-text-field.form-select {
+      border: 1px solid #aeb8c8 !important;
+      background: #c9d0da !important;
+      background-image: none !important;
+      color: #223248 !important;
+      -webkit-text-fill-color: #223248 !important;
+      font-weight: 700 !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.56) !important;
+    }
+
+    .thai-date-input .form-control {
+      display: flex;
+      align-items: center;
+      min-height: 46px;
+      height: 46px;
+      padding-right: 40px !important;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .error-box {
+      display: none;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(239, 68, 68, 0.34);
+      background: rgba(239, 68, 68, 0.1);
+      color: #991b1b;
+      font-size: 0.86rem;
+      font-weight: 650;
+      line-height: 1.44;
+    }
+
+    .error-box.show {
+      display: block;
+    }
+
+    .readonly-note {
+      border: 1px solid rgba(180, 83, 9, 0.34);
+      background: rgba(251, 191, 36, 0.16);
+      color: #92400e;
+      border-radius: 12px;
+      padding: 8px 10px;
+      font-size: 0.82rem;
+      font-weight: 650;
+    }
+
+    .saving-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 3500;
+      background: rgba(15, 23, 42, 0.22);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .saving-card {
+      min-width: min(86vw, 320px);
+      border-radius: 20px;
+      padding: 18px 18px 16px;
+      text-align: center;
+      background: var(--card-strong);
+      border: 1px solid var(--input-border);
+      box-shadow: 0 24px 54px rgba(15, 23, 42, 0.24);
+    }
+
+    .saving-spinner {
+      width: 42px;
+      height: 42px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      border: 3px solid rgba(10, 132, 255, 0.22);
+      border-top-color: var(--primary-color);
+      animation: loanSpin 0.72s linear infinite;
+    }
+
+    .saving-title {
+      font-size: 1rem;
+      font-weight: 820;
+      color: var(--text-color);
+      margin-bottom: 4px;
+    }
+
+    .saving-sub {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      font-weight: 620;
+    }
+
+    @keyframes loanSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .submit-wrap {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .loan-submit-btn {
+      width: min(360px, 100%);
+      min-height: 62px;
+      border-radius: 999px;
+      font-size: clamp(1.15rem, 2.1vw, 1.45rem);
+      font-weight: 860;
+      letter-spacing: 0.01em;
+      gap: 10px;
+      justify-content: center;
+      box-shadow: 0 12px 26px rgba(10, 132, 255, 0.24);
+    }
+
+    .loan-submit-btn i {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.05rem;
+      line-height: 1;
+      flex: 0 0 auto;
+    }
+
+    body.dark-mode.page-loan-register {
+      --text-color: #e6eefb;
+      --muted-text: #a5b6cf;
+      --primary-color: #2f89f3;
+      --primary-color-soft: rgba(47, 137, 243, 0.24);
+      --bg-gradient: linear-gradient(180deg, #081322 0%, #0d192b 55%, #12203a 100%);
+      background: var(--bg-gradient) !important;
+      color: var(--text-color) !important;
+    }
+
+    body.dark-mode.page-loan-register .loan-card {
+      border-color: #2a3f59;
+      background: linear-gradient(180deg, rgba(18, 29, 47, 0.96), rgba(18, 29, 47, 0.9));
+      box-shadow: 0 22px 44px rgba(1, 8, 22, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    body.dark-mode.page-loan-register .loan-card-head {
+      background: linear-gradient(180deg, #2b6fc9 0%, #1e58ac 68%, #16468e 100%);
+      border-bottom: 1px solid rgba(91, 144, 220, 0.36);
+    }
+
+    body.dark-mode.page-loan-register .loan-card-sub {
+      color: rgba(230, 238, 251, 0.9);
+    }
+
+    body.dark-mode.page-loan-register .loan-card-body {
+      background: linear-gradient(180deg, rgba(14, 24, 40, 0.94), rgba(14, 24, 40, 0.82));
+    }
+
+    body.dark-mode.page-loan-register .section {
+      border-color: #2a3f59;
+      background: linear-gradient(180deg, rgba(18, 29, 47, 0.92), rgba(16, 26, 41, 0.88));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 8px 18px rgba(1, 8, 22, 0.34);
+    }
+
+    body.dark-mode.page-loan-register .section-title {
+      color: #e6eefb;
+    }
+
+    body.dark-mode.page-loan-register .form-label {
+      color: #a5b6cf;
+    }
+
+    body.dark-mode.page-loan-register .loan-page .form-control,
+    body.dark-mode.page-loan-register .loan-page .form-select,
+    body.dark-mode.page-loan-register .loan-page textarea.form-control {
+      border-color: #334b68 !important;
+      background-color: #0f1a2b !important;
+      color: #e6eefb !important;
+      box-shadow: none;
+    }
+
+    body.dark-mode.page-loan-register .loan-page .form-control::placeholder {
+      color: rgba(165, 182, 207, 0.72);
+    }
+
+    body.dark-mode.page-loan-register .loan-page .form-select {
+      background-image: var(--dd-arrow-dark) !important;
+    }
+
+    body.dark-mode.page-loan-register .loan-page .form-control:focus,
+    body.dark-mode.page-loan-register .loan-page .form-select:focus {
+      border-color: rgba(86, 149, 234, 0.7) !important;
+      box-shadow: 0 0 0 3px rgba(47, 137, 243, 0.24);
+    }
+
+    body.dark-mode.page-loan-register .loan-page .form-control[disabled],
+    body.dark-mode.page-loan-register .loan-page .form-select[disabled],
+    body.dark-mode.page-loan-register .loan-page .form-control[readonly],
+    body.dark-mode.page-loan-register .loan-page .form-select[readonly] {
+      border-color: rgba(100, 116, 139, 0.58) !important;
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.94), rgba(22, 31, 45, 0.92)) !important;
+      color: rgba(230, 238, 251, 0.9) !important;
+      font-weight: 700;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+    }
+
+    body.dark-mode.page-loan-register .loan-page .auto-text-field.form-control,
+    body.dark-mode.page-loan-register .loan-page .auto-text-field.form-select {
+      border-color: rgba(100, 116, 139, 0.58) !important;
+      background: linear-gradient(180deg, rgba(30, 41, 59, 0.94), rgba(22, 31, 45, 0.92)) !important;
+      background-image: none !important;
+      color: rgba(230, 238, 251, 0.9) !important;
+      -webkit-text-fill-color: rgba(230, 238, 251, 0.9) !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+    }
+
+    body.dark-mode.page-loan-register .thai-date-input .cal-icon {
+      color: #8db5e8;
+    }
+
+    body.dark-mode.page-loan-register .error-box {
+      border-color: rgba(248, 113, 113, 0.56);
+      background: rgba(127, 29, 29, 0.34);
+      color: #fecaca;
+    }
+
+    body.dark-mode.page-loan-register .readonly-note {
+      border-color: rgba(245, 158, 11, 0.5);
+      background: rgba(120, 53, 15, 0.32);
+      color: #fcd34d;
+    }
+
+    body.dark-mode.page-loan-register #btnSubmit.loan-submit-btn {
+      background: linear-gradient(180deg, #3a8ef4 0%, #246fce 70%, #1a58aa 100%) !important;
+      border-color: rgba(86, 149, 234, 0.52) !important;
+      color: #f3f7ff !important;
+      box-shadow: 0 12px 26px rgba(18, 76, 156, 0.42) !important;
+    }
+
+    body.dark-mode.page-loan-register #btnSubmit.loan-submit-btn i {
+      background: rgba(12, 24, 42, 0.45);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      body.dark-mode.page-loan-register #btnSubmit.loan-submit-btn:hover {
+        border-color: rgba(115, 172, 251, 0.74) !important;
+        box-shadow: 0 16px 30px rgba(18, 76, 156, 0.48) !important;
+        filter: saturate(1.05);
+      }
+    }
+
+    @media (max-width: 740px) {
+      .loan-page {
+        padding: 12px;
+      }
+
+      .row.two,
+      .row.three {
+        grid-template-columns: 1fr;
+      }
+
+      .loan-submit-btn {
+        min-height: 56px;
+        font-size: clamp(1rem, 4.8vw, 1.25rem);
+      }
+
+      .loan-submit-btn i {
+        width: 30px;
+        height: 30px;
+        font-size: 0.95rem;
+      }
+
+      .meeting-textarea.form-control {
+        min-height: 86px !important;
+      }
+    }
+  </style>
+</head>
+<body class="page-loan-register">
+  <div class="loan-page">
+    <div class="loan-top">
+      <button id="btnBack" type="button" class="back-btn"><i class="bi bi-arrow-left"></i> กลับ</button>
+    </div>
+
+    <div id="errBox" class="error-box"></div>
+    <div id="readOnlyNote" class="readonly-note" style="display:none"></div>
+
+    <div id="mainCard" class="loan-grid" style="display:none;">
+      <div class="loan-card">
+        <div class="loan-card-head">
+          <div>
+            <h2 id="formTitle" class="loan-card-title">แก้ไขทะเบียนคุมเงินยืม</h2>
+            <p class="loan-card-sub">แก้ไขข้อมูลตามสัญญา พร้อมดึงข้อมูลอัตโนมัติจากทะเบียนคุมเอกสาร</p>
+          </div>
+        </div>
+
+        <div class="loan-card-body">
+          <section class="section">
+            <h3 class="section-title"><i class="bi bi-file-earmark-text"></i>ข้อมูลอ้างอิง</h3>
+            <div class="row two">
+              <div class="field">
+                <label class="form-label">เลขที่เอกสาร สธ. <span style="color:#dc2626">*</span></label>
+                <input type="text" id="docNoSdh" class="form-control" placeholder="เช่น สธ 0409.7/...">
+              </div>
+              <div class="field">
+                <label class="form-label">เลขที่สัญญา <span style="color:#dc2626">*</span></label>
+                <input type="text" id="contractNo" class="form-control" placeholder="เลขที่สัญญาเงินยืม">
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h3 class="section-title"><i class="bi bi-calendar-check"></i>ข้อมูลวันที่หลัก</h3>
+            <div class="row three">
+              <div class="field">
+                <label class="form-label">วันที่อนุมัติ <span style="color:#dc2626">*</span></label>
+                <div class="thai-date-input" onclick="openCalendar('approveDate')">
+                  <input type="hidden" id="approveDate" value="">
+                  <div id="approveDateDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
+                  <i class="bi bi-calendar3 cal-icon"></i>
+                </div>
+              </div>
+              <div class="field">
+                <label class="form-label">วันที่ได้รับเงิน <span style="color:#dc2626">*</span></label>
+                <div class="thai-date-input" onclick="openCalendar('receiveMoneyDate')">
+                  <input type="hidden" id="receiveMoneyDate" value="">
+                  <div id="receiveMoneyDateDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
+                  <i class="bi bi-calendar3 cal-icon"></i>
+                </div>
+              </div>
+              <div class="field">
+                <label class="form-label">วันที่จัด/เดินทาง <span style="color:#dc2626">*</span></label>
+                <div class="thai-date-input" onclick="openCalendar('eventDate')">
+                  <input type="hidden" id="eventDate" value="">
+                  <div id="eventDateDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
+                  <i class="bi bi-calendar3 cal-icon"></i>
+                </div>
+              </div>
+            </div>
+            <div class="row two" style="margin-top:8px">
+              <div class="field">
+                <label class="form-label">วันที่สิ้นสุดกิจกรรม <span style="color:#dc2626">*</span></label>
+                <div class="thai-date-input" onclick="openCalendar('endActivityDate')">
+                  <input type="hidden" id="endActivityDate" value="">
+                  <div id="endActivityDateDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
+                  <i class="bi bi-calendar3 cal-icon"></i>
+                </div>
+              </div>
+              <div class="field">
+                <label class="form-label">วันที่ได้รับเอกสารชดใช้สัญญา</label>
+                <div class="thai-date-input" onclick="openCalendar('settlementDocDate')">
+                  <input type="hidden" id="settlementDocDate" value="">
+                  <div id="settlementDocDateDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
+                  <i class="bi bi-calendar3 cal-icon"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h3 class="section-title"><i class="bi bi-diagram-3"></i>ข้อมูลอัตโนมัติจากทะเบียนคุมเอกสาร</h3>
+            <div class="row two">
+              <div class="field"><label class="form-label">ชื่อ-สกุลผู้ยืม</label><input id="borrowerName" class="form-control auto-text-field" disabled></div>
+              <div class="field"><label class="form-label">กลุ่ม/ศูนย์</label><input id="groupCenter" class="form-control auto-text-field" disabled></div>
+              <div class="field full"><label class="form-label">ชื่อการประชุม/การลงพื้นที่</label><textarea id="meetingTitle" class="form-control meeting-textarea auto-text-field" disabled></textarea></div>
+              <div class="field"><label class="form-label">จำนวนเงิน</label><input id="amount" class="form-control auto-text-field" disabled></div>
+              <div class="field"><label class="form-label">ผลผลิตที่</label><input id="prod" class="form-control auto-text-field" disabled></div>
+              <div class="field"><label class="form-label">กิจกรรมหลัก</label><input id="mainAct" class="form-control auto-text-field" disabled></div>
+              <div class="field"><label class="form-label">โครงการย่อยที่</label><input id="subProject" class="form-control auto-text-field" disabled></div>
+              <div class="field"><label class="form-label">กิจกรรมย่อยที่</label><input id="activity" class="form-control auto-text-field" disabled></div>
+              <div class="field"><label class="form-label">วันที่ได้รับเอกสารยืมเงิน</label><input id="receiveBorrowDocDate" class="form-control auto-text-field" disabled></div>
+              <div class="field"><label class="form-label">ผู้รับผิดชอบ</label><input id="responsible" class="form-control auto-text-field" disabled></div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h3 class="section-title"><i class="bi bi-wallet2"></i>ประเภทค่าใช้จ่ายและเกณฑ์คืนเงิน</h3>
+            <div class="row two">
+              <div class="field">
+                <label class="form-label">ประเภทค่าใช้จ่าย <span style="color:#dc2626">*</span></label>
+                <select id="expenseType" class="form-select"></select>
+              </div>
+              <div class="field">
+                <label class="form-label">แหล่งเงินยืม <span style="color:#dc2626">*</span></label>
+                <select id="fundingSource" class="form-select"></select>
+              </div>
+              <div class="field"><label class="form-label">จำนวนวัน</label><input id="daysCount" class="form-control auto-text-field" disabled></div>
+              <div class="field"><label class="form-label">เกณฑ์ชำระคืน</label><input id="dueRule" class="form-control auto-text-field" disabled></div>
+              <div class="field"><label class="form-label">วันที่ตามเกณฑ์ต้องชำระคืน</label><input id="dueBaseDate" class="form-control auto-text-field" disabled></div>
+              <div class="field"><label class="form-label">วันครบกำหนด</label><input id="dueDate" class="form-control auto-text-field" disabled></div>
+              <div class="field"><label class="form-label">คงเหลือระยะเวลา</label><input id="remainingText" class="form-control auto-text-field" disabled></div>
+              <div class="field"><label class="form-label">สถานะเอกสาร</label><input id="statusDoc" class="form-control auto-text-field" disabled></div>
+            </div>
+          </section>
+
+          <section class="section">
+            <h3 class="section-title"><i class="bi bi-receipt"></i>ข้อมูลชำระและหนังสือ</h3>
+            <div class="row two">
+              <div class="field"><label class="form-label">ใบสำคัญเลขที่/เล่มที่</label><input id="voucherNo" class="form-control"></div>
+              <div class="field"><label class="form-label">ใบสำคัญจำนวนเงิน</label><input id="voucherAmount" type="number" step="0.01" class="form-control"></div>
+              <div class="field"><label class="form-label">ใบเสร็จรับเงินเลขที่/เล่มที่</label><input id="receiptNo" class="form-control"></div>
+              <div class="field"><label class="form-label">จำนวนเงินสดรับคืน</label><input id="cashbackAmount" type="number" step="0.01" class="form-control"></div>
+              <div class="field"><label class="form-label">เลขหนังสือกลุ่ม</label><input id="groupLetterNo" class="form-control"></div>
+              <div class="field">
+                <label class="form-label">ลงวันที่ตามหนังสือกลุ่ม</label>
+                <div class="thai-date-input" onclick="openCalendar('groupLetterDate')">
+                  <input type="hidden" id="groupLetterDate" value="">
+                  <div id="groupLetterDateDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
+                  <i class="bi bi-calendar3 cal-icon"></i>
+                </div>
+              </div>
+              <div class="field"><label class="form-label">เลขหนังสือส่งกองคลัง (ยืมเงิน)</label><input id="treasuryBorrowNo" class="form-control"></div>
+              <div class="field">
+                <label class="form-label">ลงวันที่ตามหนังสือส่งกองคลัง (ยืมเงิน)</label>
+                <div class="thai-date-input" onclick="openCalendar('treasuryBorrowDate')">
+                  <input type="hidden" id="treasuryBorrowDate" value="">
+                  <div id="treasuryBorrowDateDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
+                  <i class="bi bi-calendar3 cal-icon"></i>
+                </div>
+              </div>
+              <div class="field"><label class="form-label">เลขหนังสือส่งกองคลัง (ชดใช้หนี้)</label><input id="treasurySettleNo" class="form-control"></div>
+              <div class="field">
+                <label class="form-label">ลงวันที่ตามหนังสือส่งกองคลัง (ชดใช้หนี้)</label>
+                <div class="thai-date-input" onclick="openCalendar('treasurySettleDate')">
+                  <input type="hidden" id="treasurySettleDate" value="">
+                  <div id="treasurySettleDateDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
+                  <i class="bi bi-calendar3 cal-icon"></i>
+                </div>
+              </div>
+              <div class="field"><label class="form-label">เลขที่ฎีกา/GF</label><input id="gfNo" class="form-control"></div>
+              <div class="field">
+                <label class="form-label">วันที่รับโอนคืนเงินทดรองฯ</label>
+                <div class="thai-date-input" onclick="openCalendar('refundTransferDate')">
+                  <input type="hidden" id="refundTransferDate" value="">
+                  <div id="refundTransferDateDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
+                  <i class="bi bi-calendar3 cal-icon"></i>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="submit-wrap">
+            <button id="btnSubmit" type="button" class="loan-btn primary loan-submit-btn"><i class="bi bi-save-fill"></i><span id="btnSubmitText">บันทึกการแก้ไข</span></button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="loadingMsg" class="saving-overlay" aria-hidden="true">
+    <div class="saving-card">
+      <div class="saving-spinner"></div>
+      <div id="savingTitle" class="saving-title">กำลังบันทึกข้อมูล</div>
+      <div id="savingSub" class="saving-sub">โปรดรอสักครู่...</div>
+    </div>
+  </div>
+
+  <script src="./config.js"></script>
+  <script src="./api-client.js?v=20260221-6"></script>
+  <script src="./theme-legacy.js?v=20260221-3"></script>
+  <script src="./app-common.js?v=20260221-2"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var C = window.DocFrontendCommon;
+      var q = C.parseQuery();
+      var queryId = C.safeTrim(q.id || '');
+      var DATE_IDS = [
+        'approveDate',
+        'receiveMoneyDate',
+        'eventDate',
+        'endActivityDate',
+        'settlementDocDate',
+        'groupLetterDate',
+        'treasuryBorrowDate',
+        'treasurySettleDate',
+        'refundTransferDate'
+      ];
+      var THAI_MONTHS_FULL = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
+      var DUE_RULE_FROM_RECEIVE_MONEY = 'นับจากวันที่ได้รับเงิน';
+
+      var state = {
+        settings: null,
+        api: null,
+        user: null,
+        options: {
+          expenseTypes: [],
+          fundingSources: [],
+          expenseLookup: {}
+        },
+        editId: '',
+        isReadOnly: false,
+        loading: false,
+        lookupTimer: null,
+        lookupSeq: 0,
+        updDDHooked: false,
+        computedWatchBound: false
+      };
+
+      var els = {
+        mainCard: document.getElementById('mainCard'),
+        errBox: document.getElementById('errBox'),
+        readOnlyNote: document.getElementById('readOnlyNote'),
+        btnBack: document.getElementById('btnBack'),
+        btnSubmit: document.getElementById('btnSubmit'),
+        btnSubmitText: document.getElementById('btnSubmitText'),
+        formTitle: document.getElementById('formTitle'),
+        loadingMsg: document.getElementById('loadingMsg'),
+        savingTitle: document.getElementById('savingTitle'),
+        savingSub: document.getElementById('savingSub'),
+
+        docNoSdh: document.getElementById('docNoSdh'),
+        contractNo: document.getElementById('contractNo'),
+        expenseType: document.getElementById('expenseType'),
+        fundingSource: document.getElementById('fundingSource'),
+
+        borrowerName: document.getElementById('borrowerName'),
+        groupCenter: document.getElementById('groupCenter'),
+        meetingTitle: document.getElementById('meetingTitle'),
+        amount: document.getElementById('amount'),
+        prod: document.getElementById('prod'),
+        mainAct: document.getElementById('mainAct'),
+        subProject: document.getElementById('subProject'),
+        activity: document.getElementById('activity'),
+        receiveBorrowDocDate: document.getElementById('receiveBorrowDocDate'),
+        responsible: document.getElementById('responsible'),
+
+        daysCount: document.getElementById('daysCount'),
+        dueRule: document.getElementById('dueRule'),
+        dueBaseDate: document.getElementById('dueBaseDate'),
+        dueDate: document.getElementById('dueDate'),
+        remainingText: document.getElementById('remainingText'),
+        statusDoc: document.getElementById('statusDoc'),
+
+        voucherNo: document.getElementById('voucherNo'),
+        voucherAmount: document.getElementById('voucherAmount'),
+        receiptNo: document.getElementById('receiptNo'),
+        cashbackAmount: document.getElementById('cashbackAmount'),
+        groupLetterNo: document.getElementById('groupLetterNo'),
+        treasuryBorrowNo: document.getElementById('treasuryBorrowNo'),
+        treasurySettleNo: document.getElementById('treasurySettleNo'),
+        gfNo: document.getElementById('gfNo')
+      };
+
+      function showError(message) {
+        var msg = C.safeTrim(message || '');
+        if (!msg) {
+          els.errBox.classList.remove('show');
+          els.errBox.textContent = '';
+          return;
+        }
+        els.errBox.textContent = msg;
+        els.errBox.classList.add('show');
+      }
+
+      var initLoadTicket = null;
+      function beginInitLoading(message) {
+        if (typeof window.beginPageLoading === 'function') {
+          initLoadTicket = window.beginPageLoading(message || 'กำลังโหลดข้อมูล...');
+          return;
+        }
+        if (typeof window.showPageLoader === 'function') {
+          window.showPageLoader(message || 'กำลังโหลดข้อมูล...', false);
+        }
+      }
+
+      function endInitLoading() {
+        if (initLoadTicket && typeof window.endPageLoading === 'function') {
+          window.endPageLoading(initLoadTicket);
+          initLoadTicket = null;
+          return;
+        }
+        if (typeof window.hidePageLoader === 'function') {
+          window.hidePageLoader(false);
+        }
+      }
+
+      function withLoading(active) {
+        state.loading = !!active;
+        var disabled = !!active;
+        var lockTargets = [
+          els.btnSubmit,
+          els.docNoSdh
+        ];
+        for (var i = 0; i < lockTargets.length; i++) {
+          if (lockTargets[i]) lockTargets[i].disabled = disabled;
+        }
+      }
+
+      function setSaving(active, titleText, subText) {
+        var isActive = !!active;
+        if (els.savingTitle && titleText) {
+          els.savingTitle.textContent = C.safeText(titleText);
+        }
+        if (els.savingSub && subText) {
+          els.savingSub.textContent = C.safeText(subText);
+        }
+        if (!els.loadingMsg) return;
+        els.loadingMsg.style.display = isActive ? 'flex' : 'none';
+        els.loadingMsg.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+      }
+
+      function redirectWithLoader(path, params, replace, message) {
+        var targetPath = C.safeTrim(path || '') || 'index.html';
+        var queryParams = params && typeof params === 'object' ? params : {};
+        var msg = C.safeTrim(message || '') || 'กำลังโหลดข้อมูล...';
+        var url = C.buildPageUrl(targetPath, queryParams);
+
+        if (typeof window.navigateWithLoader === 'function') {
+          window.navigateWithLoader(url, msg);
+          return;
+        }
+
+        C.redirect(targetPath, queryParams, !!replace);
+      }
+
+      function refreshDateDisplays() {
+        if (typeof window.updDD !== 'function') return;
+        for (var i = 0; i < DATE_IDS.length; i++) {
+          window.updDD(DATE_IDS[i]);
+        }
+      }
+
+      function setDateValue(id, value) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.value = C.safeTrim(value || '');
+        if (typeof window.updDD === 'function') window.updDD(id);
+        if (id === 'receiveMoneyDate' || id === 'endActivityDate' || id === 'settlementDocDate') {
+          recalculateComputedPreview();
+        }
+      }
+
+      function buildOptionHtml(list, placeholder) {
+        var html = '<option value="">' + C.escapeHtml(placeholder || 'เลือก...') + '</option>';
+        var arr = Array.isArray(list) ? list : [];
+        for (var i = 0; i < arr.length; i++) {
+          var value = C.safeTrim(arr[i] || '');
+          if (!value) continue;
+          html += '<option value="' + C.escapeHtml(value) + '">' + C.escapeHtml(value) + '</option>';
+        }
+        return html;
+      }
+
+      function applyOptions() {
+        els.expenseType.innerHTML = buildOptionHtml(state.options.expenseTypes, 'เลือกประเภทค่าใช้จ่าย...');
+        els.fundingSource.innerHTML = buildOptionHtml(state.options.fundingSources, 'เลือกแหล่งเงินยืม...');
+      }
+
+      function ensureSelectValue(selectEl, value) {
+        if (!selectEl) return;
+        var v = C.safeTrim(value || '');
+        if (!v) return;
+        var found = false;
+        var opts = selectEl.options || [];
+        for (var i = 0; i < opts.length; i++) {
+          if (C.safeTrim(opts[i].value || '') === v) {
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          var opt = document.createElement('option');
+          opt.value = v;
+          opt.textContent = v;
+          selectEl.appendChild(opt);
+        }
+        selectEl.value = v;
+      }
+
+      function getExpenseLookup() {
+        return (state.options && state.options.expenseLookup && typeof state.options.expenseLookup === 'object')
+          ? state.options.expenseLookup
+          : {};
+      }
+
+      function normalizeLooseKey(text) {
+        return C.safeTrim(text || '').replace(/\s+/g, '').toUpperCase();
+      }
+
+      function parseInputDateValue(text) {
+        var value = C.safeTrim(text || '');
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return null;
+        var parts = value.split('-');
+        var year = Number(parts[0]);
+        var month = Number(parts[1]);
+        var day = Number(parts[2]);
+        if (!isFinite(year) || !isFinite(month) || !isFinite(day)) return null;
+        var dt = new Date(year, month - 1, day);
+        if (isNaN(dt.getTime())) return null;
+        if (dt.getFullYear() !== year || dt.getMonth() !== (month - 1) || dt.getDate() !== day) return null;
+        dt.setHours(0, 0, 0, 0);
+        return dt;
+      }
+
+      function formatThaiDateFromDate(dt) {
+        if (!dt || isNaN(dt.getTime())) return '';
+        var day = ('0' + dt.getDate()).slice(-2);
+        var month = THAI_MONTHS_FULL[dt.getMonth()] || '';
+        var yearThai = dt.getFullYear() + 543;
+        return day + ' ' + month + ' ' + yearThai;
+      }
+
+      function parseDayCountValue(value) {
+        var raw = C.safeTrim(value || '').replace(/,/g, '');
+        if (!raw) return null;
+        var number = Number(raw);
+        if (!isFinite(number)) return null;
+        return Math.round(number);
+      }
+
+      function recalculateComputedPreview() {
+        var receiveMoneyDate = parseInputDateValue((document.getElementById('receiveMoneyDate') || {}).value || '');
+        var endActivityDate = parseInputDateValue((document.getElementById('endActivityDate') || {}).value || '');
+        var settlementDocDateRaw = C.safeTrim((document.getElementById('settlementDocDate') || {}).value || '');
+        var dayCount = parseDayCountValue((els.daysCount && els.daysCount.value) || '');
+        var dueRule = C.safeTrim((els.dueRule && els.dueRule.value) || '');
+        var baseDate = null;
+        var dueDate = null;
+        var isPaid = !!settlementDocDateRaw;
+        var hasAnyDueInput = !!dueRule || !!receiveMoneyDate || !!endActivityDate || dayCount !== null || isPaid;
+
+        if (dueRule) {
+          var useReceiveMoneyDate = normalizeLooseKey(dueRule) === normalizeLooseKey(DUE_RULE_FROM_RECEIVE_MONEY);
+          baseDate = useReceiveMoneyDate ? receiveMoneyDate : endActivityDate;
+        }
+
+        if (baseDate && dayCount !== null) {
+          dueDate = new Date(baseDate.getTime());
+          dueDate.setDate(dueDate.getDate() + dayCount - 1);
+          dueDate.setHours(0, 0, 0, 0);
+        }
+
+        els.dueBaseDate.value = formatThaiDateFromDate(baseDate);
+        els.dueDate.value = formatThaiDateFromDate(dueDate);
+
+        if (isPaid) {
+          els.remainingText.value = 'ชำระแล้ว';
+          els.statusDoc.value = 'ชำระแล้ว';
+          return;
+        }
+
+        if (!hasAnyDueInput) {
+          els.remainingText.value = '';
+          els.statusDoc.value = '';
+          return;
+        }
+
+        els.statusDoc.value = 'ยังไม่ชำระ';
+        if (!dueDate) {
+          els.remainingText.value = '';
+          return;
+        }
+
+        var today = new Date();
+        today.setHours(0, 0, 0, 0);
+        var daysToDue = Math.floor((dueDate.getTime() - today.getTime()) / 86400000);
+
+        if (daysToDue < 0) {
+          els.remainingText.value = 'เลยกำหนด ' + String(Math.abs(daysToDue)) + ' วัน';
+          return;
+        }
+        if (daysToDue === 0) {
+          els.remainingText.value = 'ครบกำหนดวันนี้';
+          return;
+        }
+        els.remainingText.value = 'คงเหลือ ' + String(daysToDue) + ' วัน';
+      }
+
+      function hookDateDisplayUpdateForComputedPreview() {
+        if (state.updDDHooked || typeof window.updDD !== 'function') return;
+        var rawUpdDD = window.updDD;
+        window.updDD = function (inputId) {
+          rawUpdDD(inputId);
+          if (inputId === 'receiveMoneyDate' || inputId === 'endActivityDate' || inputId === 'settlementDocDate') {
+            recalculateComputedPreview();
+          }
+        };
+        state.updDDHooked = true;
+      }
+
+      function bindComputedPreviewWatchers() {
+        if (state.computedWatchBound) return;
+        state.computedWatchBound = true;
+
+        var watchDateIds = ['receiveMoneyDate', 'endActivityDate', 'settlementDocDate'];
+        for (var i = 0; i < watchDateIds.length; i++) {
+          var watchEl = document.getElementById(watchDateIds[i]);
+          if (!watchEl) continue;
+          watchEl.addEventListener('input', recalculateComputedPreview);
+          watchEl.addEventListener('change', recalculateComputedPreview);
+        }
+
+        document.addEventListener('click', function (e) {
+          var target = e && e.target;
+          if (!target || typeof target.closest !== 'function') return;
+          if (target.closest('.thai-cal-day') || target.closest('#btnCalToday') || target.closest('#btnCalClear')) {
+            setTimeout(recalculateComputedPreview, 0);
+          }
+        });
+      }
+
+      function updateExpenseRuleFields() {
+        var expense = C.safeTrim((els.expenseType && els.expenseType.value) || '');
+        var lookup = getExpenseLookup();
+        var key = expense.replace(/\s+/g, '').toUpperCase();
+        var rule = lookup[key] || null;
+
+        els.daysCount.value = rule && rule.dayCount !== null && rule.dayCount !== undefined ? String(rule.dayCount) : '';
+        els.dueRule.value = rule && rule.dueRule ? String(rule.dueRule) : '';
+        recalculateComputedPreview();
+      }
+
+      function adjustMeetingTitleHeight() {
+        if (!els.meetingTitle || !els.meetingTitle.style) return;
+        var textArea = els.meetingTitle;
+        if (String(textArea.tagName || '').toUpperCase() !== 'TEXTAREA') return;
+        textArea.style.height = 'auto';
+        var minHeight = window.matchMedia && window.matchMedia('(max-width: 740px)').matches ? 86 : 96;
+        var nextHeight = Math.max(minHeight, textArea.scrollHeight || 0);
+        textArea.style.height = nextHeight + 'px';
+      }
+
+      function clearAutoFields() {
+        els.borrowerName.value = '';
+        els.groupCenter.value = '';
+        els.meetingTitle.value = '';
+        els.amount.value = '';
+        els.prod.value = '';
+        els.mainAct.value = '';
+        els.subProject.value = '';
+        els.activity.value = '';
+        els.receiveBorrowDocDate.value = '';
+        els.responsible.value = '';
+        adjustMeetingTitleHeight();
+      }
+
+      function clearComputedFields() {
+        els.dueBaseDate.value = '';
+        els.dueDate.value = '';
+        els.remainingText.value = '';
+        els.statusDoc.value = '';
+      }
+
+      function toInputDateText(value) {
+        var text = C.safeTrim(value || '');
+        if (!text) return '';
+        if (/^\d{4}-\d{2}-\d{2}$/.test(text)) return text;
+        return '';
+      }
+
+      function fillFromProfile(profile) {
+        var p = profile || {};
+        els.docNoSdh.value = C.safeTrim(p.docNoSdh || els.docNoSdh.value || '');
+        els.borrowerName.value = C.safeText(p.borrowerName || '');
+        els.groupCenter.value = C.safeText(p.groupCenter || '');
+        els.meetingTitle.value = C.safeText(p.meetingTitle || '');
+        els.amount.value = C.safeText(p.amount || '');
+        els.prod.value = C.safeText(p.prod || '');
+        els.mainAct.value = C.safeText(p.mainAct || '');
+        els.subProject.value = C.safeText(p.subProject || '');
+        els.activity.value = C.safeText(p.activity || '');
+        els.receiveBorrowDocDate.value = C.safeText(p.receiveBorrowDocDateDisplay || '');
+        els.responsible.value = C.safeText(p.responsible || '');
+        adjustMeetingTitleHeight();
+      }
+
+      function setEditMode(recordId) {
+        state.editId = C.safeTrim(recordId || '');
+        els.formTitle.textContent = 'แก้ไขทะเบียนคุมเงินยืม';
+        els.btnSubmitText.textContent = 'บันทึกการแก้ไข';
+      }
+
+      function resetForm(keepDocNo) {
+        showError('');
+        setEditMode('');
+
+        var currentDocNo = C.safeTrim((els.docNoSdh && els.docNoSdh.value) || '');
+
+        els.contractNo.value = '';
+        if (!keepDocNo) els.docNoSdh.value = '';
+
+        var dateIds = DATE_IDS.slice();
+        for (var i = 0; i < dateIds.length; i++) {
+          setDateValue(dateIds[i], '');
+        }
+
+        clearAutoFields();
+        clearComputedFields();
+
+        els.expenseType.value = '';
+        els.fundingSource.value = '';
+        updateExpenseRuleFields();
+
+        els.voucherNo.value = '';
+        els.voucherAmount.value = '';
+        els.receiptNo.value = '';
+        els.cashbackAmount.value = '';
+        els.groupLetterNo.value = '';
+        els.treasuryBorrowNo.value = '';
+        els.treasurySettleNo.value = '';
+        els.gfNo.value = '';
+
+        if (keepDocNo && currentDocNo) {
+          els.docNoSdh.value = currentDocNo;
+        }
+      }
+
+      function updateReadOnlyMode() {
+        state.isReadOnly = !!(state.user && (state.user.isReadOnly || state.user.canEdit === false || state.user.accessRole === 'read_only'));
+        if (!state.isReadOnly) {
+          els.readOnlyNote.style.display = 'none';
+          els.btnSubmit.style.display = '';
+          return;
+        }
+
+        els.readOnlyNote.style.display = 'block';
+        els.readOnlyNote.innerHTML = '<i class="bi bi-eye me-1"></i>บัญชีผู้มีสิทธิ์อ่าน: สามารถดูข้อมูลทะเบียนคุมเงินยืมได้เท่านั้น';
+        els.btnSubmit.style.display = 'none';
+      }
+
+      async function lookupDoc(options) {
+        options = options || {};
+        var silent = !!options.silent;
+        var docNoSdh = C.safeTrim((els.docNoSdh && els.docNoSdh.value) || '');
+        if (!docNoSdh) {
+          clearAutoFields();
+          return false;
+        }
+
+        var reqSeq = ++state.lookupSeq;
+        if (!silent) {
+          withLoading(true);
+          showError('');
+        }
+        try {
+          var res = await state.api.loanLookupDoc(docNoSdh, { noPageLoader: true });
+          if (reqSeq !== state.lookupSeq) return false;
+          if (!res || res.success === false || !res.data) {
+            throw new Error((res && res.error) ? res.error : 'ไม่พบข้อมูลเลขที่ สธ.');
+          }
+          fillFromProfile(res.data || {});
+          return true;
+        } catch (err) {
+          if (reqSeq === state.lookupSeq) clearAutoFields();
+          if (!silent) {
+            showError((err && err.message) ? err.message : 'ดึงข้อมูลอัตโนมัติไม่สำเร็จ');
+          }
+          return false;
+        } finally {
+          if (!silent) withLoading(false);
+        }
+      }
+
+      function buildFormData() {
+        return {
+          docNoSdh: C.safeTrim(els.docNoSdh.value || ''),
+          contractNo: C.safeTrim(els.contractNo.value || ''),
+          approveDate: C.safeTrim(document.getElementById('approveDate').value || ''),
+          receiveMoneyDate: C.safeTrim(document.getElementById('receiveMoneyDate').value || ''),
+          eventDate: C.safeTrim(document.getElementById('eventDate').value || ''),
+          endActivityDate: C.safeTrim(document.getElementById('endActivityDate').value || ''),
+          expenseType: C.safeTrim(els.expenseType.value || ''),
+          fundingSource: C.safeTrim(els.fundingSource.value || ''),
+          settlementDocDate: C.safeTrim(document.getElementById('settlementDocDate').value || ''),
+          voucherNo: C.safeTrim(els.voucherNo.value || ''),
+          voucherAmount: C.safeTrim(els.voucherAmount.value || ''),
+          receiptNo: C.safeTrim(els.receiptNo.value || ''),
+          cashbackAmount: C.safeTrim(els.cashbackAmount.value || ''),
+          groupLetterNo: C.safeTrim(els.groupLetterNo.value || ''),
+          groupLetterDate: C.safeTrim(document.getElementById('groupLetterDate').value || ''),
+          treasuryBorrowNo: C.safeTrim(els.treasuryBorrowNo.value || ''),
+          treasuryBorrowDate: C.safeTrim(document.getElementById('treasuryBorrowDate').value || ''),
+          treasurySettleNo: C.safeTrim(els.treasurySettleNo.value || ''),
+          treasurySettleDate: C.safeTrim(document.getElementById('treasurySettleDate').value || ''),
+          gfNo: C.safeTrim(els.gfNo.value || ''),
+          refundTransferDate: C.safeTrim(document.getElementById('refundTransferDate').value || '')
+        };
+      }
+
+      function validateForm(data) {
+        if (!data.docNoSdh) return 'กรุณากรอกเลขที่เอกสาร สธ.';
+        if (!data.contractNo) return 'กรุณากรอกเลขที่สัญญา';
+        if (!data.approveDate) return 'กรุณาเลือกวันที่อนุมัติ';
+        if (!data.receiveMoneyDate) return 'กรุณาเลือกวันที่ได้รับเงิน';
+        if (!data.eventDate) return 'กรุณาเลือกวันที่จัด/เดินทาง';
+        if (!data.endActivityDate) return 'กรุณาเลือกวันที่สิ้นสุดกิจกรรม';
+        if (!data.expenseType) return 'กรุณาเลือกประเภทค่าใช้จ่าย';
+        if (!data.fundingSource) return 'กรุณาเลือกแหล่งเงินยืม';
+        return '';
+      }
+
+      function sleep(ms) {
+        var delay = Number(ms);
+        if (!isFinite(delay) || delay < 0) delay = 0;
+        return new Promise(function (resolve) { setTimeout(resolve, delay); });
+      }
+
+      function parseErrorMessage(err, fallback) {
+        var message = '';
+        if (err && typeof err === 'object') {
+          message = C.safeTrim(err.message || err.error || '');
+        } else {
+          message = C.safeTrim(err || '');
+        }
+        return message || C.safeTrim(fallback || 'เกิดข้อผิดพลาด');
+      }
+
+      function isLockBusyMessage(message) {
+        var msg = C.safeTrim(message || '');
+        return msg.indexOf('ระบบกำลังบันทึกรายการอื่น') !== -1;
+      }
+
+      async function submitLoanWithRetry(payload) {
+        var maxAttempts = 2;
+        for (var attempt = 1; attempt <= maxAttempts; attempt++) {
+          try {
+            var result = state.editId
+              ? await state.api.loanUpdate(state.editId, payload, { noPageLoader: true })
+              : await state.api.loanCreate(payload, { noPageLoader: true });
+
+            if (result && result.success !== false) {
+              return result;
+            }
+
+            var resultError = parseErrorMessage(result, 'บันทึกข้อมูลไม่สำเร็จ');
+            if (attempt < maxAttempts && isLockBusyMessage(resultError)) {
+              if (els.savingSub) {
+                els.savingSub.textContent = 'ระบบกำลังประมวลผลรายการอื่น กำลังลองใหม่...';
+              }
+              await sleep(900);
+              continue;
+            }
+            throw new Error(resultError);
+          } catch (err) {
+            var errMsg = parseErrorMessage(err, 'บันทึกข้อมูลไม่สำเร็จ');
+            if (attempt < maxAttempts && isLockBusyMessage(errMsg)) {
+              if (els.savingSub) {
+                els.savingSub.textContent = 'ระบบกำลังประมวลผลรายการอื่น กำลังลองใหม่...';
+              }
+              await sleep(900);
+              continue;
+            }
+            throw new Error(errMsg);
+          }
+        }
+        throw new Error('บันทึกข้อมูลไม่สำเร็จ');
+      }
+
+      async function submitForm() {
+        if (state.isReadOnly) return;
+
+        var payload = buildFormData();
+        var invalid = validateForm(payload);
+        if (invalid) {
+          Swal.fire({ icon: 'warning', title: invalid, confirmButtonColor: '#007AFF' });
+          return;
+        }
+
+        withLoading(true);
+        setSaving(true, 'กำลังบันทึกรายการ', 'โปรดรอสักครู่...');
+        showError('');
+
+        try {
+          var result = await submitLoanWithRetry(payload);
+
+          // ปิด overlay บันทึกทันทีหลัง API สำเร็จ เพื่อลดโอกาสค้างทับหน้าจอ
+          setSaving(false);
+          withLoading(false);
+
+          await Swal.fire({
+            icon: 'success',
+            title: state.editId ? 'บันทึกการแก้ไขสำเร็จ' : 'บันทึกรายการสำเร็จ',
+            timer: 1100,
+            showConfirmButton: false
+          });
+
+          var nextId = C.safeTrim((result && (result.docId || result.recordId || result.id)) || state.editId || payload.contractNo || queryId);
+          redirectWithLoader('loan-view.html', { id: nextId }, true, 'กำลังกลับหน้ารายละเอียดรายการเงินยืม...');
+        } catch (err) {
+          showError((err && err.message) ? err.message : 'บันทึกข้อมูลไม่สำเร็จ');
+        } finally {
+          setSaving(false);
+          withLoading(false);
+        }
+      }
+
+      async function loadDetail(recordId) {
+        withLoading(true);
+        showError('');
+
+        try {
+          var res = await state.api.loanDetail(recordId, { noPageLoader: true });
+          if (!res || res.success === false || !res.doc) {
+            throw new Error((res && res.error) ? res.error : 'ไม่พบข้อมูลสัญญา');
+          }
+
+          var d = res.doc;
+          setEditMode(d.recordId || recordId);
+
+          els.docNoSdh.value = C.safeText(d.docNoSdh || '');
+          els.contractNo.value = C.safeText(d.contractNo || '');
+
+          setDateValue('approveDate', toInputDateText(d.approveDateInput));
+          setDateValue('receiveMoneyDate', toInputDateText(d.receiveMoneyDateInput));
+          setDateValue('eventDate', toInputDateText(d.eventDateInput));
+          setDateValue('endActivityDate', toInputDateText(d.endActivityDateInput));
+          setDateValue('settlementDocDate', toInputDateText(d.settlementDocDateInput));
+          setDateValue('groupLetterDate', toInputDateText(d.groupLetterDateInput));
+          setDateValue('treasuryBorrowDate', toInputDateText(d.treasuryBorrowDateInput));
+          setDateValue('treasurySettleDate', toInputDateText(d.treasurySettleDateInput));
+          setDateValue('refundTransferDate', toInputDateText(d.refundTransferDateInput));
+
+          fillFromProfile(d);
+
+          ensureSelectValue(els.expenseType, d.expenseType || '');
+          ensureSelectValue(els.fundingSource, d.fundingSource || '');
+          updateExpenseRuleFields();
+
+          els.daysCount.value = C.safeText(d.daysCount || els.daysCount.value || '');
+          els.dueRule.value = C.safeText(d.dueRule || els.dueRule.value || '');
+          els.dueBaseDate.value = C.safeText(d.dueBaseDateDisplay || '');
+          els.dueDate.value = C.safeText(d.dueDateDisplay || '');
+          els.remainingText.value = C.safeText(d.remainingText || '');
+          els.statusDoc.value = C.safeText(d.statusDoc || '');
+
+          els.voucherNo.value = C.safeText(d.voucherNo || '');
+          els.voucherAmount.value = C.safeText(d.voucherAmount || '');
+          els.receiptNo.value = C.safeText(d.receiptNo || '');
+          els.cashbackAmount.value = C.safeText(d.cashbackAmount || '');
+          els.groupLetterNo.value = C.safeText(d.groupLetterNo || '');
+          els.treasuryBorrowNo.value = C.safeText(d.treasuryBorrowNo || '');
+          els.treasurySettleNo.value = C.safeText(d.treasurySettleNo || '');
+          els.gfNo.value = C.safeText(d.gfNo || '');
+          recalculateComputedPreview();
+
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } catch (err) {
+          showError((err && err.message) ? err.message : 'โหลดรายละเอียดไม่สำเร็จ');
+        } finally {
+          withLoading(false);
+        }
+      }
+
+      function bindEvents() {
+        els.btnBack.addEventListener('click', function () {
+          var backId = C.safeTrim(state.editId || queryId || '');
+          if (backId) {
+            redirectWithLoader('loan-view.html', { id: backId }, false, 'กำลังกลับหน้ารายละเอียดรายการเงินยืม...');
+          } else {
+            redirectWithLoader('loan-index.html', {}, false, 'กำลังกลับหน้าทะเบียนคุมเงินยืม...');
+          }
+        });
+
+        els.docNoSdh.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            if (state.lookupTimer) clearTimeout(state.lookupTimer);
+            lookupDoc({ silent: true }).catch(function () {});
+          }
+        });
+
+        els.docNoSdh.addEventListener('input', function () {
+          if (state.lookupTimer) clearTimeout(state.lookupTimer);
+          state.lookupTimer = setTimeout(function () {
+            lookupDoc({ silent: true }).catch(function () {});
+          }, 350);
+        });
+
+        els.docNoSdh.addEventListener('blur', function () {
+          if (state.lookupTimer) clearTimeout(state.lookupTimer);
+          lookupDoc({ silent: true }).catch(function () {});
+        });
+
+        els.expenseType.addEventListener('change', updateExpenseRuleFields);
+
+        els.btnSubmit.addEventListener('click', function () {
+          submitForm();
+        });
+
+        window.addEventListener('resize', function () {
+          adjustMeetingTitleHeight();
+        });
+
+      }
+
+      async function init() {
+        beginInitLoading('กำลังโหลดหน้าแก้ไขทะเบียนคุมเงินยืม...');
+        if (!queryId) {
+          redirectWithLoader('loan-index.html', {}, true, 'ไม่พบรหัสรายการที่ต้องการแก้ไข กำลังกลับหน้าทะเบียนคุมเงินยืม...');
+          endInitLoading();
+          return;
+        }
+
+        hookDateDisplayUpdateForComputedPreview();
+        bindComputedPreviewWatchers();
+        refreshDateDisplays();
+        bindEvents();
+        resetForm(false);
+        adjustMeetingTitleHeight();
+        setSaving(false);
+
+        try {
+          state.settings = C.ensureSettingsOrThrow();
+          state.api = C.createApiClient(state.settings);
+        } catch (_e) {
+          showError('กรุณาตั้งค่า scriptUrl และ deviceKey ที่หน้า index ก่อน');
+          endInitLoading();
+          return;
+        }
+
+        withLoading(true);
+        try {
+          var responses = await Promise.all([
+            state.api.me({ noPageLoader: true }),
+            state.api.loanOptions({ noPageLoader: true, forceRefresh: true })
+          ]);
+
+          var meRes = responses[0] || {};
+          var optRes = responses[1] || {};
+
+          if (!meRes || meRes.success === false || !meRes.user) {
+            redirectWithLoader('index.html', {}, true, 'กำลังกลับหน้าเข้าสู่ระบบ...');
+            return;
+          }
+
+          state.user = meRes.user;
+          state.options = (optRes && optRes.data && typeof optRes.data === 'object')
+            ? optRes.data
+            : { expenseTypes: [], fundingSources: [], expenseLookup: {} };
+
+          applyOptions();
+          updateReadOnlyMode();
+
+          await loadDetail(queryId);
+          if (els.mainCard) els.mainCard.style.display = 'grid';
+        } catch (err) {
+          showError((err && err.message) ? err.message : 'โหลดหน้าทะเบียนคุมเงินยืมไม่สำเร็จ');
+        } finally {
+          withLoading(false);
+          endInitLoading();
+        }
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
