@@ -2007,17 +2007,17 @@
         var h = '';
         h += '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>ใบแปะหน้าเอกสาร</title>';
         h += '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet">';
-        h += '<style>@page{size:A4 portrait;margin:8mm}body{font-family:"IBM Plex Sans Thai",sans-serif;margin:0;padding:0;background:#fff;color:#0F172A}.sheet{max-width:194mm;margin:0 auto;min-height:calc(297mm - 16mm);display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:12px}.label{width:100%;border:2px solid #0F172A;border-radius:18px;padding:10px 12px;background:#fff}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.title{font-size:18pt;font-weight:900;line-height:1.15}.subtitle{font-size:10pt;color:#334155;margin-top:2px}.qr-box{width:48mm;height:48mm;padding:2px;border:1px solid #CBD5E1;border-radius:12px;background:#fff;overflow:hidden;flex-shrink:0}.qr-box img{width:100%;height:100%;object-fit:contain;display:block;background:#fff}.meta{width:100%;border-collapse:collapse;margin-top:10px}.meta td{border:1px solid #CBD5E1;padding:6px 8px;font-size:10.5pt;vertical-align:top}.meta td.head{width:34%;background:#F8FAFC;font-weight:800;color:#334155}.subject{margin-top:10px;border:1px solid #CBD5E1;border-radius:12px;padding:8px 10px;background:#F8FAFC}.subject .head{font-size:8pt;color:#475569;font-weight:800;margin-bottom:4px}.subject .txt{font-size:10.5pt;line-height:1.4}.foot{margin-top:8px;font-size:8.5pt;color:#64748B;text-align:right}.no-print{text-align:center;margin-top:0}.no-print button{padding:10px 28px;border:none;border-radius:999px;background:#0A84FF;color:#fff;font-weight:900;font-size:12pt}.no-print button:hover{filter:brightness(1.04)}@media print{html,body{width:210mm;height:297mm;overflow:hidden}body{display:grid;place-items:center;padding:0!important}.sheet{max-width:194mm;width:194mm;min-height:0!important;display:block!important;margin:0 auto!important;gap:0!important}.label{page-break-inside:avoid;break-inside:avoid}.no-print{display:none!important}}</style>';
+        h += '<style>@page{size:A4 portrait;margin:8mm}body{font-family:"IBM Plex Sans Thai",sans-serif;margin:0;padding:0;background:#fff;color:#0F172A}.sheet{max-width:194mm;margin:0 auto;min-height:calc(297mm - 16mm);display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:12px}.label{width:100%;border:2px solid #0F172A;border-radius:18px;padding:10px 12px;background:#fff}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}.title{font-size:18pt;font-weight:900;line-height:1.15}.subtitle{font-size:10pt;color:#334155;margin-top:2px}.qr-box{width:48mm;height:48mm;padding:2px;border:1px solid #CBD5E1;border-radius:12px;background:#fff;overflow:hidden;flex-shrink:0}.qr-box img{width:100%;height:100%;object-fit:contain;display:block;background:#fff}.meta{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px;border:1px solid #CBD5E1;border-radius:12px;overflow:hidden}.meta td{border-right:1px solid #CBD5E1;border-bottom:1px solid #CBD5E1;padding:6px 8px;font-size:10.5pt;vertical-align:top}.meta tr:last-child td{border-bottom:0}.meta td:last-child{border-right:0}.meta td.head{width:34%;background:#F8FAFC;font-weight:800;color:#334155}.subject{margin-top:10px;border:1px solid #CBD5E1;border-radius:12px;padding:8px 10px;background:#F8FAFC}.subject .head{font-size:8pt;color:#475569;font-weight:800;margin-bottom:4px}.subject .txt{font-size:10.5pt;line-height:1.4}.foot{margin-top:8px;font-size:8.5pt;color:#64748B;text-align:right}.no-print{text-align:center;margin-top:0}.no-print button{padding:10px 28px;border:none;border-radius:999px;background:#0A84FF;color:#fff;font-weight:900;font-size:12pt}.no-print button:hover{filter:brightness(1.04)}@media print{html,body{width:210mm;height:297mm;overflow:hidden}body{display:grid;place-items:center;padding:0!important}.sheet{max-width:194mm;width:194mm;min-height:0!important;display:block!important;margin:0 auto!important;gap:0!important}.label{page-break-inside:avoid;break-inside:avoid}.no-print{display:none!important}}</style>';
         h += '</head><body>';
         h += '<div class="sheet"><div class="label">';
         h += '<div class="top"><div><div class="title">ใบแปะหน้าเอกสาร</div><div class="subtitle">ใช้สแกนเพื่อเข้าหน้าเอกสารและติดตามสถานะ</div></div><div class="qr-box"><img src="' + C.escapeHtml(docQr) + '" alt="QR"></div></div>';
         h += '<table class="meta">';
-        h += row('เลขที่เอกสาร', d.docId || '-');
-        h += row('เลขที่รับ', d.receiveNo || '-');
-        h += row('เลขที่ สธ. (กลุ่มงาน)', d.docNoSdh || '-');
         h += row('เลขที่หนังสือส่งกองคลัง', d.amDocNo || '-');
+        h += row('วันที่เลขที่หนังสือส่งกองคลัง', d.anDateDisplay || '-');
+        h += row('เลขที่รับเอกสาร', d.receiveNo || '-');
         h += row('วันที่รับเอกสาร', d.dateRecDisplay || '-');
         h += row('กลุ่ม/ศูนย์', d.group || '-');
+        h += row('เลขที่ สธ. (กลุ่มงาน)', d.docNoSdh || '-');
         h += row('ผู้ส่ง', d.sender || '-');
         h += row('วัตถุประสงค์', d.purpose || '-');
         h += row('จำนวนเบิก/ยืม/คืน', moneyText(d.amount));
@@ -2027,8 +2027,8 @@
           h += row('แผนโครงการ', projectPlan);
         }
         h += row('สถานะปัจจุบัน', d.docStatus || '-');
+        h += row('เรื่อง', d.subject || '-');
         h += '</table>';
-        h += '<div class="subject"><div class="head">เรื่อง</div><div class="txt">' + C.escapeHtml(d.subject || '-') + '</div></div>';
         h += '<div class="foot">พิมพ์เมื่อ: ' + C.escapeHtml(new Date().toLocaleString('th-TH')) + '</div>';
         h += '</div><div class="no-print"><button onclick="window.print()">พิมพ์ใบแปะหน้าเอกสาร</button></div></div>';
         h += '</body></html>';
