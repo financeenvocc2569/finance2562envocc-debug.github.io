@@ -5583,16 +5583,20 @@ body.dark-mode #statsRow .stat-icon {
   }
 }
 
-/* Status header readability */
+/* Status/form header readability */
 body.page-doc-status .header-bg small,
-body.page-doc-status .header-bg #docHead {
+body.page-doc-status .header-bg #docHead,
+body.page-doc-form .header-bg small,
+body.page-doc-form .header-bg #pageSub {
   color: rgba(255, 255, 255, 0.96) !important;
   opacity: 1 !important;
   text-shadow: 0 1px 2px rgba(8, 20, 44, 0.22);
 }
 
 body.dark-mode.page-doc-status .header-bg small,
-body.dark-mode.page-doc-status .header-bg #docHead {
+body.dark-mode.page-doc-status .header-bg #docHead,
+body.dark-mode.page-doc-form .header-bg small,
+body.dark-mode.page-doc-form .header-bg #pageSub {
   color: rgba(241, 248, 255, 0.98) !important;
   opacity: 1 !important;
   text-shadow: 0 1px 2px rgba(2, 8, 20, 0.38);

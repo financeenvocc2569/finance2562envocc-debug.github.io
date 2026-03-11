@@ -119,6 +119,11 @@
       text-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
     }
 
+    body.page-doc-form .header-bg #pageSub {
+      color: rgba(242, 248, 255, 0.96) !important;
+      opacity: 1 !important;
+    }
+
     .card-body {
       padding: 16px;
       display: grid;
@@ -642,6 +647,30 @@
           </div>
         </section>
 
+        <section id="loanExtraSection" class="form-section" style="display:none;">
+          <div class="form-section-title"><i class="bi bi-wallet2"></i>ประเภทค่าใช้จ่ายและเกณฑ์คืนเงิน</div>
+          <div class="row two">
+            <div>
+              <label class="form-label">ประเภทค่าใช้จ่าย</label>
+              <select id="loanExpenseType" class="form-select"></select>
+            </div>
+            <div>
+              <label class="form-label">แหล่งเงินยืม</label>
+              <select id="loanFundingSource" class="form-select"></select>
+            </div>
+          </div>
+          <div class="row two" style="margin-top:8px;">
+            <div>
+              <label class="form-label">เกณฑ์คืนเงิน (อัตโนมัติ)</label>
+              <input type="text" id="loanDueRule" class="form-control" disabled>
+            </div>
+            <div>
+              <label class="form-label">จำนวนวัน (อัตโนมัติ)</label>
+              <input type="text" id="loanDayCount" class="form-control" disabled>
+            </div>
+          </div>
+        </section>
+
         <section class="form-section">
           <div class="form-section-title"><i class="bi bi-bookmark-star"></i>เลขที่หนังสือส่งกองคลัง</div>
           <p class="inline-note"><i class="bi bi-info-circle me-1"></i>สามารถกรอกหรือเว้นไว้ก็ได้ เพื่อกรอกเพิ่มเติมในภายหลัง</p>
@@ -696,12 +725,19 @@
       var copyFromId = C.safeTrim(q.copyFrom || '');
       var isCopy = !isEdit && !!copyFromId;
       var APP_BROWSER_NAME = 'ระบบทะเบียนคุมเอกสาร';
+      var LOAN_PURPOSES = [
+        'ยืมเงินราชการ (เงินสด)',
+        'ยืมเงินราชการ (บัตรเครดิต)',
+        'ยืมเงินทดรองราชการ',
+        'ยืมเงินนอกงบประมาณ'
+      ];
 
       var state = {
         settings: null,
         api: null,
         user: null,
         options: null,
+        loanOptions: null,
         nextNos: {},
         doc: null,
         copyDoc: null
@@ -739,6 +775,11 @@
         subProject: document.getElementById('subProject'),
         activity: document.getElementById('activity'),
         planFieldsWrap: document.getElementById('planFieldsWrap'),
+        loanExtraSection: document.getElementById('loanExtraSection'),
+        loanExpenseType: document.getElementById('loanExpenseType'),
+        loanFundingSource: document.getElementById('loanFundingSource'),
+        loanDueRule: document.getElementById('loanDueRule'),
+        loanDayCount: document.getElementById('loanDayCount'),
         amDocNo: document.getElementById('amDocNo'),
         anDate: document.getElementById('anDate'),
         statusRemark: document.getElementById('statusRemark'),
@@ -845,6 +886,79 @@
           els.subProject.value = '';
           els.activity.value = '';
         }
+      }
+
+      function normalizePurposeKey(value) {
+        return C.safeTrim(value || '').replace(/\s+/g, '').toLowerCase();
+      }
+
+      function isLoanPurpose(value) {
+        var key = normalizePurposeKey(value);
+        if (!key) return false;
+        for (var i = 0; i < LOAN_PURPOSES.length; i++) {
+          if (normalizePurposeKey(LOAN_PURPOSES[i]) === key) return true;
+        }
+        return false;
+      }
+
+      function buildLoanOptionHtml(list, placeholder) {
+        var html = '<option value="">' + C.escapeHtml(placeholder || 'เลือก...') + '</option>';
+        var arr = Array.isArray(list) ? list : [];
+        for (var i = 0; i < arr.length; i++) {
+          var value = C.safeTrim(arr[i] || '');
+          if (!value) continue;
+          html += '<option value="' + C.escapeHtml(value) + '">' + C.escapeHtml(value) + '</option>';
+        }
+        return html;
+      }
+
+      function applyLoanOptions() {
+        var data = (state.loanOptions && state.loanOptions.data) ? state.loanOptions.data : { expenseTypes: [], fundingSources: [], expenseLookup: {} };
+        if (els.loanExpenseType) {
+          els.loanExpenseType.innerHTML = buildLoanOptionHtml(data.expenseTypes, 'เลือกประเภทค่าใช้จ่าย...');
+        }
+        if (els.loanFundingSource) {
+          els.loanFundingSource.innerHTML = buildLoanOptionHtml(data.fundingSources, 'เลือกแหล่งเงินยืม...');
+        }
+      }
+
+      function getLoanExpenseLookup() {
+        var data = (state.loanOptions && state.loanOptions.data) ? state.loanOptions.data : null;
+        return (data && data.expenseLookup && typeof data.expenseLookup === 'object') ? data.expenseLookup : {};
+      }
+
+      function updateLoanExpenseRuleFields() {
+        if (!els.loanExpenseType || !els.loanDueRule || !els.loanDayCount) return;
+        var expense = C.safeTrim(els.loanExpenseType.value || '');
+        var lookup = getLoanExpenseLookup();
+        var key = expense.replace(/\s+/g, '').toUpperCase();
+        var rule = lookup[key] || null;
+        els.loanDayCount.value = rule && rule.dayCount !== null && rule.dayCount !== undefined ? String(rule.dayCount) : '';
+        els.loanDueRule.value = rule && rule.dueRule ? String(rule.dueRule) : '';
+      }
+
+      function clearLoanExtraFields() {
+        if (els.loanExpenseType) els.loanExpenseType.value = '';
+        if (els.loanFundingSource) els.loanFundingSource.value = '';
+        if (els.loanDueRule) els.loanDueRule.value = '';
+        if (els.loanDayCount) els.loanDayCount.value = '';
+      }
+
+      function updateLoanExtraSection() {
+        if (!els.loanExtraSection) return;
+        var purpose = C.safeTrim(els.purpose.value || '');
+        var show = isLoanPurpose(purpose);
+        els.loanExtraSection.style.display = show ? 'block' : 'none';
+        if (!show) {
+          clearLoanExtraFields();
+          return;
+        }
+        var currentExpense = C.safeTrim((els.loanExpenseType && els.loanExpenseType.value) || '');
+        var currentFunding = C.safeTrim((els.loanFundingSource && els.loanFundingSource.value) || '');
+        applyLoanOptions();
+        ensureSelectOption(els.loanExpenseType, currentExpense);
+        ensureSelectOption(els.loanFundingSource, currentFunding);
+        updateLoanExpenseRuleFields();
       }
 
       function fillOptions() {
@@ -991,8 +1105,11 @@
         els.activity.value = doc.activity || '';
         els.amDocNo.value = doc.amDocNo || '';
         els.statusRemark.value = doc.statusRemark || '';
+        ensureSelectOption(els.loanExpenseType, doc.expenseType || '');
+        ensureSelectOption(els.loanFundingSource, doc.fundingSource || '');
 
         togglePlanFields();
+        updateLoanExtraSection();
         refreshDateDisplays();
       }
 
@@ -1017,8 +1134,11 @@
         els.mainAct.value = C.safeText(doc.mainAct || '');
         els.subProject.value = C.safeText(doc.subProject || '');
         els.activity.value = C.safeText(doc.activity || '');
+        ensureSelectOption(els.loanExpenseType, doc.expenseType || '');
+        ensureSelectOption(els.loanFundingSource, doc.fundingSource || '');
 
         togglePlanFields();
+        updateLoanExtraSection();
         refreshDateDisplays();
       }
 
@@ -1042,6 +1162,8 @@
           sender: C.safeTrim(els.sender.value || ''),
           purpose: C.safeTrim(els.purpose.value || ''),
           budgetType: C.safeTrim(els.budgetType.value || ''),
+          expenseType: C.safeTrim(els.loanExpenseType.value || ''),
+          fundingSource: C.safeTrim(els.loanFundingSource.value || ''),
           subjectK: C.safeTrim(els.subjectK.value || ''),
           subjectL: C.safeTrim(els.subjectL.value || ''),
           subjectM: C.safeTrim(els.subjectM.value || ''),
@@ -1204,7 +1326,10 @@
         var calls = [
           state.api.me(),
           state.api.optionsInfo(),
-          state.api.call('docs.next_receive_nos', { deviceKey: state.settings.deviceKey })
+          state.api.call('docs.next_receive_nos', { deviceKey: state.settings.deviceKey }),
+          state.api.loanOptions({ noPageLoader: true }).catch(function () {
+            return { success: false, data: { expenseTypes: [], fundingSources: [], expenseLookup: {} } };
+          })
         ];
         if (isEdit) calls.push(state.api.docDetail(editId));
         if (isCopy) calls.push(state.api.docDetail(copyFromId));
@@ -1213,7 +1338,8 @@
         var meRes = result[0] || {};
         var infoRes = result[1] || {};
         var nextNosRes = result[2] || {};
-        var docRes = (isEdit || isCopy) ? (result[3] || {}) : null;
+        var loanOptRes = result[3] || {};
+        var docRes = (isEdit || isCopy) ? (result[4] || {}) : null;
 
         if (!meRes || meRes.success === false || !meRes.user) {
           C.redirect('index.html', {}, true);
@@ -1229,6 +1355,7 @@
         }
 
         state.options = infoRes || { data: { fiscalYears: [], groups: [], purposes: [] } };
+        state.loanOptions = (loanOptRes && loanOptRes.success) ? loanOptRes : { data: { expenseTypes: [], fundingSources: [], expenseLookup: {} } };
         state.nextNos = (nextNosRes && nextNosRes.data && typeof nextNosRes.data === 'object') ? nextNosRes.data : {};
 
         if (isEdit) {
@@ -1275,6 +1402,8 @@
 
         els.fiscalYear.addEventListener('change', updateReceiveNo);
         els.budgetType.addEventListener('change', togglePlanFields);
+        if (els.purpose) els.purpose.addEventListener('change', updateLoanExtraSection);
+        if (els.loanExpenseType) els.loanExpenseType.addEventListener('change', updateLoanExpenseRuleFields);
         els.btnSubmit.addEventListener('click', submitDoc);
       }
 
@@ -1357,6 +1486,7 @@
             }
 
             togglePlanFields();
+            updateLoanExtraSection();
             refreshDateDisplays();
             els.mainCard.style.display = 'block';
           } catch (err) {

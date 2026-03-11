@@ -121,6 +121,12 @@
       color: #fffbeb;
     }
 
+    .head-badge.status-awaiting {
+      background: linear-gradient(180deg, rgba(139, 92, 246, 0.72), rgba(109, 40, 217, 0.52));
+      border-color: rgba(221, 214, 254, 0.74);
+      color: #f5f3ff;
+    }
+
     .loan-body {
       padding: 14px;
       display: grid;
@@ -245,6 +251,11 @@
     }
 
     .field-value.money {
+      color: #1d4ed8;
+      font-weight: 800;
+    }
+
+    .field.money-like .field-value {
       color: #1d4ed8;
       font-weight: 800;
     }
@@ -723,6 +734,10 @@
       color: #90cafc;
     }
 
+    body.dark-mode.page-loan-view .field.money-like .field-value {
+      color: #90cafc;
+    }
+
     body.dark-mode.page-loan-view .qr-box {
       border-color: rgba(100, 116, 139, 0.56);
       background: rgba(15, 23, 35, 0.92);
@@ -1090,6 +1105,18 @@
         return statusDoc === 'ชำระแล้ว' || dueState === 'paid' || settlementDate !== '';
       }
 
+      function isAwaitingInfo(doc) {
+        var d = doc || {};
+        var contractNo = C.safeTrim(d.contractNo || '');
+        var approveDate = C.safeTrim(d.approveDateInput || d.approveDateDisplay || '');
+        var receiveMoneyDate = C.safeTrim(d.receiveMoneyDateInput || d.receiveMoneyDateDisplay || '');
+        var eventDate = C.safeTrim(d.eventDateInput || d.eventDateDisplay || '');
+        var endActivityDate = C.safeTrim(d.endActivityDateInput || d.endActivityDateDisplay || '');
+        if (!contractNo) return true;
+        if (!approveDate || !receiveMoneyDate || !eventDate || !endActivityDate) return true;
+        return false;
+      }
+
       function uniqTrimmed(list) {
         var arr = Array.isArray(list) ? list : [];
         var out = [];
@@ -1163,6 +1190,9 @@
         if (statusDoc === 'ชำระแล้ว' || dueState === 'paid') {
           return '<span class="head-badge status-paid"><i class="bi bi-check-circle-fill"></i>ชำระแล้ว</span>';
         }
+        if (isAwaitingInfo(doc)) {
+          return '<span class="head-badge status-awaiting"><i class="bi bi-pencil-square"></i>รอเพิ่มข้อมูล</span>';
+        }
         if (dueState === 'overdue') {
           return '<span class="head-badge status-overdue"><i class="bi bi-exclamation-octagon-fill"></i>เลยกำหนด</span>';
         }
@@ -1174,7 +1204,7 @@
         var dueState = C.safeTrim((doc && doc.dueState) || '');
         var paid = isPaidForStorage(doc);
 
-        if (paid || dueState === 'paid') {
+        if (paid || dueState === 'paid' || isAwaitingInfo(doc)) {
           return '';
         }
 
@@ -1243,8 +1273,8 @@
         html += fieldItem('วันที่ได้รับเงิน', doc.receiveMoneyDateDisplay || '-');
         html += fieldItem('วันที่จัด/เดินทาง', doc.eventDateDisplay || '-');
         html += fieldItem('วันที่สิ้นสุดกิจกรรม', doc.endActivityDateDisplay || '-');
-        html += fieldItem('ประเภทค่าใช้จ่าย', doc.expenseType || '-');
-        html += fieldItem('แหล่งเงินยืม', doc.fundingSource || '-');
+        html += fieldItem('ประเภทค่าใช้จ่าย', doc.expenseType || '-', 'money-like');
+        html += fieldItem('แหล่งเงินยืม', doc.fundingSource || '-', 'money-like');
         html += moneyFieldItem('จำนวนเงิน', doc.amount || '-');
         html += fieldItem('ผู้รับผิดชอบ', doc.responsible || '-');
         els.generalInfo.innerHTML = html;

@@ -540,7 +540,7 @@
                 <input type="text" id="docNoSdh" class="form-control" placeholder="เช่น สธ 0409.7/...">
               </div>
               <div class="field">
-                <label class="form-label">เลขที่สัญญา <span style="color:#dc2626">*</span></label>
+                <label class="form-label">เลขที่สัญญา</label>
                 <input type="text" id="contractNo" class="form-control" placeholder="เลขที่สัญญาเงินยืม">
               </div>
             </div>
@@ -550,7 +550,7 @@
             <h3 class="section-title"><i class="bi bi-calendar-check"></i>ข้อมูลวันที่หลัก</h3>
             <div class="row three">
               <div class="field">
-                <label class="form-label">วันที่อนุมัติ <span style="color:#dc2626">*</span></label>
+                <label class="form-label">วันที่อนุมัติ</label>
                 <div class="thai-date-input" onclick="openCalendar('approveDate')">
                   <input type="hidden" id="approveDate" value="">
                   <div id="approveDateDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
@@ -558,7 +558,7 @@
                 </div>
               </div>
               <div class="field">
-                <label class="form-label">วันที่ได้รับเงิน <span style="color:#dc2626">*</span></label>
+                <label class="form-label">วันที่ได้รับเงิน</label>
                 <div class="thai-date-input" onclick="openCalendar('receiveMoneyDate')">
                   <input type="hidden" id="receiveMoneyDate" value="">
                   <div id="receiveMoneyDateDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
@@ -566,7 +566,7 @@
                 </div>
               </div>
               <div class="field">
-                <label class="form-label">วันที่จัด/เดินทาง <span style="color:#dc2626">*</span></label>
+                <label class="form-label">วันที่จัด/เดินทาง</label>
                 <div class="thai-date-input" onclick="openCalendar('eventDate')">
                   <input type="hidden" id="eventDate" value="">
                   <div id="eventDateDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
@@ -576,7 +576,7 @@
             </div>
             <div class="row two" style="margin-top:8px">
               <div class="field">
-                <label class="form-label">วันที่สิ้นสุดกิจกรรม <span style="color:#dc2626">*</span></label>
+                <label class="form-label">วันที่สิ้นสุดกิจกรรม</label>
                 <div class="thai-date-input" onclick="openCalendar('endActivityDate')">
                   <input type="hidden" id="endActivityDate" value="">
                   <div id="endActivityDateDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
@@ -606,7 +606,7 @@
               <div class="field"><label class="form-label">โครงการย่อยที่</label><input id="subProject" class="form-control auto-text-field" disabled></div>
               <div class="field"><label class="form-label">กิจกรรมย่อยที่</label><input id="activity" class="form-control auto-text-field" disabled></div>
               <div class="field"><label class="form-label">วันที่ได้รับเอกสารยืมเงิน</label><input id="receiveBorrowDocDate" class="form-control auto-text-field" disabled></div>
-              <div class="field"><label class="form-label">ผู้รับผิดชอบ</label><input id="responsible" class="form-control auto-text-field" disabled></div>
+              <div class="field"><label class="form-label">ผู้รับผิดชอบ</label><input id="responsible" class="form-control auto-text-field"></div>
             </div>
           </section>
 
@@ -1101,6 +1101,9 @@
         els.activity.value = C.safeText(p.activity || '');
         els.receiveBorrowDocDate.value = C.safeText(p.receiveBorrowDocDateDisplay || '');
         els.responsible.value = C.safeText(p.responsible || '');
+        ensureSelectValue(els.expenseType, p.expenseType || '');
+        ensureSelectValue(els.fundingSource, p.fundingSource || '');
+        updateExpenseRuleFields();
         adjustMeetingTitleHeight();
       }
 
@@ -1202,6 +1205,7 @@
           expenseType: C.safeTrim(els.expenseType.value || ''),
           fundingSource: C.safeTrim(els.fundingSource.value || ''),
           settlementDocDate: C.safeTrim(document.getElementById('settlementDocDate').value || ''),
+          responsible: C.safeTrim(els.responsible.value || ''),
           voucherNo: C.safeTrim(els.voucherNo.value || ''),
           voucherAmount: C.safeTrim(els.voucherAmount.value || ''),
           receiptNo: C.safeTrim(els.receiptNo.value || ''),
@@ -1219,11 +1223,6 @@
 
       function validateForm(data) {
         if (!data.docNoSdh) return 'กรุณากรอกเลขที่เอกสาร สธ.';
-        if (!data.contractNo) return 'กรุณากรอกเลขที่สัญญา';
-        if (!data.approveDate) return 'กรุณาเลือกวันที่อนุมัติ';
-        if (!data.receiveMoneyDate) return 'กรุณาเลือกวันที่ได้รับเงิน';
-        if (!data.eventDate) return 'กรุณาเลือกวันที่จัด/เดินทาง';
-        if (!data.endActivityDate) return 'กรุณาเลือกวันที่สิ้นสุดกิจกรรม';
         if (!data.expenseType) return 'กรุณาเลือกประเภทค่าใช้จ่าย';
         if (!data.fundingSource) return 'กรุณาเลือกแหล่งเงินยืม';
         return '';

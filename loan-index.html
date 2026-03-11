@@ -16,6 +16,7 @@
     }
 
     #homeTopbar {
+      --follow-progress: 0;
       position: sticky;
       top: 0;
       z-index: 1000;
@@ -25,8 +26,42 @@
       border: 1px solid rgba(148, 163, 184, 0.3) !important;
       border-top: none !important;
       box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12) !important;
+      gap: 14px;
       backdrop-filter: saturate(170%) blur(20px);
       -webkit-backdrop-filter: saturate(170%) blur(20px);
+      transform: translate3d(0, calc(-6px * var(--follow-progress)), 0) scale(calc(1 - (0.012 * var(--follow-progress))));
+      transform-origin: top center;
+      will-change: transform, box-shadow, background, border-color;
+      transition:
+        transform 140ms linear,
+        box-shadow 300ms cubic-bezier(0.22, 1, 0.36, 1),
+        background 260ms ease,
+        border-color 260ms ease;
+    }
+
+    #homeTopbar.is-sticky {
+      background: rgba(255, 255, 255, 0.98) !important;
+      border-color: rgba(148, 163, 184, 0.38) !important;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16) !important;
+    }
+
+    #homeTopbar.is-fixed {
+      position: fixed !important;
+      top: calc(env(safe-area-inset-top, 0px) + var(--home-topbar-top-offset));
+      left: 0;
+      right: 0;
+      width: min(1220px, calc(100vw - 32px));
+      z-index: 1400;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      transform-origin: top center;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #homeTopbar {
+        transition: none !important;
+        transform: none !important;
+      }
     }
 
     #homeTopbar .container {
@@ -125,6 +160,35 @@
 
     #homeTopbar .search-box {
       width: 100%;
+    }
+
+    body.app-home-page #homeTopbar .dash-search-wrap {
+      transition:
+        transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+        filter 240ms ease;
+      will-change: transform;
+    }
+
+    body.app-home-page #homeTopbar .search-box {
+      transition:
+        border-color 260ms ease,
+        background 260ms ease,
+        box-shadow 280ms cubic-bezier(0.22, 1, 0.36, 1),
+        transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    body.app-home-page #homeTopbar.is-sticky .dash-search-wrap {
+      transform: translateY(-1px);
+      filter: saturate(1.03);
+    }
+
+    body.app-home-page #homeTopbar.is-sticky .search-box {
+      background: rgba(255, 255, 255, 0.9) !important;
+      border-color: rgba(148, 163, 184, 0.46) !important;
+      box-shadow:
+        0 14px 30px rgba(15, 23, 42, 0.11),
+        inset 0 1px 0 rgba(255, 255, 255, 0.86) !important;
+      transform: translateY(-1px);
     }
 
     #appCard {
@@ -294,6 +358,15 @@
       --stat-orb: rgba(245, 158, 11, 0.22);
     }
 
+    #statsRow .stat-card.s-awaiting {
+      --stat-border: rgba(139, 92, 246, 0.66);
+      --stat-color: #6d28d9;
+      --stat-icon: rgba(109, 40, 217, 0.24);
+      --stat-grad-a: rgba(221, 214, 254, 0.46);
+      --stat-grad-b: rgba(243, 232, 255, 0.24);
+      --stat-orb: rgba(139, 92, 246, 0.22);
+    }
+
     #statsRow .stat-card.s-inprogress {
       --stat-border: rgba(14, 165, 233, 0.66);
       --stat-color: #0ea5e9;
@@ -363,6 +436,18 @@
       color: rgba(203, 213, 225, 0.78) !important;
     }
 
+    body.dark-mode.app-home-page #homeTopbar.is-sticky .dash-search-wrap {
+      filter: saturate(1.06);
+    }
+
+    body.dark-mode.app-home-page #homeTopbar.is-sticky .search-box {
+      background: rgba(15, 23, 42, 0.86) !important;
+      border-color: rgba(125, 211, 252, 0.44) !important;
+      box-shadow:
+        0 18px 38px rgba(2, 8, 20, 0.44),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+    }
+
     body.dark-mode #statsRow .stat-card {
       background:
         radial-gradient(170px 150px at var(--mx) var(--my), rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 74%),
@@ -404,6 +489,13 @@
       --stat-color: #fcd34d;
       --stat-icon: rgba(252, 211, 77, 0.25);
       --stat-grad-a: rgba(120, 53, 15, 0.42);
+      --stat-grad-b: rgba(30, 41, 59, 0.54);
+    }
+
+    body.dark-mode #statsRow .stat-card.s-awaiting {
+      --stat-color: #ddd6fe;
+      --stat-icon: rgba(221, 214, 254, 0.26);
+      --stat-grad-a: rgba(91, 33, 182, 0.42);
       --stat-grad-b: rgba(30, 41, 59, 0.54);
     }
 
@@ -526,12 +618,23 @@
     #filterModal #btnApplyFilter,
     #filterModal .filter-modal-footer .btn {
       cursor: pointer !important;
+      font-size: 1.02rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.005em;
     }
 
     #filterModal #btnResetFilter:disabled,
     #filterModal #btnApplyFilter:disabled,
     #filterModal .filter-modal-footer .btn:disabled {
       cursor: not-allowed !important;
+    }
+
+    @media (max-width: 640px) {
+      #filterModal #btnResetFilter,
+      #filterModal #btnApplyFilter,
+      #filterModal .filter-modal-footer .btn {
+        font-size: 0.96rem !important;
+      }
     }
 
     @media (max-width: 640px) {
@@ -634,6 +737,12 @@
       color: #b45309;
     }
 
+    #docsList .badge-waiting {
+      border-color: rgba(139, 92, 246, 0.52);
+      background: rgba(196, 181, 253, 0.24);
+      color: #6d28d9;
+    }
+
     #docsList .loan-view-card {
       cursor: pointer;
       padding: 16px 20px !important;
@@ -657,6 +766,24 @@
       --doc-aura-soft: 0.12;
     }
 
+    #docsList .loan-view-card.status-waiting {
+      --doc-aura-rgb: 139, 92, 246;
+      --doc-aura-strong: 0.2;
+      --doc-aura-soft: 0.1;
+    }
+
+    .doc-list-card.status-waiting,
+    #docsList .doc-card.status-waiting,
+    #docsList .doc-item.status-waiting {
+      border-left: 6px solid #7c3aed !important;
+    }
+
+    .doc-list-card.status-ready,
+    #docsList .doc-card.status-ready,
+    #docsList .doc-item.status-ready {
+      border-left: 6px solid #b45309 !important;
+    }
+
     #docsList .loan-view-card.status-completed .doc-bg-icon {
       color: rgba(15, 118, 110, 0.32);
     }
@@ -667,6 +794,10 @@
 
     #docsList .loan-view-card.status-ready .doc-bg-icon {
       color: rgba(180, 83, 9, 0.34);
+    }
+
+    #docsList .loan-view-card.status-waiting .doc-bg-icon {
+      color: rgba(109, 40, 217, 0.32);
     }
 
     #docsList .loan-view-card:focus-visible {
@@ -814,6 +945,12 @@
       color: #fde68a;
     }
 
+    body.dark-mode #docsList .badge-waiting {
+      border-color: rgba(196, 181, 253, 0.5);
+      background: rgba(91, 33, 182, 0.28);
+      color: #ddd6fe;
+    }
+
     body.dark-mode #docsList .loan-view-card.status-completed .doc-bg-icon {
       color: rgba(94, 234, 212, 0.4);
     }
@@ -824,6 +961,10 @@
 
     body.dark-mode #docsList .loan-view-card.status-ready .doc-bg-icon {
       color: rgba(252, 211, 77, 0.42);
+    }
+
+    body.dark-mode #docsList .loan-view-card.status-waiting .doc-bg-icon {
+      color: rgba(196, 181, 253, 0.32);
     }
 
     body.dark-mode #docsList .loan-info-key {
@@ -1099,6 +1240,11 @@
                     <span class="filter-label"><i class="bi bi-clock-history me-1" style="color:#F59E0B"></i>รอจัดเก็บ</span>
                   </label>
                   <label class="filter-option">
+                    <input type="checkbox" id="filterLoanAwaiting" value="awaiting">
+                    <span class="checkmark"></span>
+                    <span class="filter-label"><i class="bi bi-pencil-square me-1" style="color:#6D28D9"></i>รอเพิ่มข้อมูล</span>
+                  </label>
+                  <label class="filter-option">
                     <input type="checkbox" id="filterLoanStored" value="stored">
                     <span class="checkmark"></span>
                     <span class="filter-label"><i class="bi bi-archive-fill me-1" style="color:#007AFF"></i>จัดเก็บแล้ว</span>
@@ -1306,6 +1452,7 @@
         filterLoanOverdue: document.getElementById('filterLoanOverdue'),
         filterLoanPaid: document.getElementById('filterLoanPaid'),
         filterLoanPendingStorage: document.getElementById('filterLoanPendingStorage'),
+        filterLoanAwaiting: document.getElementById('filterLoanAwaiting'),
         filterLoanStored: document.getElementById('filterLoanStored'),
         filterExpenseOptions: document.getElementById('filterExpenseOptions'),
         filterFundingOptions: document.getElementById('filterFundingOptions'),
@@ -1506,6 +1653,7 @@
           els.filterLoanOverdue,
           els.filterLoanPaid,
           els.filterLoanPendingStorage,
+          els.filterLoanAwaiting,
           els.filterLoanStored,
           els.filterLocation,
           els.filterApproveDateFrom,
@@ -1578,12 +1726,25 @@
         return !storedLoc && isPaidForStorage(item);
       }
 
+      function isAwaitingInfo(item) {
+        var d = item || {};
+        var contractNo = C.safeTrim(d.contractNo || '');
+        var approveDate = C.safeTrim(d.approveDateInput || d.approveDateDisplay || '');
+        var receiveMoneyDate = C.safeTrim(d.receiveMoneyDateInput || d.receiveMoneyDateDisplay || '');
+        var eventDate = C.safeTrim(d.eventDateInput || d.eventDateDisplay || '');
+        var endActivityDate = C.safeTrim(d.endActivityDateInput || d.endActivityDateDisplay || '');
+        if (!contractNo) return true;
+        if (!approveDate || !receiveMoneyDate || !eventDate || !endActivityDate) return true;
+        return false;
+      }
+
       function getLoanStatusClass(item) {
         var dueState = C.safeTrim((item && item.dueState) || '');
         var storedLoc = C.safeTrim((item && item.storedLoc) || '');
 
         if (storedLoc) return 'status-stored';
         if (isPendingStorage(item)) return 'status-ready';
+        if (isAwaitingInfo(item)) return 'status-waiting';
         if (dueState === 'overdue') return 'status-cancelled';
         if (dueState === 'due_soon' || dueState === 'due_today') return 'status-pending';
         return 'status-inprogress';
@@ -1595,6 +1756,7 @@
 
         if (storedLoc) return 'bi-archive-fill';
         if (isPendingStorage(item)) return 'bi-clock-history';
+        if (isAwaitingInfo(item)) return 'bi-pencil-square';
         if (dueState === 'overdue') return 'bi-exclamation-octagon-fill';
         if (dueState === 'due_soon' || dueState === 'due_today') return 'bi-alarm-fill';
         return 'bi-hourglass-split';
@@ -1605,6 +1767,9 @@
 
         if (isPaidForStorage(item)) {
           return '<span class="badge-status badge-completed"><i class="bi bi-check-circle-fill"></i>ชำระแล้ว</span>';
+        }
+        if (isAwaitingInfo(item)) {
+          return '<span class="badge-status badge-waiting"><i class="bi bi-pencil-square"></i>รอเพิ่มข้อมูล</span>';
         }
         if (dueState === 'overdue') {
           return '<span class="badge-status badge-cancel"><i class="bi bi-exclamation-octagon-fill"></i>เลยกำหนด</span>';
@@ -1617,7 +1782,7 @@
 
       function getLoanDueBadge(item) {
         var dueState = C.safeTrim((item && item.dueState) || '');
-        if (isPaidForStorage(item) || dueState === 'paid') return '';
+        if (isPaidForStorage(item) || dueState === 'paid' || isAwaitingInfo(item)) return '';
 
         var dueBadgeClass = getDueBadgeClass(dueState);
         var dueLabel = C.safeTrim((item && item.dueLabel) || '') || 'ยังไม่กำหนดวันครบกำหนด';
@@ -1627,6 +1792,7 @@
       function getLoanRemainingDisplay(item) {
         var remaining = C.safeTrim((item && item.remainingText) || '');
         if (remaining) return remaining;
+        if (isAwaitingInfo(item)) return 'รอเพิ่มข้อมูล';
 
         var dueState = C.safeTrim((item && item.dueState) || '');
         var rawDays = (item && item.daysToDue != null) ? Number(item.daysToDue) : null;
@@ -1723,6 +1889,8 @@
       function matchesLoanStatusFilter(item, statusKey) {
         var key = C.safeTrim(statusKey || '');
         if (!key) return true;
+        if (isAwaitingInfo(item)) return key === 'awaiting';
+        if (key === 'awaiting') return false;
         if (key === 'unpaid') return !isPaidForStorage(item);
         if (key === 'due_soon') {
           var dueSoonState = C.safeTrim((item && item.dueState) || '');
@@ -1864,6 +2032,7 @@
         if (els.filterLoanOverdue) els.filterLoanOverdue.checked = state.selectedStatusFilters.indexOf('overdue') > -1;
         if (els.filterLoanPaid) els.filterLoanPaid.checked = state.selectedStatusFilters.indexOf('paid') > -1;
         if (els.filterLoanPendingStorage) els.filterLoanPendingStorage.checked = state.selectedStatusFilters.indexOf('pending_storage') > -1;
+        if (els.filterLoanAwaiting) els.filterLoanAwaiting.checked = state.selectedStatusFilters.indexOf('awaiting') > -1;
         if (els.filterLoanStored) els.filterLoanStored.checked = state.selectedStatusFilters.indexOf('stored') > -1;
 
         if (els.filterApproveDateFrom) els.filterApproveDateFrom.value = state.selectedApproveDateFrom || '';
@@ -1981,14 +2150,13 @@
 
       function openFilterModal() {
         if (!els.filterModal) return;
-        setLoading(true);
+        mountFilterModalToBody();
+        refreshFilterOptions();
+        els.filterModal.classList.add('active');
+
         ensureFilterDataLoaded(false).then(function () {
-          mountFilterModalToBody();
           refreshFilterOptions();
-          els.filterModal.classList.add('active');
-          setLoading(false);
         }).catch(function (err) {
-          setLoading(false);
           showError((err && err.message) ? err.message : 'โหลดข้อมูลตัวกรองไม่สำเร็จ');
         });
       }
@@ -2014,6 +2182,7 @@
         if (els.filterLoanOverdue && els.filterLoanOverdue.checked) state.selectedStatusFilters.push('overdue');
         if (els.filterLoanPaid && els.filterLoanPaid.checked) state.selectedStatusFilters.push('paid');
         if (els.filterLoanPendingStorage && els.filterLoanPendingStorage.checked) state.selectedStatusFilters.push('pending_storage');
+        if (els.filterLoanAwaiting && els.filterLoanAwaiting.checked) state.selectedStatusFilters.push('awaiting');
         if (els.filterLoanStored && els.filterLoanStored.checked) state.selectedStatusFilters.push('stored');
 
         state.selectedExpenseTypes = [];
@@ -2095,10 +2264,11 @@
 
       function buildLoanStatsFromDocs(rows) {
         var docs = Array.isArray(rows) ? rows : [];
-        var stats = { total: 0, paid: 0, unpaid: 0, overdue: 0, dueSoon: 0, stored: 0, pendingStorage: 0 };
+        var stats = { total: 0, paid: 0, unpaid: 0, overdue: 0, dueSoon: 0, stored: 0, pendingStorage: 0, awaiting: 0 };
         for (var i = 0; i < docs.length; i++) {
           var d = docs[i] || {};
           stats.total++;
+          if (isAwaitingInfo(d)) stats.awaiting++;
           if (C.safeTrim(d.statusDoc || '') === 'ชำระแล้ว' || C.safeTrim(d.dueState || '') === 'paid') stats.paid++;
           else stats.unpaid++;
           if (C.safeTrim(d.dueState || '') === 'overdue') stats.overdue++;
@@ -2125,6 +2295,7 @@
         var d = item || {};
         if (C.safeTrim(d.storedLoc || '')) return 'จัดเก็บแล้ว';
         if (isPendingStorage(d)) return 'รอจัดเก็บ';
+        if (isAwaitingInfo(d)) return 'รอเพิ่มข้อมูล';
         if (isPaidForStorage(d)) return 'ชำระแล้ว';
         if (C.safeTrim(d.dueState || '') === 'overdue') return 'เลยกำหนด';
         if (C.safeTrim(d.dueState || '') === 'due_soon' || C.safeTrim(d.dueState || '') === 'due_today') return 'ใกล้ครบกำหนด';
@@ -2161,6 +2332,7 @@
           { key: 'stored', label: 'จัดเก็บแล้ว', cls: 's-stored', icon: 'bi-archive-fill' },
           { key: 'paid', label: 'ชำระแล้ว', cls: 's-completed', icon: 'bi-check-circle-fill' },
           { key: 'pendingStorage', label: 'รอจัดเก็บ', cls: 's-ready', icon: 'bi-clock-history' },
+          { key: 'awaiting', label: 'รอเพิ่มข้อมูล', cls: 's-awaiting', icon: 'bi-pencil-square' },
           { key: 'dueSoon', label: 'ใกล้ครบกำหนด', cls: 's-pending', icon: 'bi-alarm-fill' },
           { key: 'unpaid', label: 'ยังไม่ชำระ', cls: 's-inprogress', icon: 'bi-hourglass-split' },
           { key: 'overdue', label: 'เลยกำหนด', cls: 's-cancel', icon: 'bi-exclamation-octagon-fill' }
@@ -2646,6 +2818,7 @@
             applyFilterFromModal();
             closeFilterModal();
             state.page = 1;
+            switchTab('docs');
             loadList(true).catch(function (err) {
               showError((err && err.message) ? err.message : 'ไม่สามารถกรองข้อมูลได้');
             });
@@ -2763,6 +2936,62 @@
       }
 
       function init() {
+        function setupHeaderFollow() {
+          var topbar = document.getElementById('homeTopbar');
+          var spacer = document.getElementById('topbarSpacer');
+          if (!topbar) return;
+
+          function readTopbarOffset() {
+            if (!window.getComputedStyle) return 0;
+            var raw = window.getComputedStyle(document.documentElement).getPropertyValue('--home-topbar-top-offset');
+            var n = parseFloat(raw);
+            return isFinite(n) ? Math.max(0, n) : 0;
+          }
+
+          function applyPinnedState() {
+            var isVisible = !topbar.classList.contains('hidden');
+            topbar.classList.toggle('is-fixed', isVisible);
+            topbar.classList.toggle('is-sticky', isVisible);
+            topbar.style.setProperty('--follow-progress', isVisible ? '0.12' : '0');
+
+            if (!spacer) return;
+            if (!isVisible) {
+              spacer.style.height = '0px';
+              topbar.style.left = '';
+              topbar.style.right = '';
+              topbar.style.width = '';
+              return;
+            }
+
+            var rect = spacer.getBoundingClientRect();
+            var offset = readTopbarOffset();
+            var h = topbar.getBoundingClientRect().height;
+            spacer.style.height = Math.max(0, Math.round(h + offset)) + 'px';
+
+            if (rect && rect.width > 0) {
+              topbar.style.left = rect.left + 'px';
+              topbar.style.right = 'auto';
+              topbar.style.width = rect.width + 'px';
+            } else {
+              topbar.style.left = '';
+              topbar.style.right = '';
+              topbar.style.width = '';
+            }
+          }
+
+          if (typeof MutationObserver === 'function') {
+            var observer = new MutationObserver(function () {
+              applyPinnedState();
+            });
+            observer.observe(topbar, { attributes: true, attributeFilter: ['class'] });
+          }
+
+          window.addEventListener('resize', applyPinnedState, { passive: true });
+          setTimeout(applyPinnedState, 0);
+        }
+
+        setupHeaderFollow();
+
         if (els.searchInput) {
           // ป้องกันค่าค้นหาค้างจาก browser restore/autofill ที่ทำให้จำนวนรายการไม่ตรงข้ามอุปกรณ์
           els.searchInput.value = '';
