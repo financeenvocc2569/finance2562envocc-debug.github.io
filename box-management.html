@@ -346,15 +346,15 @@
 
       var C = window.DocFrontendCommon;
       var q = C.parseQuery();
-      var scope = C.safeTrim(q.scope || '').toLowerCase() === 'loan' ? 'loan' : 'main';
+      var scope = 'main';
 
       var state = {
         api: null,
         user: null,
         settings: null,
         list: [],
-        boxColumn: scope === 'loan' ? 'B' : 'A',
-        destroyColumn: scope === 'loan' ? 'K' : 'J',
+        boxColumn: 'A',
+        destroyColumn: 'B',
         defaultDestroyYears: 10,
         saving: false
       };
@@ -373,9 +373,8 @@
 
       function getBackPage() {
         var raw = C.safeTrim(q.back || '');
-        if (raw === 'loan-index.html') return 'loan-index.html';
         if (raw === 'index.html') return 'index.html';
-        return scope === 'loan' ? 'loan-index.html' : 'index.html';
+        return 'index.html';
       }
 
       function goBack() {
@@ -425,7 +424,7 @@
       }
 
       function getScopeLabel() {
-        return scope === 'loan' ? 'ทะเบียนคุมเงินยืม' : 'ทะเบียนคุมเอกสารหลัก';
+        return 'ทะเบียนคุมเอกสารหลัก';
       }
 
       function renderHeader() {

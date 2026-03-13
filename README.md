@@ -12,7 +12,6 @@
 - `document-status.html`
 - `loan-index.html`
 - `loan-register.html`
-- `loan-storage-box-view.html`
 - `box-management.html`
 - `inspection-report.html`
 - `storage-box-view.html`

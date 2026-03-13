@@ -648,57 +648,6 @@
     }, opts);
   };
 
-  DocumentControlApi.prototype.loanStorageOptions = function (opts) {
-    var cached = (opts && opts.forceRefresh) ? null : this._cacheRead('loan.storage.options', 10 * 60 * 1000);
-    if (cached && cached.success) return Promise.resolve(cached);
-
-    var self = this;
-    return this.call('loan.storage.options', {
-      deviceKey: this.defaultDeviceKey,
-      clientIpKey: this.defaultIpKey
-    }, opts).then(function (res) {
-      if (res && res.success) self._cacheWrite('loan.storage.options', res);
-      return res;
-    });
-  };
-
-  DocumentControlApi.prototype.checkLoanStorageEligibility = function (recordId, opts) {
-    var normalizedId = safeTrim(recordId || '');
-    return this.call('loan.storage.check_eligibility', {
-      deviceKey: this.defaultDeviceKey,
-      clientIpKey: this.defaultIpKey,
-      recordId: normalizedId,
-      id: normalizedId,
-      docId: normalizedId
-    }, opts);
-  };
-
-  DocumentControlApi.prototype.saveLoanStorageData = function (recordId, newLoc, userName, fiscalYear, opts) {
-    var realFiscal = fiscalYear;
-    var realOpts = opts;
-    if (realFiscal && typeof realFiscal === 'object' && !Array.isArray(realFiscal)) {
-      realOpts = realFiscal;
-      realFiscal = '';
-    }
-    return this.call('loan.storage.save_data', {
-      deviceKey: this.defaultDeviceKey,
-      clientIpKey: this.defaultIpKey,
-      recordId: safeTrim(recordId || ''),
-      newLoc: safeTrim(newLoc || ''),
-      userName: safeTrim(userName || ''),
-      fiscalYear: safeTrim(realFiscal || '')
-    }, realOpts);
-  };
-
-  DocumentControlApi.prototype.saveLoanDocumentsToStorage = function (items, userName, opts) {
-    return this.call('loan.storage.save_documents', {
-      deviceKey: this.defaultDeviceKey,
-      clientIpKey: this.defaultIpKey,
-      items: Array.isArray(items) ? items : [],
-      userName: safeTrim(userName || '')
-    }, opts);
-  };
-
   DocumentControlApi.prototype.docCreate = function (formData, opts) {
     return this.call('doc.create', {
       deviceKey: this.defaultDeviceKey,
@@ -819,7 +768,6 @@
       if (res && res.success) {
         self._cacheClear('options.info');
         self._cacheClear('storage.options');
-        self._cacheClear('loan.storage.options');
       }
       return res;
     });
@@ -844,7 +792,6 @@
       if (res && res.success) {
         self._cacheClear('options.info');
         self._cacheClear('storage.options');
-        self._cacheClear('loan.storage.options');
       }
       return res;
     });

@@ -109,18 +109,6 @@
       color: #fff5f5;
     }
 
-    .head-badge.status-stored {
-      background: linear-gradient(180deg, rgba(22, 163, 74, 0.64), rgba(22, 163, 74, 0.48));
-      border-color: rgba(187, 247, 208, 0.74);
-      color: #f0fdf4;
-    }
-
-    .head-badge.status-ready {
-      background: linear-gradient(180deg, rgba(245, 158, 11, 0.68), rgba(217, 119, 6, 0.54));
-      border-color: rgba(253, 230, 138, 0.74);
-      color: #fffbeb;
-    }
-
     .head-badge.status-awaiting {
       background: linear-gradient(180deg, rgba(139, 92, 246, 0.72), rgba(109, 40, 217, 0.52));
       border-color: rgba(221, 214, 254, 0.74);
@@ -285,335 +273,6 @@
       word-break: break-word;
     }
 
-    .storage-status-empty,
-    .storage-status-ok,
-    .storage-status-ready {
-      text-align: center;
-    }
-
-    .storage-status-empty {
-      background: linear-gradient(180deg, rgba(148, 163, 184, 0.14), rgba(148, 163, 184, 0.06));
-      border-color: rgba(148, 163, 184, 0.28);
-    }
-
-    .storage-status-ready {
-      background: linear-gradient(180deg, rgba(245, 158, 11, 0.16), rgba(245, 158, 11, 0.08));
-      border-color: rgba(245, 158, 11, 0.32);
-    }
-
-    .storage-status-ok {
-      background: linear-gradient(180deg, rgba(34, 197, 94, 0.14), rgba(34, 197, 94, 0.08));
-      border-color: rgba(34, 197, 94, 0.28);
-    }
-
-    .storage-status-empty-title,
-    .storage-status-title {
-      margin: 2px 0 0;
-      font-size: 1.06rem;
-      font-weight: 820;
-    }
-
-    .storage-status-empty-title {
-      color: var(--text-muted);
-    }
-
-    .storage-status-ready .storage-status-title {
-      color: #b45309;
-    }
-
-    .storage-status-title {
-      color: #16a34a;
-      font-weight: 860;
-    }
-
-    .storage-status-sub {
-      margin: 6px 0 0;
-      font-size: 0.82rem;
-      line-height: 1.4;
-      color: var(--text-muted);
-      font-weight: 620;
-    }
-
-    .readonly-box,
-    .notice-box {
-      text-align: center;
-      padding: 14px;
-      border-radius: 14px;
-      border: 1px solid transparent;
-      font-size: 0.86rem;
-      line-height: 1.45;
-      font-weight: 640;
-    }
-
-    .readonly-box {
-      background: rgba(217, 119, 6, 0.12);
-      border-color: rgba(217, 119, 6, 0.3);
-      color: var(--text-color);
-    }
-
-    .notice-box.gray {
-      background: rgba(148, 163, 184, 0.22);
-      border-color: rgba(100, 116, 139, 0.32);
-      color: var(--text-color);
-    }
-
-    .notice-box.blue {
-      background: rgba(90, 200, 250, 0.14);
-      border-color: rgba(90, 200, 250, 0.34);
-      color: var(--text-color);
-    }
-
-    .notice-box.green {
-      background: rgba(34, 197, 94, 0.14);
-      border-color: rgba(34, 197, 94, 0.28);
-      color: var(--text-color);
-    }
-
-    .storage-form {
-      padding: 14px;
-      border-radius: 18px;
-      border: 1px solid #d4dfed;
-      background: #fff;
-      box-shadow: 0 10px 22px rgba(11, 45, 92, 0.08);
-    }
-
-    .storage-form-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
-
-    .storage-form-title {
-      margin: 0;
-      font-size: 0.98rem;
-      font-weight: 860;
-      color: var(--text-color);
-      line-height: 1.3;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .storage-form-sub {
-      margin: 2px 0 0;
-      font-size: 0.79rem;
-      font-weight: 620;
-      color: var(--text-muted);
-      line-height: 1.45;
-    }
-
-    .storage-fields {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-
-    .storage-field {
-      min-width: 0;
-      display: grid;
-      gap: 6px;
-    }
-
-    .storage-select {
-      width: 100%;
-      min-height: 50px;
-      height: 50px;
-      border-radius: 14px !important;
-      font-weight: 650;
-      appearance: none !important;
-      -webkit-appearance: none !important;
-      -moz-appearance: none !important;
-      padding-right: 42px !important;
-      background-color: #ffffff !important;
-      background-image: var(--dd-arrow-light) !important;
-      background-repeat: no-repeat !important;
-      background-position: right 14px center !important;
-      background-size: 14px 14px !important;
-    }
-
-    .storage-user {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      border-radius: 14px;
-      border: 1px solid #d4dfed;
-      background: #f8fbff;
-    }
-
-    .storage-user img,
-    .storage-user .fallback {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      flex: 0 0 auto;
-    }
-
-    .storage-user .fallback {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(10, 132, 255, 0.12);
-      border: 1px solid rgba(10, 132, 255, 0.26);
-      color: #007aff;
-      font-weight: 860;
-    }
-
-    .storage-user-copy {
-      min-width: 0;
-      line-height: 1.35;
-    }
-
-    .storage-user-name {
-      font-size: 0.9rem;
-      font-weight: 800;
-      color: var(--text-color);
-      word-break: break-word;
-    }
-
-    .storage-user-role {
-      font-size: 0.78rem;
-      font-weight: 620;
-      color: var(--text-muted);
-      word-break: break-word;
-    }
-
-    .storage-note {
-      margin-top: 10px;
-      border-radius: 12px;
-      border: 1px solid #bfd3ee;
-      background: #eef5ff;
-      color: #17447a;
-      padding: 10px 12px;
-      font-size: 0.8rem;
-      font-weight: 680;
-      line-height: 1.45;
-    }
-
-    .storage-submit-wrap {
-      margin-top: 12px;
-      display: flex;
-    }
-
-    .storage-submit-wrap .btn {
-      width: 100%;
-      min-height: 50px;
-    }
-
-    .storage-detail {
-      margin-top: 8px;
-      padding: 10px;
-      border-radius: 14px;
-      border: 1px solid rgba(34, 197, 94, 0.25);
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.13), rgba(34, 197, 94, 0.04)), linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(248, 252, 255, 0.68));
-      text-align: left;
-    }
-
-    .storage-detail .chip {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 4px 10px;
-      font-size: 0.72rem;
-      font-weight: 760;
-      border: 1px solid rgba(59, 130, 246, 0.32);
-      background: rgba(191, 219, 254, 0.42);
-      color: #1d4ed8;
-      margin-bottom: 8px;
-    }
-
-    .storage-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      align-items: start;
-    }
-
-    .storage-cell {
-      min-width: 0;
-    }
-
-    .storage-meta-label {
-      display: block;
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      font-weight: 760;
-      letter-spacing: 0.04em;
-    }
-
-    .storage-meta-value {
-      font-size: 0.9rem;
-      color: var(--text-color);
-      font-weight: 760;
-    }
-
-    .storage-owner {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      width: 100%;
-    }
-
-    .storage-owner-text {
-      min-width: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .storage-owner-name {
-      font-size: 0.9rem;
-      color: var(--text-color);
-      font-weight: 760;
-      line-height: 1.22;
-      overflow-wrap: anywhere;
-    }
-
-    .storage-owner img,
-    .storage-owner .fallback {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      object-fit: cover;
-      flex: 0 0 auto;
-      border: 1px solid rgba(34, 197, 94, 0.3);
-    }
-
-    .storage-owner .fallback {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(34, 197, 94, 0.18);
-      color: #166534;
-      font-weight: 860;
-      border: 1px solid rgba(34, 197, 94, 0.26);
-    }
-
-    .storage-owner-pos {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      line-height: 1.24;
-      display: block;
-    }
-
-    .state-row {
-      display: none;
-      text-align: center;
-      padding: 10px 0 4px;
-      color: var(--text-muted);
-      font-size: 0.86rem;
-      font-weight: 640;
-    }
-
-    .state-row.show {
-      display: block;
-    }
-
     .spinner {
       width: 28px;
       height: 28px;
@@ -749,59 +408,10 @@
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 12px 26px rgba(2, 8, 20, 0.32);
     }
 
-    body.dark-mode.page-loan-view .storage-status-ready .storage-status-title {
-      color: #fbbf24;
-    }
-
-    body.dark-mode.page-loan-view .storage-status-title {
-      color: #86efac;
-    }
-
-    body.dark-mode.page-loan-view .storage-form,
-    body.dark-mode.page-loan-view .storage-user,
     body.dark-mode.page-loan-view .qr-wrap {
       border-color: rgba(148, 163, 184, 0.36);
       background: linear-gradient(180deg, rgba(18, 28, 42, 0.84), rgba(14, 23, 35, 0.72));
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 14px 30px rgba(2, 8, 20, 0.34);
-    }
-
-    body.dark-mode.page-loan-view .storage-select {
-      background-color: rgba(20, 29, 43, 0.9) !important;
-      background-image: var(--dd-arrow-dark) !important;
-      background-repeat: no-repeat !important;
-      background-position: right 14px center !important;
-      background-size: 14px 14px !important;
-      border-color: rgba(148, 163, 184, 0.44) !important;
-      color: rgba(241, 245, 249, 0.96) !important;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 10px 22px rgba(2, 8, 20, 0.34) !important;
-    }
-
-    body.dark-mode.page-loan-view .storage-note {
-      color: #d1e9ff;
-      border-color: rgba(90, 200, 250, 0.44);
-      background: linear-gradient(180deg, rgba(10, 132, 255, 0.22), rgba(10, 132, 255, 0.1));
-    }
-
-    body.dark-mode.page-loan-view .storage-detail {
-      border-color: rgba(74, 222, 128, 0.34);
-      background: linear-gradient(180deg, rgba(21, 41, 28, 0.76), rgba(13, 30, 21, 0.62));
-    }
-
-    body.dark-mode.page-loan-view .storage-detail .chip {
-      border-color: rgba(125, 211, 252, 0.42);
-      background: rgba(30, 58, 138, 0.42);
-      color: #bfdbfe;
-    }
-
-    body.dark-mode.page-loan-view .storage-meta-value,
-    body.dark-mode.page-loan-view .storage-owner-name {
-      color: #e6eefb;
-    }
-
-    body.dark-mode.page-loan-view .storage-owner .fallback {
-      background: rgba(34, 197, 94, 0.24);
-      border-color: rgba(134, 239, 172, 0.44);
-      color: #dcfce7;
     }
 
     body.dark-mode.page-loan-view .btn.outline {
@@ -829,16 +439,6 @@
       }
     }
 
-    @media (max-width: 980px) {
-      .storage-fields {
-        grid-template-columns: 1fr;
-      }
-
-      .storage-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
     @media (max-width: 740px) {
       .loan-view-page {
         padding: 12px;
@@ -859,10 +459,6 @@
 
       .action-row {
         display: grid;
-      }
-
-      .storage-submit-wrap .btn {
-        min-height: 48px;
       }
 
       .qr-wrap {
@@ -914,19 +510,6 @@
             <div id="paymentInfo" class="field-grid"></div>
           </section>
 
-          <section class="section">
-            <h2 class="section-title"><i class="bi bi-archive"></i>สถานะจัดเก็บ</h2>
-            <div id="storageStatusSection"></div>
-          </section>
-
-          <section class="section">
-            <h2 class="section-title"><i class="bi bi-pencil-square"></i>การบันทึกจัดเก็บ</h2>
-            <div id="storageActionSection"></div>
-          </section>
-
-          <div id="successMsg" class="state-row">บันทึกสำเร็จ! ระบบกำลังรีโหลดข้อมูล...</div>
-          <div id="loadingMsg" class="state-row"><div class="spinner"></div><div>กำลังบันทึก...</div></div>
-
           <div class="qr-wrap">
             <p class="qr-title"><i class="bi bi-qr-code"></i>QR Code รายการนี้</p>
             <p class="qr-sub">ใช้สำหรับเปิดหน้ารายละเอียดรายการเงินยืมและพิมพ์ใบแปะหน้าเอกสาร</p>
@@ -956,17 +539,8 @@
         settings: null,
         api: null,
         user: null,
-        members: [],
-        memberImgMap: {},
-        memberPosMap: {},
         doc: null,
-        isReadOnly: false,
-        storageInfo: {
-          boxes: [],
-          allBoxes: [],
-          fiscalYears: [],
-          boxesByFiscalYear: {}
-        }
+        isReadOnly: false
       };
 
       var els = {
@@ -983,10 +557,6 @@
         autoInfo: document.getElementById('autoInfo'),
         dueInfo: document.getElementById('dueInfo'),
         paymentInfo: document.getElementById('paymentInfo'),
-        storageStatusSection: document.getElementById('storageStatusSection'),
-        storageActionSection: document.getElementById('storageActionSection'),
-        successMsg: document.getElementById('successMsg'),
-        loadingMsg: document.getElementById('loadingMsg'),
         docQr: document.getElementById('docQr')
       };
 
@@ -1023,56 +593,6 @@
         }
       }
 
-      function setBusy(isBusy) {
-        if (els.loadingMsg) {
-          els.loadingMsg.classList.toggle('show', !!isBusy);
-        }
-      }
-
-      function showSuccessRow(text) {
-        if (!els.successMsg) return;
-        els.successMsg.textContent = C.safeText(text || 'บันทึกสำเร็จ');
-        els.successMsg.classList.add('show');
-        setTimeout(function () {
-          if (els.successMsg) els.successMsg.classList.remove('show');
-        }, 2200);
-      }
-
-      function normalizeMemberKey(name) {
-        var text = C.safeTrim(name || '');
-        if (!text) return '';
-        return text.toLowerCase().replace(/\s+/g, '');
-      }
-
-      function mapMemberData(members) {
-        var imgMap = {};
-        var posMap = {};
-        var list = Array.isArray(members) ? members : [];
-
-        for (var i = 0; i < list.length; i++) {
-          var m = list[i] || {};
-          var name = C.safeTrim(m.name || m.displayName || '');
-          if (!name) continue;
-          var lower = name.toLowerCase();
-          var img = C.safeTrim(m.image || m.imageUrl || m.avatar || '');
-          var pos = C.safeTrim(m.position || '');
-          var compact = normalizeMemberKey(name);
-          if (img) {
-            imgMap[name] = img;
-            imgMap[lower] = img;
-            if (compact) imgMap[compact] = img;
-          }
-          if (pos) {
-            posMap[name] = pos;
-            posMap[lower] = pos;
-            if (compact) posMap[compact] = pos;
-          }
-        }
-
-        state.memberImgMap = imgMap;
-        state.memberPosMap = posMap;
-      }
-
       function updatePageTitle(idText) {
         var suffix = C.safeTrim(idText || '');
         document.title = (suffix ? ('รายละเอียดเงินยืม • ' + suffix) : 'รายละเอียดทะเบียนคุมเงินยืม');
@@ -1098,7 +618,7 @@
         return !!(user && (user.isReadOnly || user.canEdit === false || user.accessRole === 'read_only'));
       }
 
-      function isPaidForStorage(doc) {
+      function isPaidDoc(doc) {
         var statusDoc = C.safeTrim((doc && doc.statusDoc) || '');
         var dueState = C.safeTrim((doc && doc.dueState) || '');
         var settlementDate = C.safeTrim((doc && (doc.settlementDocDateInput || doc.settlementDocDateDisplay)) || '');
@@ -1117,77 +637,11 @@
         return false;
       }
 
-      function uniqTrimmed(list) {
-        var arr = Array.isArray(list) ? list : [];
-        var out = [];
-        var seen = {};
-        for (var i = 0; i < arr.length; i++) {
-          var value = C.safeTrim(arr[i] || '');
-          if (!value || seen[value]) continue;
-          seen[value] = true;
-          out.push(value);
-        }
-        return out;
-      }
-
-      function normalizeLoanStorageInfo(raw) {
-        var data = (raw && typeof raw === 'object') ? raw : {};
-        var info = {
-          boxes: uniqTrimmed(data.boxes),
-          allBoxes: uniqTrimmed(data.allBoxes),
-          fiscalYears: uniqTrimmed(data.fiscalYears),
-          boxesByFiscalYear: {}
-        };
-
-        var byFiscal = (data.boxesByFiscalYear && typeof data.boxesByFiscalYear === 'object')
-          ? data.boxesByFiscalYear
-          : {};
-
-        for (var key in byFiscal) {
-          if (!Object.prototype.hasOwnProperty.call(byFiscal, key)) continue;
-          var fy = C.safeTrim(key || '');
-          if (!fy) continue;
-          info.boxesByFiscalYear[fy] = uniqTrimmed(byFiscal[key]);
-        }
-
-        if (!info.allBoxes.length) info.allBoxes = info.boxes.slice();
-        if (!info.boxes.length) info.boxes = info.allBoxes.slice();
-        return info;
-      }
-
-      function userAvatar(name, bgColor, colorHex) {
-        var userName = C.safeTrim(name || '');
-        var userLower = userName.toLowerCase();
-        var userCompact = normalizeMemberKey(userName);
-        var myName = C.safeTrim((state.user && (state.user.displayName || state.user.username)) || '');
-        var myLower = myName.toLowerCase();
-        var myImage = C.safeTrim((state.user && (state.user.imageUrl || state.user.avatar || state.user.image)) || '');
-        var img = '';
-        if (userName && myImage && (userName === myName || userLower === myLower)) {
-          img = myImage;
-        }
-        if (!img && userName) {
-          img = C.safeTrim(state.memberImgMap[userName] || state.memberImgMap[userLower] || state.memberImgMap[userCompact] || '');
-        }
-        if (img) {
-          return '<img src="' + C.escapeHtml(img) + '" alt="u">';
-        }
-        var first = userName ? userName.charAt(0).toUpperCase() : 'U';
-        var style = '';
-        if (bgColor || colorHex) {
-          style = ' style="'
-            + (bgColor ? ('background:' + C.escapeHtml(bgColor) + ';') : '')
-            + (colorHex ? ('color:' + C.escapeHtml(colorHex) + ';') : '')
-            + '"';
-        }
-        return '<span class="fallback"' + style + '>' + C.escapeHtml(first) + '</span>';
-      }
-
       function getStatusBadge(doc) {
         var statusDoc = C.safeTrim((doc && doc.statusDoc) || '');
         var dueState = C.safeTrim((doc && doc.dueState) || '');
 
-        if (statusDoc === 'ชำระแล้ว' || dueState === 'paid') {
+        if (isPaidDoc(doc)) {
           return '<span class="head-badge status-paid"><i class="bi bi-check-circle-fill"></i>ชำระแล้ว</span>';
         }
         if (isAwaitingInfo(doc)) {
@@ -1202,7 +656,7 @@
       function getDueBadge(doc) {
         var dueText = C.safeTrim((doc && doc.dueLabel) || '') || 'ยังไม่กำหนดวันครบกำหนด';
         var dueState = C.safeTrim((doc && doc.dueState) || '');
-        var paid = isPaidForStorage(doc);
+        var paid = isPaidDoc(doc);
 
         if (paid || dueState === 'paid' || isAwaitingInfo(doc)) {
           return '';
@@ -1212,16 +666,6 @@
           return '<span class="head-badge status-overdue"><i class="bi bi-alarm-fill"></i>' + C.escapeHtml(dueText) + '</span>';
         }
         return '<span class="head-badge status-unpaid"><i class="bi bi-alarm"></i>' + C.escapeHtml(dueText) + '</span>';
-      }
-
-      function getStoredBadge(doc) {
-        if (doc && doc.isStored) {
-          return '<span class="head-badge status-stored"><i class="bi bi-archive-fill"></i>จัดเก็บแล้ว</span>';
-        }
-        if (isPaidForStorage(doc)) {
-          return '<span class="head-badge status-ready"><i class="bi bi-clock-history"></i>รอจัดเก็บ</span>';
-        }
-        return '<span class="head-badge"><i class="bi bi-archive"></i>ยังไม่พร้อมจัดเก็บ</span>';
       }
 
       function fieldItem(label, value, classes) {
@@ -1262,7 +706,7 @@
         updatePageTitle(title);
         els.headTitle.textContent = 'สัญญา: ' + title;
         els.headSub.textContent = 'เลขที่ สธ.: ' + sub;
-        els.headBadges.innerHTML = getStatusBadge(doc) + getDueBadge(doc) + getStoredBadge(doc);
+        els.headBadges.innerHTML = getStatusBadge(doc) + getDueBadge(doc);
       }
 
       function renderGeneralInfo(doc) {
@@ -1320,179 +764,6 @@
         html += fieldItem('เลขที่ฎีกา/GF', doc.gfNo || '-');
         html += fieldItem('วันที่รับโอนคืนเงินทดรองฯ', doc.refundTransferDateDisplay || '-');
         els.paymentInfo.innerHTML = html;
-      }
-
-      function renderStorageStatus(doc) {
-        var isStored = !!(doc && doc.isStored);
-        var isPaid = isPaidForStorage(doc);
-        var html = '';
-
-        if (!isStored) {
-          if (isPaid) {
-            html += '<div class="info-group storage-status-ready">';
-            html += '<p class="info-label">สถานที่เก็บ</p>';
-            html += '<h4 class="storage-status-title">รอจัดเก็บ</h4>';
-            html += '<p class="storage-status-sub">เอกสารชำระเงินเรียบร้อยแล้ว สามารถบันทึกการจัดเก็บได้ทันที</p>';
-            html += '</div>';
-          } else {
-            html += '<div class="info-group storage-status-empty">';
-            html += '<p class="info-label">สถานที่เก็บ</p>';
-            html += '<h4 class="storage-status-empty-title">ยังไม่พร้อมจัดเก็บ</h4>';
-            html += '<p class="storage-status-sub">ระบบจะขึ้นสถานะรอจัดเก็บอัตโนมัติเมื่อเอกสารถูกชำระเงินแล้ว</p>';
-            html += '</div>';
-          }
-          els.storageStatusSection.innerHTML = html;
-          return;
-        }
-
-        var storedLoc = C.safeTrim(doc.storedLoc || '-') || '-';
-        var storedAt = C.safeTrim(doc.storedAtDisplay || '-') || '-';
-        var storedBy = C.safeTrim(doc.storedBy || '-') || '-';
-        var storedPos = C.safeTrim(doc.storedPosition || '') || '';
-        var fiscalText = C.safeTrim(doc.fiscalYear || '-') || '-';
-
-        html += '<div class="info-group storage-status-ok">';
-        html += '<p class="info-label">สถานที่เก็บ</p>';
-        html += '<h4 class="storage-status-title">' + C.escapeHtml(storedLoc) + '</h4>';
-        html += '<div class="storage-detail">';
-        html += '<span class="chip">ปีงบฯ ' + C.escapeHtml(fiscalText) + '</span>';
-        html += '<div class="storage-grid">';
-        html += '<div class="storage-cell"><small class="storage-meta-label">วันเวลาที่บันทึก</small><strong class="storage-meta-value">' + C.escapeHtml(storedAt) + '</strong></div>';
-        html += '<div class="storage-cell"><small class="storage-meta-label">ผู้บันทึกข้อมูล</small><div class="storage-owner">';
-        html += userAvatar(storedBy, 'rgba(34,197,94,0.18)', '#166534');
-        html += '<div class="storage-owner-text"><strong class="storage-owner-name">' + C.escapeHtml(storedBy) + '</strong>';
-        if (storedPos) {
-          html += '<small class="storage-owner-pos">' + C.escapeHtml(storedPos) + '</small>';
-        }
-        html += '</div></div></div>';
-        html += '</div></div></div>';
-        els.storageStatusSection.innerHTML = html;
-      }
-
-      function buildStorageAction(doc) {
-        if (state.isReadOnly) {
-          return '<div class="readonly-box"><i class="bi bi-eye me-1"></i>สิทธิ์อ่านเท่านั้น ไม่สามารถบันทึกจัดเก็บได้</div>';
-        }
-
-        if (doc && doc.isStored) {
-          return '<div class="notice-box green"><i class="bi bi-check-circle-fill me-1"></i>จัดเก็บเรียบร้อยแล้ว</div>';
-        }
-
-        if (!isPaidForStorage(doc)) {
-          return '<div class="notice-box blue"><i class="bi bi-hourglass-split me-1"></i>ต้องชำระเงินก่อน ระบบจึงจะเปิดให้บันทึกการจัดเก็บ</div>';
-        }
-
-        var info = normalizeLoanStorageInfo(state.storageInfo || {});
-        var boxes = uniqTrimmed(info.allBoxes && info.allBoxes.length ? info.allBoxes : info.boxes);
-        var fiscalYears = uniqTrimmed(info.fiscalYears || []);
-        if (!boxes.length) {
-          return '<div class="notice-box gray"><i class="bi bi-info-circle me-1"></i>ไม่พบข้อมูลสถานที่จัดเก็บในชีตข้อมูล</div>';
-        }
-        if (!fiscalYears.length) {
-          return '<div class="notice-box gray"><i class="bi bi-info-circle me-1"></i>ไม่พบข้อมูลปีงบประมาณในชีตข้อมูล</div>';
-        }
-
-        var locHtml = '<option value="" selected disabled>เลือกสถานที่จัดเก็บ...</option>';
-        for (var b = 0; b < boxes.length; b++) {
-          locHtml += '<option value="' + C.escapeHtml(boxes[b]) + '">' + C.escapeHtml(boxes[b]) + '</option>';
-        }
-
-        var fiscalHtml = '<option value="" selected disabled>เลือกปีงบประมาณ...</option>';
-        for (var i = 0; i < fiscalYears.length; i++) {
-          fiscalHtml += '<option value="' + C.escapeHtml(fiscalYears[i]) + '">' + C.escapeHtml(fiscalYears[i]) + '</option>';
-        }
-
-        var userName = C.safeTrim((state.user && (state.user.displayName || state.user.username)) || '');
-        var userPos = C.safeTrim((state.user && state.user.position) || '') || 'ผู้ใช้งานระบบ';
-
-        var html = '';
-        html += '<div class="storage-form" id="storageFormContainer">';
-        html += '<div class="storage-form-head">';
-        html += '<div>';
-        html += '<h4 class="storage-form-title"><i class="bi bi-pencil-square"></i>บันทึกการจัดเก็บ</h4>';
-        html += '<p class="storage-form-sub">เลือกสถานที่และปีงบประมาณให้ครบก่อนบันทึก</p>';
-        html += '</div>';
-        html += '</div>';
-
-        html += '<div class="storage-fields">';
-        html += '<div class="storage-field">';
-        html += '<label class="info-label">สถานที่จัดเก็บ</label>';
-        html += '<select id="locationSelect" class="form-select storage-select">' + locHtml + '</select>';
-        html += '</div>';
-        html += '<div class="storage-field">';
-        html += '<label class="info-label">ปีงบประมาณ (ของเอกสาร)</label>';
-        html += '<select id="fiscalSelect" class="form-select storage-select">' + fiscalHtml + '</select>';
-        html += '</div>';
-        html += '</div>';
-
-        html += '<div class="storage-field">';
-        html += '<label class="info-label">ผู้บันทึกข้อมูล (ผู้ที่ล็อกอิน)</label>';
-        html += '<div class="storage-user">';
-        html += userAvatar(userName, 'rgba(10,132,255,0.12)', '#007AFF');
-        html += '<div class="storage-user-copy"><div class="storage-user-name">' + C.escapeHtml(userName || '-') + '</div>';
-        html += '<div class="storage-user-role">' + C.escapeHtml(userPos) + '</div></div>';
-        html += '</div>';
-        html += '</div>';
-        html += '<div class="storage-note"><i class="bi bi-info-circle me-1"></i>ระบบจะบันทึกวันเวลาและผู้บันทึกให้อัตโนมัติ</div>';
-        html += '<div class="storage-submit-wrap">';
-        html += '<button type="button" class="btn primary" id="btnSaveStorage"><i class="bi bi-save-fill"></i>บันทึกจัดเก็บ</button>';
-        html += '</div>';
-        html += '</div>';
-        return html;
-      }
-
-      function bindStorageActionEvents(doc) {
-        var btn = document.getElementById('btnSaveStorage');
-        if (!btn) return;
-        btn.addEventListener('click', function () {
-          submitStorage(doc).catch(function (err) {
-            Swal.fire('เกิดข้อผิดพลาด', (err && err.message) ? err.message : 'บันทึกไม่สำเร็จ', 'error');
-          });
-        });
-      }
-
-      async function submitStorage(doc) {
-        if (!doc || state.isReadOnly) {
-          Swal.fire({ icon: 'warning', title: 'สิทธิ์ไม่เพียงพอ', text: 'บัญชีผู้มีสิทธิ์อ่าน ไม่สามารถบันทึกจัดเก็บได้' });
-          return;
-        }
-
-        if (!isPaidForStorage(doc)) {
-          Swal.fire('ยังไม่พร้อมจัดเก็บ', 'เอกสารยังไม่ได้ชำระเงิน จึงยังไม่สามารถจัดเก็บได้', 'warning');
-          return;
-        }
-
-        var fiscal = C.safeTrim((document.getElementById('fiscalSelect') || {}).value || '');
-        var loc = C.safeTrim((document.getElementById('locationSelect') || {}).value || '');
-        if (!fiscal || !loc) {
-          Swal.fire('กรอกข้อมูลไม่ครบ', 'กรุณาเลือกปีงบประมาณและสถานที่จัดเก็บ', 'warning');
-          return;
-        }
-
-        var saveBtn = document.getElementById('btnSaveStorage');
-        if (saveBtn) saveBtn.disabled = true;
-        setBusy(true);
-        try {
-          var eligibilityRes = await state.api.checkLoanStorageEligibility(doc.recordId || recordId, { noPageLoader: true });
-          if (!eligibilityRes || eligibilityRes.success === false) {
-            throw new Error((eligibilityRes && eligibilityRes.error) ? eligibilityRes.error : 'ไม่สามารถจัดเก็บเอกสารได้');
-          }
-
-          var userName = C.safeTrim((state.user && (state.user.displayName || state.user.username)) || '');
-          var saveRes = await state.api.saveLoanStorageData(doc.recordId || recordId, loc, userName, fiscal);
-          if (!saveRes || saveRes.success === false) {
-            throw new Error((saveRes && saveRes.error) ? saveRes.error : 'บันทึกจัดเก็บไม่สำเร็จ');
-          }
-
-          showSuccessRow('บันทึกสำเร็จ! ระบบกำลังรีโหลดข้อมูล...');
-          await Swal.fire({ icon: 'success', title: 'บันทึกจัดเก็บสำเร็จ', confirmButtonColor: '#007AFF' });
-          await loadData();
-        } catch (err) {
-          Swal.fire('เกิดข้อผิดพลาด', (err && err.message) ? err.message : 'บันทึกไม่สำเร็จ', 'error');
-        } finally {
-          setBusy(false);
-          if (saveBtn) saveBtn.disabled = false;
-        }
       }
 
       function applyReadOnlyUi() {
@@ -1563,7 +834,6 @@
         html += row('ประเภทค่าใช้จ่าย', d.expenseType || '-');
         html += row('แหล่งเงินยืม', d.fundingSource || '-');
         html += row('ผู้รับผิดชอบ', d.responsible || '-');
-        html += row('สถานที่เก็บ', d.storedLoc || '-');
         html += '</table>';
         html += '<div class="subject"><div class="head">ชื่อการประชุม/การลงพื้นที่</div><div class="txt">' + C.escapeHtml(d.meetingTitle || '-') + '</div></div>';
         html += '<div class="foot">พิมพ์เมื่อ: ' + C.escapeHtml(new Date().toLocaleString('th-TH-u-ca-buddhist', { timeZone: 'Asia/Bangkok' })) + '</div>';
@@ -1603,9 +873,6 @@
         renderAutoInfo(doc);
         renderDueInfo(doc);
         renderPaymentInfo(doc);
-        renderStorageStatus(doc);
-        els.storageActionSection.innerHTML = buildStorageAction(doc);
-        bindStorageActionEvents(doc);
         applyReadOnlyUi();
         els.docQr.src = getLoanQrUrl();
         els.mainCard.style.display = 'block';
@@ -1616,15 +883,11 @@
 
         var responses = await Promise.all([
           state.api.me({ noPageLoader: true }),
-          state.api.loanDetail(recordId),
-          state.api.loanStorageOptions({ noPageLoader: true, forceRefresh: true }).catch(function () { return { success: false }; }),
-          state.api.optionsMembers({ noPageLoader: true }).catch(function () { return { success: false, data: [] }; })
+          state.api.loanDetail(recordId)
         ]);
 
         var meRes = responses[0] || {};
         var detailRes = responses[1] || {};
-        var storageRes = responses[2] || {};
-        var membersRes = responses[3] || {};
 
         if (!meRes || meRes.success === false || !meRes.user) {
           C.redirect('index.html', {}, true);
@@ -1643,10 +906,7 @@
         state.user = meRes.user;
         state.doc = detailRes.doc;
         state.isReadOnly = isReadOnlyUser(meRes.user);
-        state.storageInfo = normalizeLoanStorageInfo((storageRes && storageRes.success && storageRes.data) ? storageRes.data : {});
-        state.members = Array.isArray(membersRes.data) ? membersRes.data : [];
         syncLoanRouteId((state.doc && (state.doc.recordId || state.doc.contractNo || state.doc.docNoSdh)) || recordId);
-        mapMemberData(state.members);
 
         renderDocument();
         return true;

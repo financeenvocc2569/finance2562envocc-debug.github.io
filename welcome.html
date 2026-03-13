@@ -190,35 +190,18 @@
       transition: transform 0.16s ease, filter 0.2s ease;
     }
 
-    .welcome-btn-primary {
-      height: 50px;
-      padding: 0 22px;
-      border-radius: 999px;
-      font-weight: 900;
-      font-size: 0.98rem;
-      background: linear-gradient(180deg, #2f97ff 0%, #0a84ff 58%, #0071e3 100%);
-      border: 1px solid rgba(10, 132, 255, 0.54);
-      color: #fff;
-      box-shadow: 0 20px 48px rgba(10, 132, 255, 0.32);
-    }
-
-    .welcome-btn-primary:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.04);
-    }
-
+    .welcome-btn-primary,
     .welcome-btn-loan {
       height: 50px;
       padding: 0 22px;
       border-radius: 999px;
       font-weight: 900;
       font-size: 0.98rem;
-      background: linear-gradient(180deg, #40cf93 0%, #22c55e 56%, #16974d 100%);
-      border: 1px solid rgba(21, 128, 61, 0.52);
-      color: #fff;
-      box-shadow: 0 20px 48px rgba(22, 163, 74, 0.28);
+      --btn-tint-rgb: 10, 132, 255;
+      --btn-text: #075985;
     }
 
+    .welcome-btn-primary:hover,
     .welcome-btn-loan:hover {
       transform: translateY(-1px);
       filter: brightness(1.04);
@@ -250,12 +233,6 @@
 
     body.dark-mode .welcome-btn-secondary:hover {
       background: rgba(22, 30, 44, 0.88);
-    }
-
-    body.dark-mode .welcome-btn-loan {
-      background: linear-gradient(180deg, #2cb66f 0%, #179855 56%, #116f3f 100%);
-      border-color: rgba(74, 222, 128, 0.46);
-      box-shadow: 0 20px 44px rgba(7, 38, 22, 0.52);
     }
 
     .state-error {
