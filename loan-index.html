@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>ทะเบียนคุมเงินยืม</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="./theme-legacy.css?v=20260221-17">
+  <link rel="stylesheet" href="./theme-legacy.css?v=20260317-6">
   <style>
     :root {
       --home-topbar-top-offset: 10px;
@@ -1112,9 +1112,9 @@
   <button id="btnAddFab" class="fab hidden" type="button" title="เพิ่มรายการเงินยืม"><i class="bi bi-plus-lg"></i></button>
 
   <script src="./config.js"></script>
-  <script src="./api-client.js?v=20260221-6"></script>
+  <script src="./api-client.js?v=20260317-1"></script>
   <script src="./theme-legacy.js?v=20260221-3"></script>
-  <script src="./app-common.js?v=20260221-2"></script>
+  <script src="./app-common.js?v=20260317-1"></script>
   <script>
     (function () {
       'use strict';
@@ -1434,10 +1434,9 @@
         var contractNo = C.safeTrim(d.contractNo || '');
         var approveDate = C.safeTrim(d.approveDateInput || d.approveDateDisplay || '');
         var receiveMoneyDate = C.safeTrim(d.receiveMoneyDateInput || d.receiveMoneyDateDisplay || '');
-        var eventDate = C.safeTrim(d.eventDateInput || d.eventDateDisplay || '');
         var endActivityDate = C.safeTrim(d.endActivityDateInput || d.endActivityDateDisplay || '');
         if (!contractNo) return true;
-        if (!approveDate || !receiveMoneyDate || !eventDate || !endActivityDate) return true;
+        if (!approveDate || !receiveMoneyDate || !endActivityDate) return true;
         return false;
       }
 
@@ -2056,7 +2055,7 @@
         if (!state.api) return Promise.reject(new Error('ยังไม่ได้ตั้งค่า API'));
 
         if (els.itemsPerPage) state.itemsPerPage = parseInt(els.itemsPerPage.value, 10) || 20;
-        state.searchText = C.safeTrim((els.searchInput && els.searchInput.value) || state.searchText || '');
+        state.searchText = C.safeTrim(els.searchInput ? els.searchInput.value : (state.searchText || ''));
 
         setLoading(true);
         showError('');

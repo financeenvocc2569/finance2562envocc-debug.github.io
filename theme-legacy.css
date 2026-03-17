@@ -1091,6 +1091,61 @@ small,
   color: var(--muted-text) !important;
 }
 
+.form-label .field-help {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 6px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1;
+  border: 1px solid rgba(148, 163, 184, 0.72);
+  color: #475569;
+  background: rgba(255, 255, 255, 0.9);
+  cursor: help;
+  vertical-align: middle;
+}
+
+body.dark-mode .form-label .field-help {
+  border-color: rgba(148, 163, 184, 0.36);
+  color: #cbd5f5;
+  background: rgba(15, 23, 42, 0.72);
+}
+
+.section.section-payment input,
+.section.section-payment textarea {
+  cursor: text;
+  caret-color: #0f172a;
+}
+
+.section.section-payment select,
+.section.section-payment .form-select,
+.section.section-payment .thai-date-input,
+.section.section-payment .thai-date-input .form-control,
+.section.section-payment .thai-date-input .cal-icon {
+  cursor: pointer;
+}
+
+.section.section-payment input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.section.section-payment input[type="number"]::-webkit-outer-spin-button,
+.section.section-payment input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+body.dark-mode.page-loan-register .section.section-payment input,
+body.dark-mode.page-loan-register .section.section-payment textarea,
+body.dark-mode.page-loan-register .section.section-payment .form-control {
+  caret-color: #e2e8f0;
+}
+
 .field,
 .row,
 .actions {
@@ -1132,6 +1187,11 @@ textarea:focus,
   outline: none;
 }
 
+select,
+.form-select {
+  cursor: pointer;
+}
+
 .btn {
   border-radius: 999px !important;
   font-weight: 760 !important;
@@ -1148,6 +1208,17 @@ textarea:focus,
   transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.32s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.28s ease, border-color 0.24s ease, color 0.24s ease, opacity 0.2s ease !important;
   will-change: transform;
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+}
+
+.back-btn,
+#btnBack,
+.back-btn * {
+  cursor: pointer;
+}
+
+.back-btn:disabled,
+.back-btn:disabled * {
+  cursor: not-allowed !important;
 }
 
 .btn::before {

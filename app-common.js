@@ -236,6 +236,76 @@
     });
   }
 
+  var helpDictCache = {};
+
+  function normalizeHelpKey(value) {
+    var text = safeText(value || '');
+    text = text.replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+    text = text.replace(/\s*\([A-Z]{1,3}\)\s*$/g, '').trim();
+    return text;
+  }
+
+  function applyHelpDictToLabels(labels, dictMap) {
+    if (!labels || !labels.length) return;
+    var map = dictMap || {};
+    for (var i = 0; i < labels.length; i++) {
+      var label = labels[i];
+      if (!label) continue;
+      var key = normalizeHelpKey(label.textContent || '');
+      if (!key) continue;
+      var helpText = safeTrim(map[key] || '');
+      var badge = label.querySelector('.field-help');
+      if (!badge) {
+        badge = document.createElement('span');
+        badge.className = 'field-help';
+        badge.textContent = '?';
+        label.appendChild(badge);
+      }
+      badge.setAttribute('data-help-key', key);
+      if (helpText) {
+        badge.title = helpText;
+      } else {
+        badge.title = 'ยังไม่มีคำอธิบาย';
+      }
+    }
+  }
+
+  function attachHelpHints(scope, api, root) {
+    var scopeKey = safeTrim(scope || '').toLowerCase();
+    if (!scopeKey) return Promise.resolve(false);
+    if (!global.document) return Promise.resolve(false);
+    var host = root && root.querySelectorAll ? root : global.document;
+    var labels = host.querySelectorAll('.form-label');
+    if (!labels.length) return Promise.resolve(false);
+
+    if (helpDictCache[scopeKey]) {
+      applyHelpDictToLabels(labels, helpDictCache[scopeKey]);
+      return Promise.resolve(true);
+    }
+
+    if (!api || typeof api.dictGet !== 'function') {
+      applyHelpDictToLabels(labels, {});
+      return Promise.resolve(false);
+    }
+
+    return api.dictGet(scopeKey, { noPageLoader: true }).then(function (res) {
+      var items = (res && res.success && res.data && Array.isArray(res.data.items)) ? res.data.items : [];
+      var map = {};
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i] || {};
+        var key = normalizeHelpKey(item.key || item.name || '');
+        if (!key) continue;
+        map[key] = safeTrim(item.desc || item.description || '');
+      }
+      helpDictCache[scopeKey] = map;
+      applyHelpDictToLabels(labels, map);
+      return true;
+    }).catch(function () {
+      applyHelpDictToLabels(labels, {});
+      return false;
+    });
+  }
+
   global.DocFrontendCommon = {
     safeText: safeText,
     safeTrim: safeTrim,
@@ -251,6 +321,8 @@
     redirect: redirect,
     escapeHtml: escapeHtml,
     fmtMoney: fmtMoney,
+    normalizeHelpKey: normalizeHelpKey,
+    attachHelpHints: attachHelpHints,
     storageKeys: {
       scriptUrl: STORAGE_SCRIPT_URL,
       deviceKey: STORAGE_DEVICE_KEY

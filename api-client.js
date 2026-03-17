@@ -549,6 +549,14 @@
     });
   };
 
+  DocumentControlApi.prototype.dictGet = function (scope, opts) {
+    return this.call('dict.get', {
+      deviceKey: this.defaultDeviceKey,
+      clientIpKey: this.defaultIpKey,
+      scope: scope || ''
+    }, opts);
+  };
+
   DocumentControlApi.prototype.storageOptions = function (opts) {
     var cached = (opts && opts.forceRefresh) ? null : this._cacheRead('storage.options', 10 * 60 * 1000);
     if (cached && cached.success) return Promise.resolve(cached);

@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link rel="stylesheet" href="./theme-legacy.css?v=20260221-17">
+  <link rel="stylesheet" href="./theme-legacy.css?v=20260317-6">
   <style>
     .loan-page {
       max-width: 1240px;
@@ -126,6 +126,12 @@
       padding: 10px;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(250, 253, 255, 0.72));
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.86), 0 8px 20px rgba(15, 23, 42, 0.06);
+    }
+
+    .section.section-payment {
+      border-color: rgba(244, 114, 182, 0.38);
+      background: linear-gradient(180deg, rgba(253, 232, 243, 0.9), rgba(251, 207, 232, 0.62));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 8px 20px rgba(244, 114, 182, 0.18);
     }
 
     .section-title {
@@ -399,6 +405,12 @@
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 8px 18px rgba(1, 8, 22, 0.34);
     }
 
+    body.dark-mode.page-loan-register .section.section-payment {
+      border-color: rgba(244, 114, 182, 0.4);
+      background: linear-gradient(180deg, rgba(62, 28, 46, 0.9), rgba(40, 18, 30, 0.92));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 10px 22px rgba(8, 2, 10, 0.45);
+    }
+
     body.dark-mode.page-loan-register .section-title {
       color: #e6eefb;
     }
@@ -548,7 +560,7 @@
 
           <section class="section">
             <h3 class="section-title"><i class="bi bi-calendar-check"></i>ข้อมูลวันที่หลัก</h3>
-            <div class="row three">
+            <div class="row two">
               <div class="field">
                 <label class="form-label">วันที่อนุมัติ</label>
                 <div class="thai-date-input" onclick="openCalendar('approveDate')">
@@ -562,14 +574,6 @@
                 <div class="thai-date-input" onclick="openCalendar('receiveMoneyDate')">
                   <input type="hidden" id="receiveMoneyDate" value="">
                   <div id="receiveMoneyDateDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
-                  <i class="bi bi-calendar3 cal-icon"></i>
-                </div>
-              </div>
-              <div class="field">
-                <label class="form-label">วันที่จัด/เดินทาง</label>
-                <div class="thai-date-input" onclick="openCalendar('eventDate')">
-                  <input type="hidden" id="eventDate" value="">
-                  <div id="eventDateDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
                   <i class="bi bi-calendar3 cal-icon"></i>
                 </div>
               </div>
@@ -630,7 +634,7 @@
             </div>
           </section>
 
-          <section class="section">
+          <section class="section section-payment">
             <h3 class="section-title"><i class="bi bi-receipt"></i>ข้อมูลชำระและหนังสือ</h3>
             <div class="row two">
               <div class="field"><label class="form-label">ใบสำคัญเลขที่/เล่มที่</label><input id="voucherNo" class="form-control"></div>
@@ -694,9 +698,9 @@
   </div>
 
   <script src="./config.js"></script>
-  <script src="./api-client.js?v=20260221-6"></script>
+  <script src="./api-client.js?v=20260317-1"></script>
   <script src="./theme-legacy.js?v=20260221-3"></script>
-  <script src="./app-common.js?v=20260221-2"></script>
+  <script src="./app-common.js?v=20260317-1"></script>
   <script>
     (function () {
       'use strict';
@@ -708,7 +712,6 @@
       var DATE_IDS = [
         'approveDate',
         'receiveMoneyDate',
-        'eventDate',
         'endActivityDate',
         'settlementDocDate',
         'groupLetterDate',
@@ -1206,7 +1209,6 @@
           contractNo: C.safeTrim(els.contractNo.value || ''),
           approveDate: C.safeTrim(document.getElementById('approveDate').value || ''),
           receiveMoneyDate: C.safeTrim(document.getElementById('receiveMoneyDate').value || ''),
-          eventDate: C.safeTrim(document.getElementById('eventDate').value || ''),
           endActivityDate: C.safeTrim(document.getElementById('endActivityDate').value || ''),
           expenseType: C.safeTrim(els.expenseType.value || ''),
           fundingSource: C.safeTrim(els.fundingSource.value || ''),
@@ -1352,7 +1354,6 @@
 
           setDateValue('approveDate', toInputDateText(d.approveDateInput));
           setDateValue('receiveMoneyDate', toInputDateText(d.receiveMoneyDateInput));
-          setDateValue('eventDate', toInputDateText(d.eventDateInput));
           setDateValue('endActivityDate', toInputDateText(d.endActivityDateInput));
           setDateValue('settlementDocDate', toInputDateText(d.settlementDocDateInput));
           setDateValue('groupLetterDate', toInputDateText(d.groupLetterDateInput));
@@ -1468,6 +1469,7 @@
             : { expenseTypes: [], fundingSources: [], expenseLookup: {} };
 
           applyOptions();
+          C.attachHelpHints('loan', state.api, els.mainCard);
           updateReadOnlyMode();
 
           // ให้โหมดแก้ไขมีลำดับความสำคัญสูงกว่าโหมดเพิ่มเสมอเมื่อมี id ส่งมา

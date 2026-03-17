@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <link rel="stylesheet" href="./theme-legacy.css?v=20260221-17">
+  <link rel="stylesheet" href="./theme-legacy.css?v=20260317-6">
   <style>
     .loan-view-page {
       max-width: 1200px;
@@ -524,9 +524,9 @@
   </div>
 
   <script src="./config.js"></script>
-  <script src="./api-client.js?v=20260221-6"></script>
+  <script src="./api-client.js?v=20260317-1"></script>
   <script src="./theme-legacy.js?v=20260221-3"></script>
-  <script src="./app-common.js?v=20260221-2"></script>
+  <script src="./app-common.js?v=20260317-1"></script>
   <script>
     (function () {
       'use strict';
@@ -630,10 +630,9 @@
         var contractNo = C.safeTrim(d.contractNo || '');
         var approveDate = C.safeTrim(d.approveDateInput || d.approveDateDisplay || '');
         var receiveMoneyDate = C.safeTrim(d.receiveMoneyDateInput || d.receiveMoneyDateDisplay || '');
-        var eventDate = C.safeTrim(d.eventDateInput || d.eventDateDisplay || '');
         var endActivityDate = C.safeTrim(d.endActivityDateInput || d.endActivityDateDisplay || '');
         if (!contractNo) return true;
-        if (!approveDate || !receiveMoneyDate || !eventDate || !endActivityDate) return true;
+        if (!approveDate || !receiveMoneyDate || !endActivityDate) return true;
         return false;
       }
 
@@ -715,7 +714,6 @@
         html += fieldItem('เลขที่สัญญา', doc.contractNo || '-');
         html += fieldItem('วันที่อนุมัติ', doc.approveDateDisplay || '-');
         html += fieldItem('วันที่ได้รับเงิน', doc.receiveMoneyDateDisplay || '-');
-        html += fieldItem('วันที่จัด/เดินทาง', doc.eventDateDisplay || '-');
         html += fieldItem('วันที่สิ้นสุดกิจกรรม', doc.endActivityDateDisplay || '-');
         html += fieldItem('ประเภทค่าใช้จ่าย', doc.expenseType || '-', 'money-like');
         html += fieldItem('แหล่งเงินยืม', doc.fundingSource || '-', 'money-like');
