@@ -1503,11 +1503,11 @@
 
       function renderGeneralInfo(doc) {
         var html = '';
-        html += infoItem('เลขที่รับ', doc.receiveNo || '-');
-        html += infoItem('วันที่รับ', doc.dateRecDisplay || '-');
+        html += infoItem('เลขรับ', doc.receiveNo || '-');
+        html += infoItem('วันที่', doc.dateRecDisplay || '-');
         html += infoItem('เวลา', (doc.timeRec || '-') + ' น.');
-        html += infoItem('ลงวันที่', doc.datedDisplay || '-');
-        html += infoItem('เลขที่ สธ. (กลุ่มงาน)', doc.docNoSdh || '-');
+        html += infoItem('ลงวันที่ (กอง/กลุ่ม)', doc.datedDisplay || '-');
+        html += infoItem('เลขที่ สธ. (กอง/กลุ่ม)', doc.docNoSdh || '-');
         html += infoItem('สถานะหลัก', doc.docStatus || '-');
         els.generalInfo.innerHTML = html;
       }
@@ -2014,10 +2014,10 @@
         h += '<table class="meta">';
         h += row('เลขที่หนังสือส่งกองคลัง', d.amDocNo || '-');
         h += row('วันที่หนังสือส่งกองคลัง', d.anDateDisplay || '-');
-        h += row('เลขที่รับเอกสาร', d.receiveNo || '-');
-        h += row('วันที่รับเอกสาร', d.dateRecDisplay || '-');
+        h += row('เลขรับ', d.receiveNo || '-');
+        h += row('วันที่', d.dateRecDisplay || '-');
         h += row('กลุ่ม/ศูนย์', d.group || '-');
-        h += row('เลขที่ สธ. (กลุ่มงาน)', d.docNoSdh || '-');
+        h += row('เลขที่ สธ. (กอง/กลุ่ม)', d.docNoSdh || '-');
         h += row('ผู้ส่ง', d.sender || '-');
         h += row('วัตถุประสงค์', d.purpose || '-');
         h += row('จำนวนเบิก/ยืม/คืน', moneyText(d.amount));

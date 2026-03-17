@@ -704,13 +704,13 @@
         var sub = C.safeTrim((doc && doc.docNoSdh) || '') || '-';
         updatePageTitle(title);
         els.headTitle.textContent = 'สัญญา: ' + title;
-        els.headSub.textContent = 'เลขที่ สธ.: ' + sub;
+        els.headSub.textContent = 'เลขรับ: ' + sub;
         els.headBadges.innerHTML = getStatusBadge(doc) + getDueBadge(doc);
       }
 
       function renderGeneralInfo(doc) {
         var html = '';
-        html += fieldItem('เลขที่เอกสาร สธ.', doc.docNoSdh || '-');
+        html += fieldItem('เลขรับ', doc.docNoSdh || '-');
         html += fieldItem('เลขที่สัญญา', doc.contractNo || '-');
         html += fieldItem('วันที่อนุมัติ', doc.approveDateDisplay || '-');
         html += fieldItem('วันที่ได้รับเงิน', doc.receiveMoneyDateDisplay || '-');
@@ -731,7 +731,7 @@
         html += fieldItem('กิจกรรมหลัก', doc.mainAct || '-');
         html += fieldItem('โครงการย่อยที่', doc.subProject || '-');
         html += fieldItem('กิจกรรมย่อยที่', doc.activity || '-');
-        html += fieldItem('วันที่ได้รับเอกสารยืมเงิน', doc.receiveBorrowDocDateDisplay || '-');
+        html += fieldItem('เลขที่ สธ. (กอง/กลุ่ม)', doc.docNoSdh || '-');
         els.autoInfo.innerHTML = html;
       }
 
@@ -821,7 +821,7 @@
         html += '<div class="top"><div><div class="title">ใบแปะหน้าสัญญาเงินยืม</div><div class="subtitle">ใช้สแกนเพื่อเข้าหน้ารายละเอียดรายการเงินยืม</div></div><div class="qr-box"><img src="' + C.escapeHtml(qrUrl) + '" alt="QR"></div></div>';
         html += '<table class="meta">';
         html += row('เลขที่สัญญา', d.contractNo || '-');
-        html += row('เลขที่เอกสาร สธ.', d.docNoSdh || '-');
+        html += row('เลขรับ', d.docNoSdh || '-');
         html += row('ชื่อผู้ยืม', d.borrowerName || '-');
         html += row('กลุ่ม/ศูนย์', d.groupCenter || '-');
         html += row('วันที่อนุมัติ', d.approveDateDisplay || '-');

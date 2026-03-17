@@ -134,6 +134,12 @@
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 8px 20px rgba(244, 114, 182, 0.18);
     }
 
+    .section.section-info-ref {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: linear-gradient(180deg, rgba(224, 242, 254, 0.95), rgba(191, 219, 254, 0.7));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 8px 20px rgba(37, 99, 235, 0.14);
+    }
+
     .section-title {
       margin: 0 0 8px;
       font-size: 0.88rem;
@@ -411,6 +417,11 @@
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 10px 22px rgba(8, 2, 10, 0.45);
     }
 
+    body.dark-mode.page-loan-register .section.section-info-ref {
+      border-color: rgba(56, 189, 248, 0.45);
+      background: linear-gradient(180deg, rgba(16, 35, 56, 0.92), rgba(12, 28, 44, 0.9));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 10px 22px rgba(2, 12, 24, 0.5);
+    }
     body.dark-mode.page-loan-register .section-title {
       color: #e6eefb;
     }
@@ -544,12 +555,12 @@
         </div>
 
         <div class="loan-card-body">
-          <section class="section">
+          <section class="section section-info-ref">
             <h3 class="section-title"><i class="bi bi-file-earmark-text"></i>ข้อมูลอ้างอิง</h3>
             <div class="row two">
               <div class="field">
-                <label class="form-label">เลขที่เอกสาร สธ. <span style="color:#dc2626">*</span></label>
-                <input type="text" id="docNoSdh" class="form-control" placeholder="เช่น สธ 0409.7/...">
+                <label class="form-label">เลขรับ <span style="color:#dc2626">*</span></label>
+                <input type="text" id="docNoSdh" class="form-control" placeholder="เลขรับ">
               </div>
               <div class="field">
                 <label class="form-label">เลขที่สัญญา</label>
@@ -558,7 +569,7 @@
             </div>
           </section>
 
-          <section class="section">
+          <section class="section section-info-ref">
             <h3 class="section-title"><i class="bi bi-calendar-check"></i>ข้อมูลวันที่หลัก</h3>
             <div class="row two">
               <div class="field">
@@ -609,7 +620,7 @@
               <div class="field"><label class="form-label">กิจกรรมหลัก</label><input id="mainAct" class="form-control auto-text-field" disabled></div>
               <div class="field"><label class="form-label">โครงการย่อยที่</label><input id="subProject" class="form-control auto-text-field" disabled></div>
               <div class="field"><label class="form-label">กิจกรรมย่อยที่</label><input id="activity" class="form-control auto-text-field" disabled></div>
-              <div class="field"><label class="form-label">วันที่ได้รับเอกสารยืมเงิน</label><input id="receiveBorrowDocDate" class="form-control auto-text-field" disabled></div>
+              <div class="field"><label class="form-label">เลขที่ สธ. (กอง/กลุ่ม)</label><input id="receiveBorrowDocDate" class="form-control auto-text-field" disabled></div>
               <div class="field"><label class="form-label">ผู้รับผิดชอบ</label><input id="responsible" class="form-control auto-text-field"></div>
             </div>
           </section>
@@ -1103,7 +1114,7 @@
         els.mainAct.value = C.safeText(p.mainAct || '');
         els.subProject.value = C.safeText(p.subProject || '');
         els.activity.value = C.safeText(p.activity || '');
-        els.receiveBorrowDocDate.value = C.safeText(p.receiveBorrowDocDateDisplay || '');
+        els.receiveBorrowDocDate.value = C.safeText(p.docNoSdh || '');
         els.responsible.value = C.safeText(p.responsible || '');
         ensureSelectValue(els.expenseType, p.expenseType || '');
         ensureSelectValue(els.fundingSource, p.fundingSource || '');
@@ -1188,7 +1199,7 @@
           var res = await state.api.loanLookupDoc(docNoSdh, { noPageLoader: true });
           if (reqSeq !== state.lookupSeq) return false;
           if (!res || res.success === false || !res.data) {
-            throw new Error((res && res.error) ? res.error : 'ไม่พบข้อมูลเลขที่ สธ.');
+            throw new Error((res && res.error) ? res.error : 'ไม่พบข้อมูลเลขรับ');
           }
           fillFromProfile(res.data || {});
           return true;
@@ -1230,7 +1241,7 @@
       }
 
       function validateForm(data) {
-        if (!data.docNoSdh) return 'กรุณากรอกเลขที่เอกสาร สธ.';
+        if (!data.docNoSdh) return 'กรุณากรอกเลขรับ';
         if (!data.expenseType) return 'กรุณาเลือกประเภทค่าใช้จ่าย';
         if (!data.fundingSource) return 'กรุณาเลือกแหล่งเงินยืม';
         return '';

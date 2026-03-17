@@ -939,7 +939,7 @@
         </div>
         <div class="dash-search-wrap">
           <i id="searchIcon" class="bi bi-search"></i>
-          <input type="text" id="searchInput" class="search-box" placeholder="ค้นหาด้วยเลขที่สัญญา, เลขที่ สธ., ชื่อผู้ยืม..." autocomplete="off" autocapitalize="off" spellcheck="false">
+          <input type="text" id="searchInput" class="search-box" placeholder="ค้นหาด้วยเลขที่สัญญา, เลขรับ, ชื่อผู้ยืม..." autocomplete="off" autocapitalize="off" spellcheck="false">
         </div>
       </div>
     </div>
@@ -1994,14 +1994,15 @@
           var bgIcon = getLoanBgIcon(d);
           var statusBadge = getLoanStatusBadge(d);
           var dueBadge = getLoanDueBadge(d);
-          var dueDateText = C.safeTrim(d.dueDateDisplay || '') || '-';
+          var statusKey = getLoanStatusKey(d);
+          var dueDateText = statusKey === 'awaiting' ? '-' : (C.safeTrim(d.dueDateDisplay || '') || '-');
           var remainingLabel = getLoanRemainingDisplay(d);
 
           html += '<article class="doc-card loan-view-card ' + statusClass + ' mb-2 d-block" tabindex="0" role="button" data-view-id="' + C.escapeHtml(recordId) + '" aria-label="ดูรายละเอียดสัญญา ' + C.escapeHtml(d.contractNo || '-') + '">';
           html += '<i class="bi ' + C.escapeHtml(bgIcon) + ' doc-bg-icon" aria-hidden="true"></i>';
 
           html += '<div class="loan-card-head">';
-          html += '<div class="loan-card-id"><div class="doc-title loan-doc-title">สัญญา: ' + C.escapeHtml(d.contractNo || '-') + '</div><div class="doc-subtitle loan-doc-subtitle">เลขที่ สธ.: ' + C.escapeHtml(d.docNoSdh || '-') + '</div></div>';
+          html += '<div class="loan-card-id"><div class="doc-title loan-doc-title">สัญญา: ' + C.escapeHtml(d.contractNo || '-') + '</div><div class="doc-subtitle loan-doc-subtitle">เลขรับ: ' + C.escapeHtml(d.docNoSdh || '-') + '</div></div>';
           html += '<div class="loan-chip-row">' + statusBadge + dueBadge + '</div>';
           html += '</div>';
 
@@ -2165,7 +2166,7 @@
           h += '<p class="meta">พิมพ์เมื่อ: ' + esc(printedAt) + '</p>';
           if (hasSearch) h += '<p class="meta filter">คำค้นหา: ' + esc(state.searchText) + '</p>';
           if (filterSummary) h += '<p class="meta filter">ตัวกรอง: ' + esc(filterSummary) + '</p>';
-          h += '<table><colgroup><col style="width:4%"><col style="width:11%"><col style="width:10%"><col style="width:12%"><col style="width:12%"><col style="width:12%"><col style="width:9%"><col style="width:10%"><col style="width:10%"></colgroup><thead><tr><th>ลำดับ</th><th>เลขที่สัญญา</th><th>เลขที่ สธ.</th><th>ผู้ยืม</th><th>กลุ่ม/ศูนย์</th><th>ประเภทค่าใช้จ่าย</th><th>แหล่งเงินยืม</th><th>สถานะ</th><th>วันครบกำหนด</th></tr></thead><tbody>';
+          h += '<table><colgroup><col style="width:4%"><col style="width:11%"><col style="width:10%"><col style="width:12%"><col style="width:12%"><col style="width:12%"><col style="width:9%"><col style="width:10%"><col style="width:10%"></colgroup><thead><tr><th>ลำดับ</th><th>เลขที่สัญญา</th><th>เลขรับ</th><th>ผู้ยืม</th><th>กลุ่ม/ศูนย์</th><th>ประเภทค่าใช้จ่าย</th><th>แหล่งเงินยืม</th><th>สถานะ</th><th>วันครบกำหนด</th></tr></thead><tbody>';
 
           for (var i = 0; i < docs.length; i++) {
             var d = docs[i] || {};

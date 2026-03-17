@@ -519,19 +519,19 @@
               <select id="fiscalYear" class="form-select"></select>
             </div>
             <div>
-              <label class="form-label">เลขที่รับ (อัตโนมัติ)</label>
+              <label class="form-label">เลขรับ</label>
               <input id="receiveNoDisplay" class="form-control" type="text" disabled placeholder="เลือกปีงบประมาณ">
             </div>
           </div>
 
           <div id="receiveNoReadOnlyRow" style="display:none;margin-bottom:10px;">
-            <label class="form-label">เลขที่รับ</label>
+            <label class="form-label">เลขรับ</label>
             <input id="receiveNoReadOnly" class="form-control" type="text" disabled>
           </div>
 
           <div class="row two">
             <div>
-              <label class="form-label">วันที่รับเอกสาร <span class="text-danger">*</span></label>
+              <label class="form-label">วันที่ <span class="text-danger">*</span></label>
               <div class="thai-date-input" onclick="openCalendar('dateRec')">
                 <input type="hidden" id="dateRec" value="">
                 <div id="dateRecDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
@@ -539,7 +539,7 @@
               </div>
             </div>
             <div>
-              <label class="form-label">เวลาที่รับ <span class="text-danger">*</span></label>
+              <label class="form-label">เวลา <span class="text-danger">*</span></label>
               <div class="thai-time-wrap">
                 <select id="timeRecHr" class="form-select"></select>
                 <span class="thai-time-sep">:</span>
@@ -555,11 +555,11 @@
 
           <div class="row two" style="margin-bottom:10px;">
             <div>
-              <label class="form-label">เลขที่ สธ. (กลุ่มงาน) <span class="text-danger">*</span></label>
-              <input type="text" id="docNoSdh" class="form-control" placeholder="เลขที่ สธ. (กลุ่มงาน)">
+              <label class="form-label">เลขที่ สธ. (กอง/กลุ่ม) <span class="text-danger">*</span></label>
+              <input type="text" id="docNoSdh" class="form-control" placeholder="เลขที่ สธ. (กอง/กลุ่ม)">
             </div>
             <div>
-              <label class="form-label">ลงวันที่ กอง/กลุ่ม <span class="text-danger">*</span></label>
+              <label class="form-label">ลงวันที่ (กอง/กลุ่ม) <span class="text-danger">*</span></label>
               <div class="thai-date-input" onclick="openCalendar('dated')">
                 <input type="hidden" id="dated" value="">
                 <div id="datedDisplay" class="form-control" style="color:var(--text-muted)">เลือกวันที่...</div>
@@ -593,8 +593,8 @@
             <input type="text" id="subjectK" class="form-control" placeholder="เรื่อง">
           </div>
           <div style="margin-bottom:8px;">
-            <label class="form-label">วันที่/เดือน/ปี <span class="text-danger">*</span></label>
-            <input type="text" id="subjectL" class="form-control" placeholder="วันที่/เดือน/ปี">
+            <label class="form-label">วัน/เดือน/ปี <span class="text-danger">*</span></label>
+            <input type="text" id="subjectL" class="form-control" placeholder="วัน/เดือน/ปี">
           </div>
           <div style="margin-bottom:8px;">
             <label class="form-label">เวลา</label>
@@ -661,11 +661,11 @@
           </div>
           <div class="row two" style="margin-top:8px;">
             <div>
-              <label class="form-label">เกณฑ์คืนเงิน (อัตโนมัติ)</label>
+              <label class="form-label">เกณฑ์คืนเงิน</label>
               <input type="text" id="loanDueRule" class="form-control" disabled>
             </div>
             <div>
-              <label class="form-label">จำนวนวัน (อัตโนมัติ)</label>
+              <label class="form-label">จำนวนวัน</label>
               <input type="text" id="loanDayCount" class="form-control" disabled>
             </div>
           </div>
@@ -1184,15 +1184,15 @@
         if (!isEdit) {
           if (!formData.fiscalYear) return 'กรุณาเลือกปีงบประมาณ';
           if (!formData.group) return 'กรุณาเลือกกลุ่ม/ศูนย์';
-          if (!formData.dateRec) return 'กรุณาเลือกวันที่รับเอกสาร';
-          if (!formData.timeRec) return 'กรุณากรอกเวลาที่รับเอกสาร (ชั่วโมงและนาที)';
-          if (!formData.dated) return 'กรุณาเลือกลงวันที่ของกอง/กลุ่ม';
+        if (!formData.dateRec) return 'กรุณาเลือกวันที่';
+        if (!formData.timeRec) return 'กรุณากรอกเวลา (ชั่วโมงและนาที)';
+        if (!formData.dated) return 'กรุณาเลือกลงวันที่ (กอง/กลุ่ม)';
         }
 
         if (!formData.subjectK) return 'กรุณากรอกเรื่อง';
-        if (!formData.subjectL) return 'กรุณากรอกวันที่/เดือน/ปี';
+        if (!formData.subjectL) return 'กรุณากรอกวัน/เดือน/ปี';
         if (!formData.subjectN) return 'กรุณากรอกสถานที่';
-        if (!formData.docNoSdh) return 'กรุณากรอกเลขที่ สธ. (กลุ่มงาน)';
+        if (!formData.docNoSdh) return 'กรุณากรอกเลขที่ สธ. (กอง/กลุ่ม)';
         if (!formData.sender) return 'กรุณากรอกชื่อผู้ส่ง/ผู้ยืม/ผู้ใช้หนี้/ผู้ประสานงาน';
         if (!formData.purpose) return 'กรุณาเลือกวัตถุประสงค์';
         if (!formData.budgetType) return 'กรุณาเลือกประเภทเงินงบประมาณ';
@@ -1249,7 +1249,7 @@
         var msg = C.safeTrim(message || '');
         if (!msg) return 'บันทึกไม่สำเร็จ';
         if (msg.indexOf('เลขที่เอกสารซ้ำ') !== -1) {
-          return msg + '\nกรุณาแก้ไขช่อง "เลขที่ สธ. (กลุ่มงาน)" แล้วบันทึกใหม่';
+          return msg + '\nกรุณาแก้ไขช่อง "เลขที่ สธ. (กอง/กลุ่ม)" แล้วบันทึกใหม่';
         }
         if (msg.indexOf('เลขที่หนังสือส่งกองคลังซ้ำ') !== -1) {
           return msg + '\nกรุณาแก้ไขช่อง "เลขที่หนังสือ" หรือเว้นว่างไว้ก่อน';

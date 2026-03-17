@@ -1853,7 +1853,7 @@
               </div>
 
               <div class="filter-section">
-                <p class="filter-section-title"><i class="bi bi-calendar-month me-1"></i>ช่วงวันที่รับเอกสาร</p>
+                <p class="filter-section-title"><i class="bi bi-calendar-month me-1"></i>ช่วงวันที่</p>
                 <div class="filter-date-range">
                   <div class="filter-date-item">
                     <label class="filter-date-label">จากวันที่</label>
@@ -3008,7 +3008,7 @@
           h += '<h2>รายงานรายการเอกสารทั้งหมดในระบบ</h2>';
           h += '<p class="sub">จำนวนทั้งหมด ' + docs.length + ' รายการ</p>';
           h += '<p class="meta">พิมพ์เมื่อ: ' + esc(new Date().toLocaleString('th-TH')) + '</p>';
-          h += '<table><colgroup><col style="width:4%"><col style="width:5%"><col style="width:10%"><col style="width:8%"><col style="width:19%"><col style="width:10%"><col style="width:8%"><col style="width:8%"><col style="width:8%"><col style="width:9%"><col style="width:11%"></colgroup><thead><tr><th>ลำดับ</th><th>ปีงบฯ</th><th>เลขที่หนังสือส่งกองคลัง</th><th>เลขที่ สธ. (กลุ่มงาน)</th><th>ชื่อเรื่อง</th><th>ประเภทเงินงบประมาณ</th><th>จำนวนเบิก/ยืม/คืน</th><th>สถานะ</th><th>สถานที่เก็บ</th><th>วันที่รับเอกสาร</th><th>ผู้ส่ง</th></tr></thead><tbody>';
+          h += '<table><colgroup><col style="width:4%"><col style="width:5%"><col style="width:10%"><col style="width:8%"><col style="width:19%"><col style="width:10%"><col style="width:8%"><col style="width:8%"><col style="width:8%"><col style="width:9%"><col style="width:11%"></colgroup><thead><tr><th>ลำดับ</th><th>ปีงบฯ</th><th>เลขที่หนังสือส่งกองคลัง</th><th>เลขที่ สธ. (กอง/กลุ่ม)</th><th>ชื่อเรื่อง</th><th>ประเภทเงินงบประมาณ</th><th>จำนวนเบิก/ยืม/คืน</th><th>สถานะ</th><th>สถานที่เก็บ</th><th>วันที่</th><th>ผู้ส่ง</th></tr></thead><tbody>';
 
           for (var i = 0; i < docs.length; i++) {
             var d = docs[i] || {};

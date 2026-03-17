@@ -1306,7 +1306,7 @@
         h += '<h2>รายงานผลงานการตรวจสอบเอกสาร</h2>';
         h += '<p class="sub">เจ้าหน้าที่: <strong>' + esc(officer) + '</strong> | ปีงบประมาณ: <strong>' + esc(fiscal) + '</strong>' + (dr ? (' | ' + esc(dr)) : '') + ' | จำนวนรวม: <strong>' + esc(total) + ' ฉบับ</strong></p>';
         h += '<p class="meta">พิมพ์เมื่อ: ' + esc(new Date().toLocaleString('th-TH')) + '</p>';
-        h += '<table><colgroup><col style="width:4%"><col style="width:5%"><col style="width:10%"><col style="width:8%"><col style="width:24%"><col style="width:9%"><col style="width:10%"><col style="width:14%"><col style="width:8%"><col style="width:8%"></colgroup><thead><tr><th>ลำดับ</th><th>ปีงบฯ</th><th>เลขที่หนังสือส่งกองคลัง</th><th>เลขที่ สธ. (กลุ่มงาน)</th><th>ชื่อเรื่อง</th><th>วันที่ตรวจสอบ</th><th>กลุ่ม/ศูนย์</th><th>ชื่อผู้ส่ง/ชื่อผู้ยืม/ชื่อผู้ใช้หนี้/ชื่อผู้ประสานงาน</th><th>จำนวนเบิก/ยืม/คืน</th><th>ส่วนต่าง/เงินเหลือคืน</th></tr></thead><tbody>';
+        h += '<table><colgroup><col style="width:4%"><col style="width:5%"><col style="width:10%"><col style="width:8%"><col style="width:24%"><col style="width:9%"><col style="width:10%"><col style="width:14%"><col style="width:8%"><col style="width:8%"></colgroup><thead><tr><th>ลำดับ</th><th>ปีงบฯ</th><th>เลขที่หนังสือส่งกองคลัง</th><th>เลขที่ สธ. (กอง/กลุ่ม)</th><th>ชื่อเรื่อง</th><th>วันที่ตรวจสอบ</th><th>กลุ่ม/ศูนย์</th><th>ชื่อผู้ส่ง/ชื่อผู้ยืม/ชื่อผู้ใช้หนี้/ชื่อผู้ประสานงาน</th><th>จำนวนเบิก/ยืม/คืน</th><th>ส่วนต่าง/เงินเหลือคืน</th></tr></thead><tbody>';
 
         for (var i = 0; i < state.currentData.length; i++) {
           var d = state.currentData[i] || {};
