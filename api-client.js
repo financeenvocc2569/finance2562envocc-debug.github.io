@@ -631,6 +631,16 @@
     }, opts);
   };
 
+  DocumentControlApi.prototype.loanPublicDashboard = function (params, opts) {
+    params = params || {};
+    return this.call('loan.public_dashboard', {
+      deviceKey: this.defaultDeviceKey,
+      clientIpKey: this.defaultIpKey,
+      searchQuery: safeTrim(params.searchQuery || params.borrowerName || ''),
+      maxRecords: Number(params.maxRecords || 80)
+    }, opts);
+  };
+
   DocumentControlApi.prototype.loanDetail = function (recordId, opts) {
     return this.call('loan.detail', {
       deviceKey: this.defaultDeviceKey,
@@ -653,6 +663,15 @@
       clientIpKey: this.defaultIpKey,
       recordId: safeTrim(recordId || ''),
       formData: formData || {}
+    }, opts);
+  };
+
+  DocumentControlApi.prototype.loanChangeContractStatus = function (recordId, nextStatus, opts) {
+    return this.call('loan.change_contract_status', {
+      deviceKey: this.defaultDeviceKey,
+      clientIpKey: this.defaultIpKey,
+      recordId: safeTrim(recordId || ''),
+      nextStatus: safeTrim(nextStatus || '')
     }, opts);
   };
 

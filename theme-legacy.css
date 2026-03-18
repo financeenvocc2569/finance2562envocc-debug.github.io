@@ -1769,6 +1769,30 @@ button:disabled::before {
   color: #0c4a6e;
 }
 
+.badge-sheet-blue {
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(191, 219, 254, 0.55);
+  color: #1d4ed8;
+}
+
+.badge-sheet-pink {
+  border-color: rgba(236, 72, 153, 0.5);
+  background: rgba(251, 207, 232, 0.8);
+  color: #9d174d;
+}
+
+.badge-sheet-green {
+  border-color: rgba(34, 197, 94, 0.52);
+  background: rgba(187, 247, 208, 0.75);
+  color: #166534;
+}
+
+.badge-sheet-other {
+  border-color: rgba(100, 116, 139, 0.5);
+  background: rgba(226, 232, 240, 0.9);
+  color: #475569;
+}
+
 .doc-subject,
 .doc-subject-text {
   margin: 8px 0;
@@ -2654,6 +2678,30 @@ body.dark-mode .badge-budget {
   background: rgba(2, 132, 199, 0.26);
   color: #bae6fd;
   border-color: rgba(125, 211, 252, 0.46);
+}
+
+body.dark-mode .badge-sheet-blue {
+  background: rgba(30, 64, 175, 0.35);
+  color: #bfdbfe;
+  border-color: rgba(59, 130, 246, 0.6);
+}
+
+body.dark-mode .badge-sheet-pink {
+  background: rgba(157, 23, 77, 0.4);
+  color: #fbcfe8;
+  border-color: rgba(244, 114, 182, 0.58);
+}
+
+body.dark-mode .badge-sheet-green {
+  background: rgba(21, 128, 61, 0.4);
+  color: #bbf7d0;
+  border-color: rgba(74, 222, 128, 0.6);
+}
+
+body.dark-mode .badge-sheet-other {
+  background: rgba(51, 65, 85, 0.45);
+  color: #e2e8f0;
+  border-color: rgba(148, 163, 184, 0.55);
 }
 
 body.dark-mode .stored-user-chip {

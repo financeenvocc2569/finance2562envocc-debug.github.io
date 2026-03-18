@@ -26,6 +26,24 @@
       margin-bottom: 12px;
     }
 
+    .page-doc-view {
+      --sheet-card-border: rgba(59, 130, 246, 0.36);
+      --sheet-card-bg: linear-gradient(180deg, rgba(236, 248, 255, 0.9), rgba(219, 234, 254, 0.72));
+      --sheet-card-shadow: 0 30px 58px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.84);
+      --sheet-body-bg: linear-gradient(180deg, rgba(219, 234, 254, 0.46), rgba(191, 219, 254, 0.24));
+      --sheet-section-border: rgba(59, 130, 246, 0.24);
+      --sheet-section-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(239, 246, 255, 0.76));
+      --sheet-section-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.84), 0 10px 24px rgba(15, 23, 42, 0.06);
+      --sheet-header-grad: linear-gradient(145deg, #66baff 0%, #3196fb 42%, #1f79f0 100%);
+      --sheet-hover-border: rgba(37, 99, 235, 0.34);
+      --sheet-strong-text: #0f3f7f;
+      --sheet-soft-bg: linear-gradient(180deg, rgba(59, 130, 246, 0.12), rgba(59, 130, 246, 0.04));
+      --sheet-soft-border: rgba(59, 130, 246, 0.24);
+      --sheet-note-bg: #eef5ff;
+      --sheet-note-border: #bfd3ee;
+      --sheet-note-text: #17447a;
+    }
+
     .back-btn {
       border: 1px solid var(--input-border);
       background: var(--card-bg);
@@ -50,13 +68,13 @@
 
     .page-doc-view .main-card {
       overflow: hidden;
-      border: 1px solid rgba(148, 163, 184, 0.34) !important;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(247, 251, 255, 0.64)) !important;
-      box-shadow: 0 30px 58px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.84) !important;
+      border: 1px solid var(--sheet-card-border) !important;
+      background: var(--sheet-card-bg) !important;
+      box-shadow: var(--sheet-card-shadow) !important;
     }
 
     .header-bg {
-      background: linear-gradient(145deg, #66baff 0%, #3196fb 42%, #1f79f0 100%);
+      background: var(--sheet-header-grad);
       color: #fff;
       text-align: center;
       padding: 24px 16px 22px;
@@ -179,7 +197,7 @@
       padding: 16px;
       display: grid;
       gap: 12px;
-      background: linear-gradient(180deg, rgba(235, 245, 255, 0.34), rgba(235, 245, 255, 0.14));
+      background: var(--sheet-body-bg);
     }
 
     .section-title {
@@ -195,15 +213,15 @@
     .info-group {
       padding: 12px;
       border-radius: 18px;
-      border: 1px solid rgba(148, 163, 184, 0.32);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(250, 253, 255, 0.72));
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.84), 0 10px 24px rgba(15, 23, 42, 0.06);
+      border: 1px solid var(--sheet-section-border);
+      background: var(--sheet-section-bg);
+      box-shadow: var(--sheet-section-shadow);
       margin-bottom: 10px;
       transition: border-color 0.22s ease, box-shadow 0.24s ease;
     }
 
     .info-group:hover {
-      border-color: rgba(10, 132, 255, 0.28);
+      border-color: var(--sheet-hover-border);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 14px 28px rgba(15, 23, 42, 0.08);
     }
 
@@ -226,7 +244,7 @@
 
     .subject-value {
       font-weight: 750;
-      color: #0f3f7f;
+      color: var(--sheet-strong-text);
     }
 
     .muted-value {
@@ -236,9 +254,9 @@
     }
 
     .budget-highlight {
-      background: linear-gradient(180deg, rgba(10, 132, 255, 0.12), rgba(10, 132, 255, 0.04));
+      background: var(--sheet-soft-bg);
       border-style: dashed;
-      border-color: rgba(10, 132, 255, 0.26);
+      border-color: var(--sheet-soft-border);
     }
 
     .storage-status-empty,
@@ -458,6 +476,324 @@
       box-shadow: 0 12px 26px rgba(2, 8, 20, 0.32);
     }
 
+    .h-badge.sheet-blue {
+      background: linear-gradient(180deg, rgba(59, 130, 246, 0.64), rgba(37, 99, 235, 0.5));
+      border-color: rgba(191, 219, 254, 0.74);
+      color: #eff6ff;
+    }
+
+    .h-badge.sheet-pink {
+      background: linear-gradient(180deg, rgba(236, 72, 153, 0.64), rgba(219, 39, 119, 0.5));
+      border-color: rgba(251, 207, 232, 0.74);
+      color: #fff1f7;
+    }
+
+    .h-badge.sheet-green {
+      background: linear-gradient(180deg, rgba(34, 197, 94, 0.64), rgba(22, 163, 74, 0.5));
+      border-color: rgba(187, 247, 208, 0.74);
+      color: #f0fdf4;
+    }
+
+    .h-badge.sheet-other {
+      background: linear-gradient(180deg, rgba(100, 116, 139, 0.62), rgba(71, 85, 105, 0.5));
+      border-color: rgba(203, 213, 225, 0.74);
+      color: #f8fafc;
+    }
+
+    .swal2-popup.sheet-popup-blue,
+    .swal2-popup.sheet-popup-pink,
+    .swal2-popup.sheet-popup-green,
+    .swal2-popup.sheet-popup-other {
+      border-radius: 24px;
+      border: 1px solid var(--sheet-popup-border);
+      background: var(--sheet-popup-bg);
+      box-shadow: 0 24px 48px rgba(15, 23, 42, 0.18);
+    }
+
+    .swal2-popup.sheet-popup-blue {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(239, 246, 255, 0.96));
+      --sheet-popup-border: rgba(59, 130, 246, 0.26);
+    }
+
+    .swal2-popup.sheet-popup-pink {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(255, 250, 252, 0.98), rgba(252, 231, 243, 0.96));
+      --sheet-popup-border: rgba(236, 72, 153, 0.28);
+    }
+
+    .swal2-popup.sheet-popup-green {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(247, 255, 250, 0.98), rgba(220, 252, 231, 0.96));
+      --sheet-popup-border: rgba(34, 197, 94, 0.28);
+    }
+
+    .swal2-popup.sheet-popup-other {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.96));
+      --sheet-popup-border: rgba(100, 116, 139, 0.3);
+    }
+
+    body.dark-mode .swal2-popup.sheet-popup-blue,
+    body.dark-mode .swal2-popup.sheet-popup-pink,
+    body.dark-mode .swal2-popup.sheet-popup-green,
+    body.dark-mode .swal2-popup.sheet-popup-other {
+      color: #e5eefc;
+      box-shadow: 0 28px 54px rgba(2, 8, 20, 0.52);
+    }
+
+    body.dark-mode .swal2-popup.sheet-popup-blue {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(15, 28, 46, 0.96), rgba(12, 22, 36, 0.95));
+      --sheet-popup-border: rgba(96, 165, 250, 0.34);
+    }
+
+    body.dark-mode .swal2-popup.sheet-popup-pink {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(52, 20, 36, 0.96), rgba(34, 12, 24, 0.95));
+      --sheet-popup-border: rgba(244, 114, 182, 0.34);
+    }
+
+    body.dark-mode .swal2-popup.sheet-popup-green {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(16, 38, 28, 0.96), rgba(12, 28, 20, 0.95));
+      --sheet-popup-border: rgba(74, 222, 128, 0.34);
+    }
+
+    body.dark-mode .swal2-popup.sheet-popup-other {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(20, 28, 40, 0.96), rgba(14, 20, 30, 0.95));
+      --sheet-popup-border: rgba(148, 163, 184, 0.34);
+    }
+
+    body.dark-mode .h-badge.sheet-blue {
+      background: linear-gradient(180deg, rgba(30, 64, 175, 0.66), rgba(29, 78, 216, 0.52));
+      border-color: rgba(147, 197, 253, 0.74);
+      color: #dbeafe;
+    }
+
+    body.dark-mode .h-badge.sheet-pink {
+      background: linear-gradient(180deg, rgba(157, 23, 77, 0.72), rgba(190, 24, 93, 0.54));
+      border-color: rgba(249, 168, 212, 0.72);
+      color: #fce7f3;
+    }
+
+    body.dark-mode .h-badge.sheet-green {
+      background: linear-gradient(180deg, rgba(21, 128, 61, 0.72), rgba(22, 163, 74, 0.54));
+      border-color: rgba(134, 239, 172, 0.72);
+      color: #dcfce7;
+    }
+
+    body.dark-mode .h-badge.sheet-other {
+      background: linear-gradient(180deg, rgba(51, 65, 85, 0.76), rgba(71, 85, 105, 0.58));
+      border-color: rgba(203, 213, 225, 0.64);
+      color: #f1f5f9;
+    }
+
+    body.page-doc-view.sheet-theme-blue {
+      --sheet-card-border: rgba(59, 130, 246, 0.36);
+      --sheet-card-bg: linear-gradient(180deg, rgba(236, 248, 255, 0.9), rgba(219, 234, 254, 0.72));
+      --sheet-body-bg: linear-gradient(180deg, rgba(219, 234, 254, 0.46), rgba(191, 219, 254, 0.24));
+      --sheet-section-border: rgba(59, 130, 246, 0.24);
+      --sheet-section-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(239, 246, 255, 0.76));
+      --sheet-header-grad: linear-gradient(145deg, #66baff 0%, #3196fb 42%, #1f79f0 100%);
+      --sheet-hover-border: rgba(37, 99, 235, 0.34);
+      --sheet-strong-text: #0f3f7f;
+      --sheet-soft-bg: linear-gradient(180deg, rgba(59, 130, 246, 0.12), rgba(59, 130, 246, 0.04));
+      --sheet-soft-border: rgba(59, 130, 246, 0.24);
+      --sheet-note-bg: #eef5ff;
+      --sheet-note-border: #bfd3ee;
+      --sheet-note-text: #17447a;
+    }
+
+    body.page-doc-view.sheet-theme-pink {
+      --sheet-card-border: rgba(244, 114, 182, 0.4);
+      --sheet-card-bg: linear-gradient(180deg, rgba(253, 232, 243, 0.92), rgba(251, 207, 232, 0.72));
+      --sheet-body-bg: linear-gradient(180deg, rgba(252, 231, 243, 0.52), rgba(249, 168, 212, 0.22));
+      --sheet-section-border: rgba(244, 114, 182, 0.28);
+      --sheet-section-bg: linear-gradient(180deg, rgba(255, 245, 251, 0.94), rgba(252, 231, 243, 0.8));
+      --sheet-header-grad: linear-gradient(145deg, #f472b6 0%, #ec4899 52%, #db2777 100%);
+      --sheet-hover-border: rgba(190, 24, 93, 0.34);
+      --sheet-strong-text: #9d174d;
+      --sheet-soft-bg: linear-gradient(180deg, rgba(236, 72, 153, 0.14), rgba(236, 72, 153, 0.05));
+      --sheet-soft-border: rgba(236, 72, 153, 0.26);
+      --sheet-note-bg: #fdf2f8;
+      --sheet-note-border: #f5bfd7;
+      --sheet-note-text: #9d174d;
+    }
+
+    body.page-doc-view.sheet-theme-green {
+      --sheet-card-border: rgba(34, 197, 94, 0.36);
+      --sheet-card-bg: linear-gradient(180deg, rgba(220, 252, 231, 0.92), rgba(187, 247, 208, 0.72));
+      --sheet-body-bg: linear-gradient(180deg, rgba(220, 252, 231, 0.5), rgba(134, 239, 172, 0.22));
+      --sheet-section-border: rgba(34, 197, 94, 0.26);
+      --sheet-section-bg: linear-gradient(180deg, rgba(240, 253, 244, 0.94), rgba(220, 252, 231, 0.8));
+      --sheet-header-grad: linear-gradient(145deg, #34d399 0%, #22c55e 52%, #16a34a 100%);
+      --sheet-hover-border: rgba(21, 128, 61, 0.34);
+      --sheet-strong-text: #166534;
+      --sheet-soft-bg: linear-gradient(180deg, rgba(34, 197, 94, 0.13), rgba(34, 197, 94, 0.05));
+      --sheet-soft-border: rgba(34, 197, 94, 0.24);
+      --sheet-note-bg: #effdf5;
+      --sheet-note-border: #bee7cf;
+      --sheet-note-text: #166534;
+    }
+
+    body.page-doc-view.sheet-theme-other {
+      --sheet-card-border: rgba(148, 163, 184, 0.42);
+      --sheet-card-bg: linear-gradient(180deg, rgba(241, 245, 249, 0.92), rgba(226, 232, 240, 0.78));
+      --sheet-body-bg: linear-gradient(180deg, rgba(226, 232, 240, 0.48), rgba(203, 213, 225, 0.22));
+      --sheet-section-border: rgba(148, 163, 184, 0.3);
+      --sheet-section-bg: linear-gradient(180deg, rgba(248, 250, 252, 0.92), rgba(226, 232, 240, 0.82));
+      --sheet-header-grad: linear-gradient(145deg, #94a3b8 0%, #64748b 55%, #475569 100%);
+      --sheet-hover-border: rgba(71, 85, 105, 0.34);
+      --sheet-strong-text: #334155;
+      --sheet-soft-bg: linear-gradient(180deg, rgba(100, 116, 139, 0.13), rgba(100, 116, 139, 0.05));
+      --sheet-soft-border: rgba(100, 116, 139, 0.24);
+      --sheet-note-bg: #f1f5f9;
+      --sheet-note-border: #cbd5e1;
+      --sheet-note-text: #475569;
+    }
+
+    body.dark-mode.page-doc-view.sheet-theme-blue {
+      --sheet-card-border: rgba(56, 189, 248, 0.38);
+      --sheet-card-bg: linear-gradient(180deg, rgba(16, 30, 48, 0.9), rgba(12, 22, 36, 0.88));
+      --sheet-card-shadow: 0 34px 66px rgba(2, 8, 20, 0.56), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      --sheet-body-bg: linear-gradient(180deg, rgba(15, 28, 46, 0.55), rgba(12, 22, 36, 0.24));
+      --sheet-section-border: rgba(56, 189, 248, 0.28);
+      --sheet-section-bg: linear-gradient(180deg, rgba(16, 32, 48, 0.9), rgba(12, 24, 38, 0.84));
+      --sheet-header-grad: linear-gradient(145deg, #1e3a8a 0%, #1e40af 52%, #1d4ed8 100%);
+      --sheet-hover-border: rgba(96, 165, 250, 0.38);
+      --sheet-strong-text: #93c5fd;
+      --sheet-soft-bg: linear-gradient(180deg, rgba(59, 130, 246, 0.22), rgba(59, 130, 246, 0.08));
+      --sheet-soft-border: rgba(96, 165, 250, 0.34);
+      --sheet-note-bg: rgba(14, 36, 63, 0.82);
+      --sheet-note-border: rgba(96, 165, 250, 0.32);
+      --sheet-note-text: #dbeafe;
+    }
+
+    body.dark-mode.page-doc-view.sheet-theme-pink {
+      --sheet-card-border: rgba(244, 114, 182, 0.42);
+      --sheet-card-bg: linear-gradient(180deg, rgba(52, 20, 36, 0.92), rgba(34, 12, 24, 0.9));
+      --sheet-card-shadow: 0 34px 66px rgba(2, 8, 20, 0.56), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      --sheet-body-bg: linear-gradient(180deg, rgba(52, 20, 36, 0.56), rgba(34, 12, 24, 0.24));
+      --sheet-section-border: rgba(244, 114, 182, 0.28);
+      --sheet-section-bg: linear-gradient(180deg, rgba(52, 22, 38, 0.9), rgba(32, 14, 26, 0.86));
+      --sheet-header-grad: linear-gradient(145deg, #9d174d 0%, #be185d 52%, #db2777 100%);
+      --sheet-hover-border: rgba(244, 114, 182, 0.38);
+      --sheet-strong-text: #f9a8d4;
+      --sheet-soft-bg: linear-gradient(180deg, rgba(236, 72, 153, 0.24), rgba(236, 72, 153, 0.08));
+      --sheet-soft-border: rgba(244, 114, 182, 0.34);
+      --sheet-note-bg: rgba(60, 19, 39, 0.84);
+      --sheet-note-border: rgba(244, 114, 182, 0.34);
+      --sheet-note-text: #fce7f3;
+    }
+
+    body.dark-mode.page-doc-view.sheet-theme-green {
+      --sheet-card-border: rgba(34, 197, 94, 0.4);
+      --sheet-card-bg: linear-gradient(180deg, rgba(16, 38, 28, 0.92), rgba(12, 28, 20, 0.88));
+      --sheet-card-shadow: 0 34px 66px rgba(2, 8, 20, 0.56), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      --sheet-body-bg: linear-gradient(180deg, rgba(16, 38, 28, 0.54), rgba(12, 28, 20, 0.24));
+      --sheet-section-border: rgba(34, 197, 94, 0.3);
+      --sheet-section-bg: linear-gradient(180deg, rgba(18, 40, 30, 0.9), rgba(12, 30, 22, 0.86));
+      --sheet-header-grad: linear-gradient(145deg, #166534 0%, #15803d 52%, #16a34a 100%);
+      --sheet-hover-border: rgba(74, 222, 128, 0.38);
+      --sheet-strong-text: #86efac;
+      --sheet-soft-bg: linear-gradient(180deg, rgba(34, 197, 94, 0.22), rgba(34, 197, 94, 0.08));
+      --sheet-soft-border: rgba(74, 222, 128, 0.34);
+      --sheet-note-bg: rgba(19, 46, 30, 0.84);
+      --sheet-note-border: rgba(74, 222, 128, 0.34);
+      --sheet-note-text: #dcfce7;
+    }
+
+    body.dark-mode.page-doc-view.sheet-theme-other {
+      --sheet-card-border: rgba(148, 163, 184, 0.4);
+      --sheet-card-bg: linear-gradient(180deg, rgba(20, 28, 40, 0.9), rgba(14, 20, 30, 0.86));
+      --sheet-card-shadow: 0 34px 66px rgba(2, 8, 20, 0.56), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      --sheet-body-bg: linear-gradient(180deg, rgba(20, 28, 40, 0.54), rgba(14, 20, 30, 0.24));
+      --sheet-section-border: rgba(148, 163, 184, 0.3);
+      --sheet-section-bg: linear-gradient(180deg, rgba(20, 28, 40, 0.88), rgba(14, 22, 32, 0.84));
+      --sheet-header-grad: linear-gradient(145deg, #475569 0%, #334155 52%, #1f2937 100%);
+      --sheet-hover-border: rgba(148, 163, 184, 0.38);
+      --sheet-strong-text: #cbd5e1;
+      --sheet-soft-bg: linear-gradient(180deg, rgba(100, 116, 139, 0.2), rgba(100, 116, 139, 0.08));
+      --sheet-soft-border: rgba(148, 163, 184, 0.32);
+      --sheet-note-bg: rgba(30, 41, 59, 0.82);
+      --sheet-note-border: rgba(148, 163, 184, 0.34);
+      --sheet-note-text: #e2e8f0;
+    }
+
+    body.page-doc-view.sheet-theme-blue .main-card,
+    body.page-doc-view.sheet-theme-pink .main-card,
+    body.page-doc-view.sheet-theme-green .main-card,
+    body.page-doc-view.sheet-theme-other .main-card {
+      border-color: var(--sheet-card-border) !important;
+      background: var(--sheet-card-bg) !important;
+      box-shadow: var(--sheet-card-shadow) !important;
+    }
+
+    body.page-doc-view.sheet-theme-blue .header-bg,
+    body.page-doc-view.sheet-theme-pink .header-bg,
+    body.page-doc-view.sheet-theme-green .header-bg,
+    body.page-doc-view.sheet-theme-other .header-bg {
+      background: var(--sheet-header-grad) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.28) !important;
+    }
+
+    body.page-doc-view.sheet-theme-blue .doc-body,
+    body.page-doc-view.sheet-theme-pink .doc-body,
+    body.page-doc-view.sheet-theme-green .doc-body,
+    body.page-doc-view.sheet-theme-other .doc-body {
+      background: var(--sheet-body-bg) !important;
+    }
+
+    body.page-doc-view.sheet-theme-blue .info-group,
+    body.page-doc-view.sheet-theme-blue .storage-form,
+    body.page-doc-view.sheet-theme-blue .step-item,
+    body.page-doc-view.sheet-theme-pink .info-group,
+    body.page-doc-view.sheet-theme-pink .storage-form,
+    body.page-doc-view.sheet-theme-pink .step-item,
+    body.page-doc-view.sheet-theme-green .info-group,
+    body.page-doc-view.sheet-theme-green .storage-form,
+    body.page-doc-view.sheet-theme-green .step-item,
+    body.page-doc-view.sheet-theme-other .info-group,
+    body.page-doc-view.sheet-theme-other .storage-form,
+    body.page-doc-view.sheet-theme-other .step-item {
+      border-color: var(--sheet-section-border) !important;
+      background: var(--sheet-section-bg) !important;
+      box-shadow: var(--sheet-section-shadow) !important;
+    }
+
+    body.page-doc-view.sheet-theme-blue .budget-highlight,
+    body.page-doc-view.sheet-theme-pink .budget-highlight,
+    body.page-doc-view.sheet-theme-green .budget-highlight,
+    body.page-doc-view.sheet-theme-other .budget-highlight {
+      background: var(--sheet-soft-bg) !important;
+      border-color: var(--sheet-soft-border) !important;
+    }
+
+    body.page-doc-view.sheet-theme-blue .storage-user,
+    body.page-doc-view.sheet-theme-pink .storage-user,
+    body.page-doc-view.sheet-theme-green .storage-user,
+    body.page-doc-view.sheet-theme-other .storage-user {
+      border-color: var(--sheet-soft-border) !important;
+      background: rgba(255, 255, 255, 0.72) !important;
+    }
+
+    body.dark-mode.page-doc-view.sheet-theme-blue .storage-user,
+    body.dark-mode.page-doc-view.sheet-theme-pink .storage-user,
+    body.dark-mode.page-doc-view.sheet-theme-green .storage-user,
+    body.dark-mode.page-doc-view.sheet-theme-other .storage-user {
+      background: rgba(15, 23, 42, 0.52) !important;
+    }
+
+    body.page-doc-view.sheet-theme-blue .storage-note,
+    body.page-doc-view.sheet-theme-pink .storage-note,
+    body.page-doc-view.sheet-theme-green .storage-note,
+    body.page-doc-view.sheet-theme-other .storage-note {
+      background: var(--sheet-note-bg) !important;
+      border-color: var(--sheet-note-border) !important;
+      color: var(--sheet-note-text) !important;
+    }
+
+    body.page-doc-view.sheet-theme-blue .subject-value,
+    body.page-doc-view.sheet-theme-pink .subject-value,
+    body.page-doc-view.sheet-theme-green .subject-value,
+    body.page-doc-view.sheet-theme-other .subject-value {
+      color: var(--sheet-strong-text) !important;
+    }
+
     .step-track {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -576,9 +912,9 @@
     .storage-form {
       padding: 14px;
       border-radius: 18px;
-      border: 1px solid #d4dfed;
-      background: #fff;
-      box-shadow: 0 10px 22px rgba(11, 45, 92, 0.08);
+      border: 1px solid var(--sheet-section-border);
+      background: var(--sheet-section-bg);
+      box-shadow: var(--sheet-section-shadow);
     }
 
     .storage-form-head {
@@ -645,8 +981,8 @@
       gap: 10px;
       padding: 10px 12px;
       border-radius: 14px;
-      border: 1px solid #d4dfed;
-      background: #f8fbff;
+      border: 1px solid var(--sheet-soft-border);
+      background: rgba(255, 255, 255, 0.72);
     }
 
     .storage-user img,
@@ -690,9 +1026,9 @@
     .storage-note {
       margin-top: 2px;
       border-radius: 12px;
-      border: 1px solid #bfd3ee;
-      background: #eef5ff;
-      color: #17447a;
+      border: 1px solid var(--sheet-note-border);
+      background: var(--sheet-note-bg);
+      color: var(--sheet-note-text);
       padding: 10px 12px;
       font-size: 0.8rem;
       font-weight: 680;
@@ -943,8 +1279,8 @@
     .swal2-popup .sw-status-select:focus,
     .swal2-popup .sw-status-remark:focus {
       outline: none !important;
-      border-color: rgba(10, 132, 255, 0.58) !important;
-      box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.2) !important;
+      border-color: var(--sheet-soft-border) !important;
+      box-shadow: 0 0 0 3px var(--sheet-soft-bg) !important;
     }
 
     body.dark-mode .swal2-popup .sw-status-select,
@@ -1274,7 +1610,7 @@
   </div>
 
   <script src="./config.js"></script>
-  <script src="./api-client.js?v=20260317-1"></script>
+  <script src="./api-client.js?v=20260318-2"></script>
   <script src="./theme-legacy.js?v=20260221-3"></script>
   <script src="./app-common.js?v=20260317-1"></script>
   <script>
@@ -1414,6 +1750,100 @@
         state.memberPosMap = posMap;
       }
 
+      function normalizeSheetColorLabel(value) {
+        var raw = C.safeTrim(value || '');
+        if (!raw) return '';
+        var compact = raw.toLowerCase().replace(/\s+/g, '').replace(/[.]/g, '');
+        if (compact === 'ใบฟ้า' || compact === 'ฟ้า' || compact === 'ใบสีฟ้า' || compact === 'blue' || compact === 'lightblue') return 'ใบฟ้า';
+        if (compact === 'ใบชมพู' || compact === 'ชมพู' || compact === 'ใบสีชมพู' || compact === 'pink') return 'ใบชมพู';
+        if (compact === 'ใบเขียว' || compact === 'เขียว' || compact === 'ใบสีเขียว' || compact === 'green') return 'ใบเขียว';
+        if (compact === 'อื่นๆ' || compact === 'อื่น' || compact === 'other') return 'อื่น ๆ';
+        return raw;
+      }
+
+      function applySheetTheme(label) {
+        var body = document.body;
+        var themes = ['sheet-theme-blue', 'sheet-theme-pink', 'sheet-theme-green', 'sheet-theme-other'];
+        for (var i = 0; i < themes.length; i++) {
+          body.classList.remove(themes[i]);
+        }
+
+        var normalized = normalizeSheetColorLabel(label);
+        if (normalized === 'ใบชมพู') {
+          body.classList.add('sheet-theme-pink');
+          return;
+        }
+        if (normalized === 'ใบเขียว') {
+          body.classList.add('sheet-theme-green');
+          return;
+        }
+        if (normalized === 'อื่น ๆ') {
+          body.classList.add('sheet-theme-other');
+          return;
+        }
+        body.classList.add('sheet-theme-blue');
+      }
+
+      function sheetTypeBadge(label) {
+        var normalized = normalizeSheetColorLabel(label);
+        if (!normalized) return '';
+        var cls = 'sheet-blue';
+        if (normalized === 'ใบชมพู') cls = 'sheet-pink';
+        else if (normalized === 'ใบเขียว') cls = 'sheet-green';
+        else if (normalized === 'อื่น ๆ') cls = 'sheet-other';
+        return '<span class="h-badge ' + cls + '"><i class="bi bi-file-earmark-text"></i>' + C.escapeHtml(normalized) + '</span>';
+      }
+
+      function themeKeyFromSheetColor(value) {
+        var normalized = normalizeSheetColorLabel(value);
+        if (normalized === 'ใบชมพู') return 'pink';
+        if (normalized === 'ใบเขียว') return 'green';
+        if (normalized === 'อื่น ๆ') return 'other';
+        return 'blue';
+      }
+
+      function sheetThemeConfirmColor() {
+        var key = themeKeyFromSheetColor(state.doc && state.doc.sheetColor || '');
+        if (key === 'pink') return '#db2777';
+        if (key === 'green') return '#16a34a';
+        if (key === 'other') return '#475569';
+        return '#1f79f0';
+      }
+
+      function sheetThemeDenyColor() {
+        var key = themeKeyFromSheetColor(state.doc && state.doc.sheetColor || '');
+        if (key === 'pink') return '#9d174d';
+        if (key === 'green') return '#166534';
+        if (key === 'other') return '#334155';
+        return '#1e40af';
+      }
+
+      function themedSwal(options) {
+        var opts = options || {};
+        var key = themeKeyFromSheetColor(state.doc && state.doc.sheetColor || '');
+        var customClass = opts.customClass || {};
+        var popupClass = 'sheet-popup-' + key;
+        var popup = customClass.popup ? (customClass.popup + ' ' + popupClass) : popupClass;
+        var mergedCustomClass = {};
+        for (var prop in customClass) {
+          if (Object.prototype.hasOwnProperty.call(customClass, prop)) mergedCustomClass[prop] = customClass[prop];
+        }
+        mergedCustomClass.popup = popup;
+
+        var out = {};
+        for (var keyName in opts) {
+          if (Object.prototype.hasOwnProperty.call(opts, keyName)) out[keyName] = opts[keyName];
+        }
+        out.customClass = mergedCustomClass;
+        if (!Object.prototype.hasOwnProperty.call(out, 'confirmButtonColor')) {
+          out.confirmButtonColor = sheetThemeConfirmColor();
+        }
+        if (out.showDenyButton && !Object.prototype.hasOwnProperty.call(out, 'denyButtonColor')) {
+          out.denyButtonColor = sheetThemeDenyColor();
+        }
+        return out;
+      }
+
       function statusBadge(docStatus) {
         var st = C.safeTrim(docStatus || '');
         if (st === 'ยกเลิก') return '<span class="h-badge red"><i class="bi bi-x-circle"></i>ยกเลิก</span>';
@@ -1521,10 +1951,10 @@
         html += '</div>';
 
         html += infoItem('กลุ่ม/ศูนย์', doc.group || '-');
-        html += infoItem('ชื่อผู้ส่ง/ผู้ยืม/ผู้ใช้หนี้/ผู้ประสานงาน', doc.sender || '-');
+        html += infoItem('ชื่อผู้ส่งเบิก/ผู้ยืม/ผู้ใช้หนี้/ผู้จัดทำ', doc.sender || '-');
         html += infoItem('วัตถุประสงค์', doc.purpose || '-');
-        html += infoItem('จำนวนเบิก/ยืม/คืน', C.fmtMoney(doc.amount || '-'));
-        html += infoItem('ส่วนต่าง/เงินเหลือคืน', C.fmtMoney(doc.difference || '-'));
+        html += infoItem('จำนวนเงินเบิก/ยืม/คืน', C.fmtMoney(doc.amount || '-'));
+        html += infoItem('เงินเหลือคืน', C.fmtMoney(doc.difference || '-'));
 
         els.detailInfo.innerHTML = html;
       }
@@ -1776,7 +2206,7 @@
 
         btn.addEventListener('click', function () {
           submitStorage(doc).catch(function (err) {
-            Swal.fire('เกิดข้อผิดพลาด', (err && err.message) ? err.message : 'บันทึกไม่สำเร็จ', 'error');
+            Swal.fire(themedSwal({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: (err && err.message) ? err.message : 'บันทึกไม่สำเร็จ' }));
           });
         });
       }
@@ -1786,10 +2216,11 @@
         var statusData = state.statusData || {};
         var isReadOnly = !!doc.isReadOnlyUser;
         syncDocRouteId(doc.docId || docId);
+        applySheetTheme(doc.sheetColor || '');
 
         els.docIdTitle.textContent = doc.docId || '-';
         els.docIdSub.textContent = C.safeTrim(doc.docNoSdh || '') ? ('สธ ' + C.safeText(doc.docNoSdh || '')) : '-';
-        els.statusBadges.innerHTML = statusBadge(doc.docStatus) + storageBadge(!!doc.isStored, doc.docStatus);
+        els.statusBadges.innerHTML = sheetTypeBadge(doc.sheetColor || '') + statusBadge(doc.docStatus) + storageBadge(!!doc.isStored, doc.docStatus);
 
         renderActionButtons(isReadOnly);
         renderGeneralInfo(doc);
@@ -1808,11 +2239,11 @@
 
       async function changeMainStatus() {
         if (!state.doc || state.doc.isReadOnlyUser) {
-          Swal.fire({ icon: 'warning', title: 'สิทธิ์ไม่เพียงพอ', text: 'บัญชีผู้มีสิทธิ์อ่าน ไม่สามารถแก้ไขหรือจัดการเอกสารได้' });
+          Swal.fire(themedSwal({ icon: 'warning', title: 'สิทธิ์ไม่เพียงพอ', text: 'บัญชีผู้มีสิทธิ์อ่าน ไม่สามารถแก้ไขหรือจัดการเอกสารได้' }));
           return;
         }
 
-        var result = await Swal.fire({
+        var result = await Swal.fire(themedSwal({
           title: 'เปลี่ยนสถานะเอกสาร',
           width: 'min(560px, calc(100vw - 24px))',
           html: ''
@@ -1832,7 +2263,6 @@
           showCancelButton: true,
           cancelButtonText: 'ยกเลิก',
           confirmButtonText: 'บันทึก',
-          confirmButtonColor: '#007AFF',
           preConfirm: function () {
             var st = C.safeTrim((document.getElementById('swMainStatus') || {}).value || '');
             var note = C.safeTrim((document.getElementById('swStatusRemark') || {}).value || '');
@@ -1842,7 +2272,7 @@
             }
             return { status: st, remark: note };
           }
-        });
+        }));
 
         if (!result || !result.isConfirmed || !result.value) return;
 
@@ -1852,30 +2282,29 @@
           if (!res || res.success === false) {
             throw new Error((res && res.error) ? res.error : 'บันทึกไม่สำเร็จ');
           }
-          await Swal.fire({ icon: 'success', title: 'เปลี่ยนสถานะสำเร็จ', confirmButtonColor: '#007AFF' });
+          await Swal.fire(themedSwal({ icon: 'success', title: 'เปลี่ยนสถานะสำเร็จ' }));
           await loadDetail();
         } catch (err) {
-          Swal.fire('เกิดข้อผิดพลาด', (err && err.message) ? err.message : 'บันทึกไม่สำเร็จ', 'error');
+          Swal.fire(themedSwal({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: (err && err.message) ? err.message : 'บันทึกไม่สำเร็จ' }));
         }
         setBusy(false);
       }
 
       async function editAmDocNo() {
         if (!state.doc || state.doc.isReadOnlyUser) {
-          Swal.fire({ icon: 'warning', title: 'สิทธิ์ไม่เพียงพอ', text: 'บัญชีผู้มีสิทธิ์อ่าน ไม่สามารถแก้ไขได้' });
+          Swal.fire(themedSwal({ icon: 'warning', title: 'สิทธิ์ไม่เพียงพอ', text: 'บัญชีผู้มีสิทธิ์อ่าน ไม่สามารถแก้ไขได้' }));
           return;
         }
 
-        var result = await Swal.fire({
+        var result = await Swal.fire(themedSwal({
           title: 'เพิ่มเลขที่หนังสือส่งกองคลัง',
           input: 'text',
           inputPlaceholder: 'กรอกเลขที่หนังสือ',
           inputValue: C.safeText(state.doc.amDocNo || ''),
           showCancelButton: true,
           cancelButtonText: 'ยกเลิก',
-          confirmButtonText: 'บันทึก',
-          confirmButtonColor: '#007AFF'
-        });
+          confirmButtonText: 'บันทึก'
+        }));
 
         if (!result || !result.isConfirmed) return;
 
@@ -1886,22 +2315,22 @@
             throw new Error((res && res.error) ? res.error : 'บันทึกไม่สำเร็จ');
           }
           syncDocRouteId((res && res.docId) || C.safeTrim(result.value || '') || state.doc.docNoSdh || docId);
-          await Swal.fire({ icon: 'success', title: 'บันทึกสำเร็จ', confirmButtonColor: '#007AFF' });
+          await Swal.fire(themedSwal({ icon: 'success', title: 'บันทึกสำเร็จ' }));
           await loadDetail();
         } catch (err) {
-          Swal.fire('เกิดข้อผิดพลาด', (err && err.message) ? err.message : 'บันทึกไม่สำเร็จ', 'error');
+          Swal.fire(themedSwal({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: (err && err.message) ? err.message : 'บันทึกไม่สำเร็จ' }));
         }
         setBusy(false);
       }
 
       async function editAnDate() {
         if (!state.doc || state.doc.isReadOnlyUser) {
-          Swal.fire({ icon: 'warning', title: 'สิทธิ์ไม่เพียงพอ', text: 'บัญชีผู้มีสิทธิ์อ่าน ไม่สามารถแก้ไขได้' });
+          Swal.fire(themedSwal({ icon: 'warning', title: 'สิทธิ์ไม่เพียงพอ', text: 'บัญชีผู้มีสิทธิ์อ่าน ไม่สามารถแก้ไขได้' }));
           return;
         }
 
         var tempDateId = 'tempAnDate' + Date.now();
-        var result = await Swal.fire({
+        var result = await Swal.fire(themedSwal({
           title: 'แก้ไขลงวันที่ดำเนินการ',
           html: ''
             + '<div class="thai-date-input" onclick="openCalendar(\'' + tempDateId + '\')" style="margin-top:12px;">'
@@ -1912,7 +2341,6 @@
           showCancelButton: true,
           cancelButtonText: 'ยกเลิก',
           confirmButtonText: 'บันทึก',
-          confirmButtonColor: '#007AFF',
           didOpen: function () {
             if (typeof window.updDD === 'function') {
               window.updDD(tempDateId);
@@ -1926,7 +2354,7 @@
             }
             return v;
           }
-        });
+        }));
 
         if (!result || !result.isConfirmed || !result.value) return;
 
@@ -1936,24 +2364,24 @@
           if (!res || res.success === false) {
             throw new Error((res && res.error) ? res.error : 'บันทึกไม่สำเร็จ');
           }
-          await Swal.fire({ icon: 'success', title: 'บันทึกสำเร็จ', confirmButtonColor: '#007AFF' });
+          await Swal.fire(themedSwal({ icon: 'success', title: 'บันทึกสำเร็จ' }));
           await loadDetail();
         } catch (err) {
-          Swal.fire('เกิดข้อผิดพลาด', (err && err.message) ? err.message : 'บันทึกไม่สำเร็จ', 'error');
+          Swal.fire(themedSwal({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: (err && err.message) ? err.message : 'บันทึกไม่สำเร็จ' }));
         }
         setBusy(false);
       }
 
       async function submitStorage(doc) {
         if (!doc || doc.isReadOnlyUser) {
-          Swal.fire({ icon: 'warning', title: 'สิทธิ์ไม่เพียงพอ', text: 'บัญชีผู้มีสิทธิ์อ่าน ไม่สามารถบันทึกจัดเก็บได้' });
+          Swal.fire(themedSwal({ icon: 'warning', title: 'สิทธิ์ไม่เพียงพอ', text: 'บัญชีผู้มีสิทธิ์อ่าน ไม่สามารถบันทึกจัดเก็บได้' }));
           return;
         }
 
         var loc = C.safeTrim((document.getElementById('locationSelect') || {}).value || '');
         var fiscal = C.safeTrim((document.getElementById('fiscalSelect') || {}).value || '');
         if (!loc || !fiscal) {
-          Swal.fire('กรอกข้อมูลไม่ครบ', 'กรุณาเลือกสถานที่จัดเก็บและปีงบประมาณ', 'warning');
+          Swal.fire(themedSwal({ icon: 'warning', title: 'กรอกข้อมูลไม่ครบ', text: 'กรุณาเลือกสถานที่จัดเก็บและปีงบประมาณ' }));
           return;
         }
 
@@ -1969,11 +2397,11 @@
           }
 
           showSuccessRow('บันทึกสำเร็จ! ระบบกำลังรีโหลดข้อมูล...');
-          await Swal.fire({ icon: 'success', title: 'บันทึกสำเร็จ', confirmButtonColor: '#007AFF' });
+          await Swal.fire(themedSwal({ icon: 'success', title: 'บันทึกสำเร็จ' }));
           await loadDetail();
         } catch (err) {
           if (form) form.style.display = 'block';
-          Swal.fire('เกิดข้อผิดพลาด', (err && err.message) ? err.message : 'บันทึกไม่สำเร็จ', 'error');
+          Swal.fire(themedSwal({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: (err && err.message) ? err.message : 'บันทึกไม่สำเร็จ' }));
         }
         setBusy(false);
       }
@@ -1986,7 +2414,7 @@
 
         var w = window.open('', '', 'width=940,height=1200');
         if (!w) {
-          Swal.fire('ไม่สามารถเปิดหน้าต่างพิมพ์', 'กรุณาอนุญาตป๊อปอัป (Pop-up) สำหรับหน้านี้', 'info');
+          Swal.fire(themedSwal({ icon: 'info', title: 'ไม่สามารถเปิดหน้าต่างพิมพ์', text: 'กรุณาอนุญาตป๊อปอัป (Pop-up) สำหรับหน้านี้' }));
           return;
         }
 
@@ -2018,10 +2446,10 @@
         h += row('วันที่', d.dateRecDisplay || '-');
         h += row('กลุ่ม/ศูนย์', d.group || '-');
         h += row('เลขที่ สธ. (กอง/กลุ่ม)', d.docNoSdh || '-');
-        h += row('ผู้ส่ง', d.sender || '-');
+        h += row('ชื่อผู้ส่งเบิก/ผู้ยืม/ผู้ใช้หนี้/ผู้จัดทำ', d.sender || '-');
         h += row('วัตถุประสงค์', d.purpose || '-');
-        h += row('จำนวนเบิก/ยืม/คืน', moneyText(d.amount));
-        h += row('ส่วนต่าง/เงินเหลือคืน', moneyText(d.difference));
+        h += row('จำนวนเงินเบิก/ยืม/คืน', moneyText(d.amount));
+        h += row('เงินเหลือคืน', moneyText(d.difference));
         h += row('ประเภทเงินงบประมาณ', d.budgetType || '-');
         if (projectPlan !== '-') {
           h += row('แผนโครงการ', projectPlan);

@@ -115,6 +115,12 @@
       color: #f5f3ff;
     }
 
+    .head-badge.status-cancelled {
+      background: linear-gradient(180deg, rgba(239, 68, 68, 0.78), rgba(185, 28, 28, 0.6));
+      border-color: rgba(254, 202, 202, 0.82);
+      color: #fff5f5;
+    }
+
     .loan-body {
       padding: 14px;
       display: grid;
@@ -154,6 +160,13 @@
       border-color: rgba(10, 132, 255, 0.34);
       background: linear-gradient(180deg, rgba(68, 165, 255, 0.96), rgba(10, 132, 255, 0.96), rgba(0, 113, 227, 0.96));
       box-shadow: 0 12px 26px rgba(10, 132, 255, 0.26);
+    }
+
+    .btn.danger {
+      color: #fff;
+      border-color: rgba(239, 68, 68, 0.34);
+      background: linear-gradient(180deg, rgba(248, 113, 113, 0.98), rgba(239, 68, 68, 0.98), rgba(220, 38, 38, 0.98));
+      box-shadow: 0 12px 26px rgba(220, 38, 38, 0.26);
     }
 
     .btn.outline {
@@ -427,6 +440,12 @@
       color: #fcd34d;
     }
 
+    body.dark-mode.page-loan-view .btn.danger {
+      border-color: rgba(248, 113, 113, 0.44);
+      background: linear-gradient(180deg, rgba(239, 68, 68, 0.96), rgba(220, 38, 38, 0.94), rgba(185, 28, 28, 0.94));
+      box-shadow: 0 12px 24px rgba(127, 29, 29, 0.38);
+    }
+
     body.dark-mode.page-loan-view .err-box {
       border-color: rgba(248, 113, 113, 0.56);
       background: rgba(127, 29, 29, 0.34);
@@ -487,6 +506,7 @@
         <div id="readonlyNote" class="readonly-note" style="display:none"></div>
         <div class="action-row">
           <button id="btnEdit" type="button" class="btn outline"><i class="bi bi-pencil-square"></i>แก้ไขรายการ</button>
+          <button id="btnToggleContractStatus" type="button" class="btn danger"><i class="bi bi-x-octagon-fill"></i><span>ยกเลิกสัญญา</span></button>
         </div>
 
         <div class="loan-layout">
@@ -524,7 +544,7 @@
   </div>
 
   <script src="./config.js"></script>
-  <script src="./api-client.js?v=20260317-1"></script>
+  <script src="./api-client.js?v=20260318-2"></script>
   <script src="./theme-legacy.js?v=20260221-3"></script>
   <script src="./app-common.js?v=20260317-1"></script>
   <script>
@@ -546,6 +566,7 @@
       var els = {
         btnBack: document.getElementById('btnBack'),
         btnEdit: document.getElementById('btnEdit'),
+        btnToggleContractStatus: document.getElementById('btnToggleContractStatus'),
         btnPrintSticker: document.getElementById('btnPrintSticker'),
         errBox: document.getElementById('errBox'),
         mainCard: document.getElementById('mainCard'),
@@ -625,6 +646,18 @@
         return statusDoc === 'ชำระแล้ว' || dueState === 'paid' || settlementDate !== '';
       }
 
+      function isCancelledContract(doc) {
+        var status = C.safeTrim((doc && doc.contractStatus) || '');
+        if (!status) {
+          return C.safeTrim((doc && doc.statusKey) || '') === 'cancelled';
+        }
+        return status === 'ยกเลิกเงินยืม';
+      }
+
+      function getContractStatusLabel(doc) {
+        return isCancelledContract(doc) ? 'ยกเลิกเงินยืม' : 'ปกติ';
+      }
+
       function isAwaitingInfo(doc) {
         var d = doc || {};
         var contractNo = C.safeTrim(d.contractNo || '');
@@ -637,9 +670,11 @@
       }
 
       function getStatusBadge(doc) {
-        var statusDoc = C.safeTrim((doc && doc.statusDoc) || '');
         var dueState = C.safeTrim((doc && doc.dueState) || '');
 
+        if (isCancelledContract(doc)) {
+          return '<span class="head-badge status-cancelled"><i class="bi bi-x-octagon-fill"></i>ยกเลิกเงินยืม</span>';
+        }
         if (isPaidDoc(doc)) {
           return '<span class="head-badge status-paid"><i class="bi bi-check-circle-fill"></i>ชำระแล้ว</span>';
         }
@@ -657,7 +692,7 @@
         var dueState = C.safeTrim((doc && doc.dueState) || '');
         var paid = isPaidDoc(doc);
 
-        if (paid || dueState === 'paid' || isAwaitingInfo(doc)) {
+        if (isCancelledContract(doc) || paid || dueState === 'paid' || isAwaitingInfo(doc)) {
           return '';
         }
 
@@ -741,7 +776,8 @@
         html += fieldItem('เกณฑ์ชำระคืน', doc.dueRule || '-');
         html += fieldItem('วันที่ตามเกณฑ์ต้องชำระคืน', doc.dueBaseDateDisplay || '-');
         html += fieldItem('วันครบกำหนด', doc.dueDateDisplay || '-');
-        html += fieldItem('คงเหลือระยะเวลา', doc.remainingText || '-');
+        html += fieldItem('คงเหลือระยะเวลา', isCancelledContract(doc) ? 'ยกเลิกเงินยืม' : (doc.remainingText || '-'));
+        html += fieldItem('สถานะสัญญา', getContractStatusLabel(doc));
         html += fieldItem('สถานะเอกสาร', doc.statusDoc || '-');
         html += fieldItem('วันที่ได้รับเอกสารชดใช้สัญญา', doc.settlementDocDateDisplay || '-');
         els.dueInfo.innerHTML = html;
@@ -768,11 +804,31 @@
         if (!state.isReadOnly) {
           els.readonlyNote.style.display = 'none';
           els.btnEdit.style.display = '';
+          updateContractStatusButton();
           return;
         }
         els.readonlyNote.style.display = 'block';
         els.readonlyNote.innerHTML = '<i class="bi bi-eye me-1"></i>บัญชีผู้มีสิทธิ์อ่าน: สามารถดูรายละเอียดและพิมพ์ QR ได้เท่านั้น';
         els.btnEdit.style.display = 'none';
+        if (els.btnToggleContractStatus) els.btnToggleContractStatus.style.display = 'none';
+      }
+
+      function updateContractStatusButton() {
+        if (!els.btnToggleContractStatus) return;
+        if (state.isReadOnly) {
+          els.btnToggleContractStatus.style.display = 'none';
+          return;
+        }
+        var cancelled = isCancelledContract(state.doc);
+        els.btnToggleContractStatus.style.display = '';
+        els.btnToggleContractStatus.classList.remove('danger', 'outline');
+        if (cancelled) {
+          els.btnToggleContractStatus.classList.add('outline');
+          els.btnToggleContractStatus.innerHTML = '<i class="bi bi-arrow-counterclockwise"></i><span>เปลี่ยนกลับจากยกเลิกสัญญา</span>';
+        } else {
+          els.btnToggleContractStatus.classList.add('danger');
+          els.btnToggleContractStatus.innerHTML = '<i class="bi bi-x-octagon-fill"></i><span>ยกเลิกสัญญา</span>';
+        }
       }
 
       function getLoanQrUrl() {
@@ -826,7 +882,8 @@
         html += row('กลุ่ม/ศูนย์', d.groupCenter || '-');
         html += row('วันที่อนุมัติ', d.approveDateDisplay || '-');
         html += row('วันที่ได้รับเงิน', d.receiveMoneyDateDisplay || '-');
-        html += row('วันครบกำหนด', d.dueDateDisplay || '-');
+        html += row('วันครบกำหนด', isCancelledContract(d) ? '-' : (d.dueDateDisplay || '-'));
+        html += row('สถานะสัญญา', getContractStatusLabel(d));
         html += row('สถานะเอกสาร', d.statusDoc || '-');
         html += row('จำนวนเงิน', toMoney(d.amount));
         html += row('ประเภทค่าใช้จ่าย', d.expenseType || '-');
@@ -849,6 +906,68 @@
         C.redirect('loan-edit.html', { id: id });
       }
 
+      async function toggleContractStatus() {
+        if (!state.api || !state.doc || state.isReadOnly || !els.btnToggleContractStatus) return;
+
+        var cancelled = isCancelledContract(state.doc);
+        var nextStatus = cancelled ? '' : 'ยกเลิกเงินยืม';
+        var title = cancelled ? 'เปลี่ยนกลับจากยกเลิกสัญญา?' : 'ยืนยันยกเลิกสัญญา?';
+        var text = cancelled
+          ? 'ระบบจะเปลี่ยนสถานะสัญญากลับมาเป็นปกติ'
+          : 'ระบบจะเปลี่ยนสถานะสัญญาเป็น ยกเลิกเงินยืม';
+        var confirmText = cancelled ? 'เปลี่ยนกลับ' : 'ยกเลิกสัญญา';
+        var confirmColor = cancelled ? '#0A84FF' : '#dc2626';
+
+        var confirmRes = await Swal.fire({
+          title: title,
+          text: text,
+          icon: cancelled ? 'question' : 'warning',
+          showCancelButton: true,
+          confirmButtonText: confirmText,
+          cancelButtonText: 'ปิด',
+          confirmButtonColor: confirmColor
+        });
+        if (!confirmRes.isConfirmed) return;
+
+        var originalDisabled = !!els.btnToggleContractStatus.disabled;
+        els.btnToggleContractStatus.disabled = true;
+
+        try {
+          var targetRecordId = C.safeTrim((state.doc && (state.doc.recordId || state.doc.contractNo || state.doc.docNoSdh)) || recordId || '');
+          var requestOptions = { loaderMessage: cancelled ? 'กำลังเปลี่ยนกลับสถานะสัญญา...' : 'กำลังยกเลิกสัญญา...' };
+          var res;
+          if (typeof state.api.loanChangeContractStatus === 'function') {
+            res = await state.api.loanChangeContractStatus(targetRecordId, nextStatus, requestOptions);
+          } else if (typeof state.api.call === 'function') {
+            res = await state.api.call('loan.change_contract_status', {
+              deviceKey: state.api.defaultDeviceKey,
+              clientIpKey: state.api.defaultIpKey,
+              recordId: targetRecordId,
+              nextStatus: nextStatus
+            }, requestOptions);
+          } else {
+            throw new Error('api_client_missing_method');
+          }
+          if (!res || res.success === false || !res.doc) {
+            throw new Error((res && res.error) ? res.error : 'ไม่สามารถเปลี่ยนสถานะสัญญาได้');
+          }
+          state.doc = res.doc;
+          syncLoanRouteId(state.doc.recordId || state.doc.contractNo || state.doc.docNoSdh || recordId);
+          renderDocument();
+          await Swal.fire({
+            icon: 'success',
+            title: cancelled ? 'เปลี่ยนกลับสถานะสัญญาแล้ว' : 'ยกเลิกสัญญาแล้ว',
+            timer: 1600,
+            showConfirmButton: false
+          });
+        } catch (err) {
+          await Swal.fire('เกิดข้อผิดพลาด', (err && err.message) ? err.message : 'ไม่สามารถเปลี่ยนสถานะสัญญาได้', 'error');
+        } finally {
+          els.btnToggleContractStatus.disabled = originalDisabled;
+          updateContractStatusButton();
+        }
+      }
+
       function bindEvents() {
         els.btnBack.addEventListener('click', function () {
           C.redirect('loan-index.html');
@@ -857,6 +976,12 @@
         els.btnEdit.addEventListener('click', function () {
           goEdit();
         });
+
+        if (els.btnToggleContractStatus) {
+          els.btnToggleContractStatus.addEventListener('click', function () {
+            toggleContractStatus();
+          });
+        }
 
         els.btnPrintSticker.addEventListener('click', function () {
           printLoanSticker();

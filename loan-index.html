@@ -1007,6 +1007,11 @@
                     <span class="checkmark"></span>
                     <span class="filter-label"><i class="bi bi-pencil-square me-1" style="color:#6D28D9"></i>รอเพิ่มข้อมูล</span>
                   </label>
+                  <label class="filter-option">
+                    <input type="checkbox" id="filterLoanCancelled" value="cancelled">
+                    <span class="checkmark"></span>
+                    <span class="filter-label"><i class="bi bi-x-octagon-fill me-1" style="color:#DC2626"></i>ยกเลิกเงินยืม</span>
+                  </label>
                 </div>
               </div>
 
@@ -1112,7 +1117,7 @@
   <button id="btnAddFab" class="fab hidden" type="button" title="เพิ่มรายการเงินยืม"><i class="bi bi-plus-lg"></i></button>
 
   <script src="./config.js"></script>
-  <script src="./api-client.js?v=20260317-1"></script>
+  <script src="./api-client.js?v=20260318-2"></script>
   <script src="./theme-legacy.js?v=20260221-3"></script>
   <script src="./app-common.js?v=20260317-1"></script>
   <script>
@@ -1185,6 +1190,7 @@
         filterLoanOverdue: document.getElementById('filterLoanOverdue'),
         filterLoanPaid: document.getElementById('filterLoanPaid'),
         filterLoanAwaiting: document.getElementById('filterLoanAwaiting'),
+        filterLoanCancelled: document.getElementById('filterLoanCancelled'),
         filterExpenseOptions: document.getElementById('filterExpenseOptions'),
         filterFundingOptions: document.getElementById('filterFundingOptions'),
         filterApproveDateFrom: document.getElementById('filterApproveDateFrom'),
@@ -1367,6 +1373,7 @@
           els.filterLoanOverdue,
           els.filterLoanPaid,
           els.filterLoanAwaiting,
+          els.filterLoanCancelled,
           els.filterApproveDateFrom,
           els.filterApproveDateTo,
           els.filterReceiveDateFrom,
@@ -1429,6 +1436,14 @@
         return dueState === 'paid' || statusDoc === 'ชำระแล้ว' || settlementDate !== '';
       }
 
+      function isCancelledContract(item) {
+        var status = C.safeTrim((item && item.contractStatus) || '');
+        if (!status) {
+          return C.safeTrim((item && item.statusKey) || '') === 'cancelled';
+        }
+        return status === 'ยกเลิกเงินยืม';
+      }
+
       function isAwaitingInfo(item) {
         var d = item || {};
         var contractNo = C.safeTrim(d.contractNo || '');
@@ -1444,6 +1459,7 @@
         var key = C.safeTrim((item && item.statusKey) || '');
         if (key) return key;
         var dueState = C.safeTrim((item && item.dueState) || '');
+        if (isCancelledContract(item)) return 'cancelled';
         if (isAwaitingInfo(item)) return 'awaiting';
         if (isPaidDoc(item)) return 'paid';
         if (dueState === 'overdue') return 'overdue';
@@ -1453,6 +1469,7 @@
 
       function getLoanStatusClass(item) {
         var statusKey = getLoanStatusKey(item);
+        if (statusKey === 'cancelled') return 'status-cancelled';
         if (statusKey === 'awaiting') return 'status-waiting';
         if (statusKey === 'paid') return 'status-completed';
         if (statusKey === 'overdue') return 'status-cancelled';
@@ -1462,6 +1479,7 @@
 
       function getLoanBgIcon(item) {
         var statusKey = getLoanStatusKey(item);
+        if (statusKey === 'cancelled') return 'bi-x-octagon-fill';
         if (statusKey === 'awaiting') return 'bi-pencil-square';
         if (statusKey === 'paid') return 'bi-check-circle-fill';
         if (statusKey === 'overdue') return 'bi-exclamation-octagon-fill';
@@ -1471,6 +1489,9 @@
 
       function getLoanStatusBadge(item) {
         var statusKey = getLoanStatusKey(item);
+        if (statusKey === 'cancelled') {
+          return '<span class="badge-status badge-cancel"><i class="bi bi-x-octagon-fill"></i>ยกเลิกเงินยืม</span>';
+        }
         if (statusKey === 'paid') {
           return '<span class="badge-status badge-completed"><i class="bi bi-check-circle-fill"></i>ชำระแล้ว</span>';
         }
@@ -1489,7 +1510,7 @@
       function getLoanDueBadge(item) {
         var statusKey = getLoanStatusKey(item);
         var dueState = C.safeTrim((item && item.dueState) || '');
-        if (statusKey === 'paid' || statusKey === 'awaiting' || dueState === 'paid') return '';
+        if (statusKey === 'cancelled' || statusKey === 'paid' || statusKey === 'awaiting' || dueState === 'paid') return '';
 
         var dueBadgeClass = getDueBadgeClass(dueState);
         var dueLabel = C.safeTrim((item && item.dueLabel) || '') || 'ยังไม่กำหนดวันครบกำหนด';
@@ -1498,8 +1519,9 @@
 
       function getLoanRemainingDisplay(item) {
         var remaining = C.safeTrim((item && item.remainingText) || '');
-        if (remaining) return remaining;
         var statusKey = getLoanStatusKey(item);
+        if (statusKey === 'cancelled') return 'ยกเลิกเงินยืม';
+        if (remaining) return remaining;
         if (statusKey === 'awaiting') return 'รอเพิ่มข้อมูล';
         if (statusKey === 'paid') return 'ชำระแล้ว';
 
@@ -1534,6 +1556,45 @@
         return out;
       }
 
+      function parseLoanDateForSort(value) {
+        var text = C.safeTrim(value || '');
+        if (!text) return null;
+        var match = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (!match) return null;
+        var dt = new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+        if (isNaN(dt.getTime())) return null;
+        dt.setHours(0, 0, 0, 0);
+        return dt;
+      }
+
+      function sortLoanDocsForPrintByDueDate(rows) {
+        var docs = Array.isArray(rows) ? rows.slice() : [];
+        docs.sort(function (a, b) {
+          var aStatusKey = getLoanStatusKey(a);
+          var bStatusKey = getLoanStatusKey(b);
+          var aDue = (aStatusKey === 'awaiting' || aStatusKey === 'cancelled') ? null : parseLoanDateForSort((a && a.dueDateInput) || '');
+          var bDue = (bStatusKey === 'awaiting' || bStatusKey === 'cancelled') ? null : parseLoanDateForSort((b && b.dueDateInput) || '');
+
+          if (aDue && bDue) {
+            var diff = aDue.getTime() - bDue.getTime();
+            if (diff !== 0) return diff;
+          } else if (aDue && !bDue) {
+            return -1;
+          } else if (!aDue && bDue) {
+            return 1;
+          }
+
+          var aContract = C.safeTrim((a && a.contractNo) || '');
+          var bContract = C.safeTrim((b && b.contractNo) || '');
+          if (aContract !== bContract) return aContract.localeCompare(bContract, 'th');
+
+          var aDoc = C.safeTrim((a && a.docNoSdh) || '');
+          var bDoc = C.safeTrim((b && b.docNoSdh) || '');
+          return aDoc.localeCompare(bDoc, 'th');
+        });
+        return docs;
+      }
+
       function isInDateRange(dateValue, fromValue, toValue) {
         var v = C.safeTrim(dateValue || '');
         var from = C.safeTrim(fromValue || '');
@@ -1556,6 +1617,7 @@
           d.expenseType,
           d.fundingSource,
           d.statusDoc,
+          d.contractStatus,
           d.dueDateDisplay,
           d.responsible
         ].join(' ').toLowerCase();
@@ -1682,6 +1744,7 @@
         if (els.filterLoanOverdue) els.filterLoanOverdue.checked = state.selectedStatusFilters.indexOf('overdue') > -1;
         if (els.filterLoanPaid) els.filterLoanPaid.checked = state.selectedStatusFilters.indexOf('paid') > -1;
         if (els.filterLoanAwaiting) els.filterLoanAwaiting.checked = state.selectedStatusFilters.indexOf('awaiting') > -1;
+        if (els.filterLoanCancelled) els.filterLoanCancelled.checked = state.selectedStatusFilters.indexOf('cancelled') > -1;
 
         if (els.filterApproveDateFrom) els.filterApproveDateFrom.value = state.selectedApproveDateFrom || '';
         if (els.filterApproveDateTo) els.filterApproveDateTo.value = state.selectedApproveDateTo || '';
@@ -1826,6 +1889,7 @@
         if (els.filterLoanOverdue && els.filterLoanOverdue.checked) state.selectedStatusFilters.push('overdue');
         if (els.filterLoanPaid && els.filterLoanPaid.checked) state.selectedStatusFilters.push('paid');
         if (els.filterLoanAwaiting && els.filterLoanAwaiting.checked) state.selectedStatusFilters.push('awaiting');
+        if (els.filterLoanCancelled && els.filterLoanCancelled.checked) state.selectedStatusFilters.push('cancelled');
 
         state.selectedExpenseTypes = [];
         var expenseOptions = document.querySelectorAll('.filter-expense-option:checked');
@@ -1902,12 +1966,13 @@
 
       function buildLoanStatsFromDocs(rows) {
         var docs = Array.isArray(rows) ? rows : [];
-        var stats = { total: 0, paid: 0, unpaid: 0, overdue: 0, dueSoon: 0, awaiting: 0 };
+        var stats = { total: 0, paid: 0, unpaid: 0, overdue: 0, dueSoon: 0, awaiting: 0, cancelled: 0 };
         for (var i = 0; i < docs.length; i++) {
           var d = docs[i] || {};
           var statusKey = getLoanStatusKey(d);
           stats.total++;
-          if (statusKey === 'awaiting') stats.awaiting++;
+          if (statusKey === 'cancelled') stats.cancelled++;
+          else if (statusKey === 'awaiting') stats.awaiting++;
           else if (statusKey === 'paid') stats.paid++;
           else if (statusKey === 'overdue') stats.overdue++;
           else if (statusKey === 'due_soon') stats.dueSoon++;
@@ -1929,6 +1994,7 @@
 
       function getLoanStatusLabelForReport(item) {
         var statusKey = getLoanStatusKey(item);
+        if (statusKey === 'cancelled') return 'ยกเลิกเงินยืม';
         if (statusKey === 'awaiting') return 'รอเพิ่มข้อมูล';
         if (statusKey === 'paid') return 'ชำระแล้ว';
         if (statusKey === 'overdue') return 'เลยกำหนด';
@@ -1965,6 +2031,7 @@
           { key: 'total', label: 'ทั้งหมด', cls: 's-total', icon: 'bi-folder-fill' },
           { key: 'paid', label: 'ชำระแล้ว', cls: 's-completed', icon: 'bi-check-circle-fill' },
           { key: 'awaiting', label: 'รอเพิ่มข้อมูล', cls: 's-awaiting', icon: 'bi-pencil-square' },
+          { key: 'cancelled', label: 'ยกเลิกเงินยืม', cls: 's-cancel', icon: 'bi-x-octagon-fill' },
           { key: 'dueSoon', label: 'ใกล้ครบกำหนด', cls: 's-pending', icon: 'bi-alarm-fill' },
           { key: 'unpaid', label: 'ยังไม่ชำระ', cls: 's-inprogress', icon: 'bi-hourglass-split' },
           { key: 'overdue', label: 'เลยกำหนด', cls: 's-cancel', icon: 'bi-exclamation-octagon-fill' }
@@ -1995,7 +2062,7 @@
           var statusBadge = getLoanStatusBadge(d);
           var dueBadge = getLoanDueBadge(d);
           var statusKey = getLoanStatusKey(d);
-          var dueDateText = statusKey === 'awaiting' ? '-' : (C.safeTrim(d.dueDateDisplay || '') || '-');
+          var dueDateText = (statusKey === 'awaiting' || statusKey === 'cancelled') ? '-' : (C.safeTrim(d.dueDateDisplay || '') || '-');
           var remainingLabel = getLoanRemainingDisplay(d);
 
           html += '<article class="doc-card loan-view-card ' + statusClass + ' mb-2 d-block" tabindex="0" role="button" data-view-id="' + C.escapeHtml(recordId) + '" aria-label="ดูรายละเอียดสัญญา ' + C.escapeHtml(d.contractNo || '-') + '">';
@@ -2144,6 +2211,7 @@
           var docs = hasAdvancedFilter()
             ? buildFilteredLoanDocs(allDocs, state.searchText)
             : buildFilteredLoanDocs(allDocs, C.safeTrim(state.searchText || ''));
+          docs = sortLoanDocsForPrintByDueDate(docs);
 
           if (!docs.length) {
             try { w.close(); } catch (_ignore2) {}
@@ -2179,7 +2247,7 @@
             h += '<td class="expense-cell">' + esc(d.expenseType || '-') + '</td>';
             h += '<td class="fund-cell">' + esc(d.fundingSource || '-') + '</td>';
             h += '<td class="status-cell text-center">' + esc(getLoanStatusLabelForReport(d)) + '</td>';
-            h += '<td class="due text-center">' + esc(d.dueDateDisplay || '-') + '</td>';
+            h += '<td class="due text-center">' + esc(getLoanStatusKey(d) === 'cancelled' ? '-' : (d.dueDateDisplay || '-')) + '</td>';
             h += '</tr>';
           }
 

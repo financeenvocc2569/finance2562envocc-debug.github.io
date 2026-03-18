@@ -27,6 +27,24 @@
       margin-bottom: 12px;
     }
 
+    .page-doc-status {
+      --sheet-card-border: rgba(59, 130, 246, 0.36);
+      --sheet-card-bg: linear-gradient(180deg, rgba(236, 248, 255, 0.9), rgba(219, 234, 254, 0.72));
+      --sheet-card-shadow: 0 30px 58px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.84);
+      --sheet-body-bg: linear-gradient(180deg, rgba(219, 234, 254, 0.46), rgba(191, 219, 254, 0.24));
+      --sheet-section-border: rgba(59, 130, 246, 0.24);
+      --sheet-section-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(239, 246, 255, 0.76));
+      --sheet-section-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.84), 0 10px 24px rgba(15, 23, 42, 0.06);
+      --sheet-header-grad: linear-gradient(145deg, #66baff 0%, #3196fb 42%, #1f79f0 100%);
+      --sheet-soft-bg: rgba(59, 130, 246, 0.1);
+      --sheet-soft-border: rgba(59, 130, 246, 0.28);
+      --sheet-soft-text: #0a63cf;
+      --sheet-button-grad: linear-gradient(145deg, #66baff 0%, #3196fb 42%, #1f79f0 100%);
+      --sheet-button-shadow: 0 16px 34px rgba(10, 132, 255, 0.26);
+      --sheet-popup-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(241, 248, 255, 0.95));
+      --sheet-popup-border: rgba(59, 130, 246, 0.26);
+    }
+
     .back-btn {
       border: 1px solid var(--input-border);
       background: var(--card-bg);
@@ -51,10 +69,13 @@
 
     .main-card {
       overflow: hidden;
+      border: 1px solid var(--sheet-card-border) !important;
+      background: var(--sheet-card-bg) !important;
+      box-shadow: var(--sheet-card-shadow) !important;
     }
 
     .header-bg {
-      background: linear-gradient(180deg, #2f97ff 0%, #0a84ff 62%, #0071e3 100%);
+      background: var(--sheet-header-grad);
       color: #fff;
       text-align: center;
       padding: 22px 16px;
@@ -74,7 +95,7 @@
       pointer-events: none;
     }
 
-    .header-bg i {
+    .header-bg > .header-hero-icon {
       font-size: 2rem;
       margin-bottom: 5px;
       display: inline-block;
@@ -94,11 +115,73 @@
       font-size: 0.84rem;
     }
 
+    .header-badges {
+      margin-top: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .h-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 13px;
+      border-radius: 999px;
+      font-size: 0.77rem;
+      font-weight: 800;
+      border: 1px solid rgba(255, 255, 255, 0.58);
+      line-height: 1.15;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0.24));
+      color: #f8fbff;
+      text-shadow: 0 1px 0 rgba(15, 23, 42, 0.2);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.34), 0 10px 20px rgba(15, 23, 42, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .h-badge i {
+      font-size: 0.84rem;
+      line-height: 1;
+      margin: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    .h-badge.sheet-blue {
+      background: linear-gradient(180deg, rgba(59, 130, 246, 0.64), rgba(37, 99, 235, 0.5));
+      border-color: rgba(191, 219, 254, 0.74);
+      color: #eff6ff;
+    }
+
+    .h-badge.sheet-pink {
+      background: linear-gradient(180deg, rgba(236, 72, 153, 0.64), rgba(219, 39, 119, 0.5));
+      border-color: rgba(251, 207, 232, 0.74);
+      color: #fff1f7;
+    }
+
+    .h-badge.sheet-green {
+      background: linear-gradient(180deg, rgba(34, 197, 94, 0.64), rgba(22, 163, 74, 0.5));
+      border-color: rgba(187, 247, 208, 0.74);
+      color: #f0fdf4;
+    }
+
+    .h-badge.sheet-other {
+      background: linear-gradient(180deg, rgba(100, 116, 139, 0.62), rgba(71, 85, 105, 0.5));
+      border-color: rgba(203, 213, 225, 0.74);
+      color: #f8fafc;
+    }
+
     .status-body {
       padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 12px;
+      background: var(--sheet-body-bg);
     }
 
     .desc-note {
@@ -115,7 +198,7 @@
     }
 
     .desc-note.emphasis {
-      color: #1e3a8a;
+      color: var(--sheet-soft-text);
       background: transparent !important;
       border: none !important;
       border-radius: 0;
@@ -145,10 +228,10 @@
     }
 
     .history-popup-btn {
-      border: 1px solid rgba(10, 132, 255, 0.3);
+      border: 1px solid var(--sheet-soft-border);
       border-radius: 999px;
-      background: rgba(10, 132, 255, 0.1);
-      color: #0a63cf;
+      background: var(--sheet-soft-bg);
+      color: var(--sheet-soft-text);
       min-height: 32px;
       padding: 0 12px;
       font-size: 0.79rem;
@@ -162,8 +245,8 @@
     }
 
     .history-popup-btn:hover {
-      border-color: rgba(10, 132, 255, 0.45);
-      background: rgba(10, 132, 255, 0.16);
+      border-color: var(--sheet-soft-border);
+      background: rgba(255, 255, 255, 0.42);
     }
 
     .history-popup-btn:disabled {
@@ -181,9 +264,9 @@
     }
 
     .history-popup-block {
-      border: 1px solid rgba(148, 163, 184, 0.28);
+      border: 1px solid var(--sheet-section-border);
       border-radius: 10px;
-      background: rgba(255, 255, 255, 0.5);
+      background: var(--sheet-section-bg);
       padding: 8px 10px;
     }
 
@@ -211,7 +294,7 @@
     }
 
     body.dark-mode .desc-note.emphasis {
-      color: #dbeafe;
+      color: var(--sheet-soft-text);
       background: transparent !important;
       border: none !important;
     }
@@ -274,9 +357,10 @@
     }
 
     .toolbar-btn.primary {
-      background: linear-gradient(180deg, #2f97ff 0%, #0a84ff 62%, #0071e3 100%);
+      background: var(--sheet-button-grad);
       color: #fff;
-      border-color: rgba(10, 132, 255, 0.4);
+      border-color: var(--sheet-soft-border);
+      box-shadow: var(--sheet-button-shadow);
     }
 
     body.dark-mode .toolbar-btn.primary {
@@ -288,9 +372,9 @@
       position: relative;
       display: block;
       margin: 0 !important;
-      border: 1px solid rgba(148, 163, 184, 0.28) !important;
-      background: rgba(255, 255, 255, 0.4) !important;
-      box-shadow: none !important;
+      border: 1px solid var(--sheet-section-border) !important;
+      background: var(--sheet-section-bg) !important;
+      box-shadow: var(--sheet-section-shadow) !important;
       overflow: hidden;
       isolation: isolate;
       z-index: 0;
@@ -310,8 +394,8 @@
     }
 
     .status-step-card.active {
-      border-color: rgba(10, 132, 255, 0.38) !important;
-      background: rgba(10, 132, 255, 0.08) !important;
+      border-color: var(--sheet-soft-border) !important;
+      background: var(--sheet-soft-bg) !important;
       box-shadow: none !important;
     }
 
@@ -336,9 +420,9 @@
       min-width: 22px;
       height: 22px;
       border-radius: 999px;
-      background: rgba(10, 132, 255, 0.12);
-      border: 1px solid rgba(10, 132, 255, 0.28);
-      color: #0a5fc6;
+      background: var(--sheet-soft-bg);
+      border: 1px solid var(--sheet-soft-border);
+      color: var(--sheet-soft-text);
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -401,8 +485,8 @@
       padding: 2px 8px;
       font-size: 0.72rem;
       font-weight: 760;
-      color: #0a63cf;
-      background: rgba(10, 132, 255, 0.12);
+      color: var(--sheet-soft-text);
+      background: var(--sheet-soft-bg);
       white-space: nowrap;
       line-height: 1.3;
     }
@@ -520,7 +604,8 @@
     .status-field.remark-field {
       padding: 10px;
       border-radius: 12px;
-      background: rgba(148, 163, 184, 0.1);
+      background: var(--sheet-soft-bg);
+      border: 1px solid var(--sheet-soft-border);
     }
 
     body.dark-mode .status-field.remark-field {
@@ -561,8 +646,8 @@
     .form-control:focus,
     .form-select:focus {
       outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px var(--primary-color-soft);
+      border-color: var(--sheet-soft-border);
+      box-shadow: 0 0 0 3px var(--sheet-soft-bg);
     }
 
     textarea.form-control {
@@ -602,10 +687,10 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      background: rgba(10, 132, 255, 0.12);
+      background: var(--sheet-soft-bg);
       border: none;
       box-shadow: none;
-      color: #007aff;
+      color: var(--sheet-soft-text);
       font-size: 0.9rem;
       font-weight: 800;
     }
@@ -632,19 +717,277 @@
       font: inherit;
       font-weight: 860;
       color: #fff;
-      background: linear-gradient(180deg, #2f97ff 0%, #0a84ff 62%, #0071e3 100%);
+      background: var(--sheet-button-grad);
       cursor: pointer;
       display: inline-flex;
       justify-content: center;
       align-items: center;
       gap: 8px;
       transition: transform 0.2s ease, box-shadow 0.25s ease;
-      box-shadow: 0 16px 34px rgba(10, 132, 255, 0.26);
+      box-shadow: var(--sheet-button-shadow);
     }
 
     .submit-btn:hover {
       transform: translateY(-1px);
-      box-shadow: 0 22px 42px rgba(10, 132, 255, 0.32);
+      box-shadow: 0 22px 42px rgba(15, 23, 42, 0.26);
+    }
+
+    .swal2-popup.sheet-popup-blue,
+    .swal2-popup.sheet-popup-pink,
+    .swal2-popup.sheet-popup-green,
+    .swal2-popup.sheet-popup-other {
+      border-radius: 24px;
+      border: 1px solid var(--sheet-popup-border);
+      background: var(--sheet-popup-bg);
+      box-shadow: 0 24px 48px rgba(15, 23, 42, 0.18);
+    }
+
+    .swal2-popup.sheet-popup-blue {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(239, 246, 255, 0.96));
+      --sheet-popup-border: rgba(59, 130, 246, 0.26);
+    }
+
+    .swal2-popup.sheet-popup-pink {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(255, 250, 252, 0.98), rgba(252, 231, 243, 0.96));
+      --sheet-popup-border: rgba(236, 72, 153, 0.28);
+    }
+
+    .swal2-popup.sheet-popup-green {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(247, 255, 250, 0.98), rgba(220, 252, 231, 0.96));
+      --sheet-popup-border: rgba(34, 197, 94, 0.28);
+    }
+
+    .swal2-popup.sheet-popup-other {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(241, 245, 249, 0.96));
+      --sheet-popup-border: rgba(100, 116, 139, 0.3);
+    }
+
+    body.dark-mode .swal2-popup.sheet-popup-blue,
+    body.dark-mode .swal2-popup.sheet-popup-pink,
+    body.dark-mode .swal2-popup.sheet-popup-green,
+    body.dark-mode .swal2-popup.sheet-popup-other {
+      color: #e5eefc;
+      box-shadow: 0 28px 54px rgba(2, 8, 20, 0.52);
+    }
+
+    body.dark-mode .swal2-popup.sheet-popup-blue {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(15, 28, 46, 0.96), rgba(12, 22, 36, 0.95));
+      --sheet-popup-border: rgba(96, 165, 250, 0.34);
+    }
+
+    body.dark-mode .swal2-popup.sheet-popup-pink {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(52, 20, 36, 0.96), rgba(34, 12, 24, 0.95));
+      --sheet-popup-border: rgba(244, 114, 182, 0.34);
+    }
+
+    body.dark-mode .swal2-popup.sheet-popup-green {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(16, 38, 28, 0.96), rgba(12, 28, 20, 0.95));
+      --sheet-popup-border: rgba(74, 222, 128, 0.34);
+    }
+
+    body.dark-mode .swal2-popup.sheet-popup-other {
+      --sheet-popup-bg: linear-gradient(180deg, rgba(20, 28, 40, 0.96), rgba(14, 20, 30, 0.95));
+      --sheet-popup-border: rgba(148, 163, 184, 0.34);
+    }
+
+    body.page-doc-status.sheet-theme-blue {
+      --sheet-card-border: rgba(59, 130, 246, 0.36);
+      --sheet-card-bg: linear-gradient(180deg, rgba(236, 248, 255, 0.9), rgba(219, 234, 254, 0.72));
+      --sheet-body-bg: linear-gradient(180deg, rgba(219, 234, 254, 0.46), rgba(191, 219, 254, 0.24));
+      --sheet-section-border: rgba(59, 130, 246, 0.24);
+      --sheet-section-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(239, 246, 255, 0.76));
+      --sheet-header-grad: linear-gradient(145deg, #66baff 0%, #3196fb 42%, #1f79f0 100%);
+      --sheet-soft-bg: rgba(59, 130, 246, 0.1);
+      --sheet-soft-border: rgba(59, 130, 246, 0.28);
+      --sheet-soft-text: #0a63cf;
+      --sheet-button-grad: linear-gradient(145deg, #66baff 0%, #3196fb 42%, #1f79f0 100%);
+      --sheet-button-shadow: 0 16px 34px rgba(10, 132, 255, 0.26);
+    }
+
+    body.page-doc-status.sheet-theme-pink {
+      --sheet-card-border: rgba(244, 114, 182, 0.4);
+      --sheet-card-bg: linear-gradient(180deg, rgba(253, 232, 243, 0.92), rgba(251, 207, 232, 0.72));
+      --sheet-body-bg: linear-gradient(180deg, rgba(252, 231, 243, 0.52), rgba(249, 168, 212, 0.24));
+      --sheet-section-border: rgba(244, 114, 182, 0.28);
+      --sheet-section-bg: linear-gradient(180deg, rgba(255, 245, 251, 0.94), rgba(252, 231, 243, 0.8));
+      --sheet-header-grad: linear-gradient(145deg, #f472b6 0%, #ec4899 52%, #db2777 100%);
+      --sheet-soft-bg: rgba(236, 72, 153, 0.12);
+      --sheet-soft-border: rgba(236, 72, 153, 0.28);
+      --sheet-soft-text: #be185d;
+      --sheet-button-grad: linear-gradient(145deg, #f472b6 0%, #ec4899 52%, #db2777 100%);
+      --sheet-button-shadow: 0 16px 34px rgba(219, 39, 119, 0.24);
+    }
+
+    body.page-doc-status.sheet-theme-green {
+      --sheet-card-border: rgba(34, 197, 94, 0.36);
+      --sheet-card-bg: linear-gradient(180deg, rgba(220, 252, 231, 0.92), rgba(187, 247, 208, 0.72));
+      --sheet-body-bg: linear-gradient(180deg, rgba(220, 252, 231, 0.5), rgba(134, 239, 172, 0.22));
+      --sheet-section-border: rgba(34, 197, 94, 0.26);
+      --sheet-section-bg: linear-gradient(180deg, rgba(240, 253, 244, 0.94), rgba(220, 252, 231, 0.8));
+      --sheet-header-grad: linear-gradient(145deg, #34d399 0%, #22c55e 52%, #16a34a 100%);
+      --sheet-soft-bg: rgba(34, 197, 94, 0.12);
+      --sheet-soft-border: rgba(34, 197, 94, 0.28);
+      --sheet-soft-text: #15803d;
+      --sheet-button-grad: linear-gradient(145deg, #34d399 0%, #22c55e 52%, #16a34a 100%);
+      --sheet-button-shadow: 0 16px 34px rgba(22, 163, 74, 0.24);
+    }
+
+    body.page-doc-status.sheet-theme-other {
+      --sheet-card-border: rgba(148, 163, 184, 0.42);
+      --sheet-card-bg: linear-gradient(180deg, rgba(241, 245, 249, 0.92), rgba(226, 232, 240, 0.78));
+      --sheet-body-bg: linear-gradient(180deg, rgba(226, 232, 240, 0.48), rgba(203, 213, 225, 0.22));
+      --sheet-section-border: rgba(148, 163, 184, 0.3);
+      --sheet-section-bg: linear-gradient(180deg, rgba(248, 250, 252, 0.92), rgba(226, 232, 240, 0.82));
+      --sheet-header-grad: linear-gradient(145deg, #94a3b8 0%, #64748b 55%, #475569 100%);
+      --sheet-soft-bg: rgba(100, 116, 139, 0.12);
+      --sheet-soft-border: rgba(100, 116, 139, 0.28);
+      --sheet-soft-text: #475569;
+      --sheet-button-grad: linear-gradient(145deg, #94a3b8 0%, #64748b 55%, #475569 100%);
+      --sheet-button-shadow: 0 16px 34px rgba(71, 85, 105, 0.22);
+    }
+
+    body.dark-mode.page-doc-status.sheet-theme-blue {
+      --sheet-card-border: rgba(56, 189, 248, 0.38);
+      --sheet-card-bg: linear-gradient(180deg, rgba(16, 30, 48, 0.9), rgba(12, 22, 36, 0.88));
+      --sheet-card-shadow: 0 34px 66px rgba(2, 8, 20, 0.56), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      --sheet-body-bg: linear-gradient(180deg, rgba(15, 28, 46, 0.55), rgba(12, 22, 36, 0.24));
+      --sheet-section-border: rgba(56, 189, 248, 0.28);
+      --sheet-section-bg: linear-gradient(180deg, rgba(16, 32, 48, 0.9), rgba(12, 24, 38, 0.84));
+      --sheet-header-grad: linear-gradient(145deg, #1e3a8a 0%, #1e40af 52%, #1d4ed8 100%);
+      --sheet-soft-bg: rgba(59, 130, 246, 0.18);
+      --sheet-soft-border: rgba(96, 165, 250, 0.34);
+      --sheet-soft-text: #bfdbfe;
+      --sheet-button-grad: linear-gradient(145deg, #1e3a8a 0%, #1e40af 52%, #1d4ed8 100%);
+      --sheet-button-shadow: 0 18px 36px rgba(30, 64, 175, 0.3);
+    }
+
+    body.dark-mode.page-doc-status.sheet-theme-pink {
+      --sheet-card-border: rgba(244, 114, 182, 0.42);
+      --sheet-card-bg: linear-gradient(180deg, rgba(52, 20, 36, 0.92), rgba(34, 12, 24, 0.9));
+      --sheet-card-shadow: 0 34px 66px rgba(2, 8, 20, 0.56), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      --sheet-body-bg: linear-gradient(180deg, rgba(52, 20, 36, 0.56), rgba(34, 12, 24, 0.24));
+      --sheet-section-border: rgba(244, 114, 182, 0.28);
+      --sheet-section-bg: linear-gradient(180deg, rgba(52, 22, 38, 0.9), rgba(32, 14, 26, 0.86));
+      --sheet-header-grad: linear-gradient(145deg, #9d174d 0%, #be185d 52%, #db2777 100%);
+      --sheet-soft-bg: rgba(236, 72, 153, 0.2);
+      --sheet-soft-border: rgba(244, 114, 182, 0.34);
+      --sheet-soft-text: #fbcfe8;
+      --sheet-button-grad: linear-gradient(145deg, #9d174d 0%, #be185d 52%, #db2777 100%);
+      --sheet-button-shadow: 0 18px 36px rgba(157, 23, 77, 0.3);
+    }
+
+    body.dark-mode.page-doc-status.sheet-theme-green {
+      --sheet-card-border: rgba(34, 197, 94, 0.4);
+      --sheet-card-bg: linear-gradient(180deg, rgba(16, 38, 28, 0.92), rgba(12, 28, 20, 0.88));
+      --sheet-card-shadow: 0 34px 66px rgba(2, 8, 20, 0.56), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      --sheet-body-bg: linear-gradient(180deg, rgba(16, 38, 28, 0.54), rgba(12, 28, 20, 0.24));
+      --sheet-section-border: rgba(34, 197, 94, 0.3);
+      --sheet-section-bg: linear-gradient(180deg, rgba(18, 40, 30, 0.9), rgba(12, 30, 22, 0.86));
+      --sheet-header-grad: linear-gradient(145deg, #166534 0%, #15803d 52%, #16a34a 100%);
+      --sheet-soft-bg: rgba(34, 197, 94, 0.18);
+      --sheet-soft-border: rgba(74, 222, 128, 0.34);
+      --sheet-soft-text: #bbf7d0;
+      --sheet-button-grad: linear-gradient(145deg, #166534 0%, #15803d 52%, #16a34a 100%);
+      --sheet-button-shadow: 0 18px 36px rgba(21, 128, 61, 0.3);
+    }
+
+    body.dark-mode.page-doc-status.sheet-theme-other {
+      --sheet-card-border: rgba(148, 163, 184, 0.4);
+      --sheet-card-bg: linear-gradient(180deg, rgba(20, 28, 40, 0.9), rgba(14, 20, 30, 0.86));
+      --sheet-card-shadow: 0 34px 66px rgba(2, 8, 20, 0.56), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      --sheet-body-bg: linear-gradient(180deg, rgba(20, 28, 40, 0.54), rgba(14, 20, 30, 0.24));
+      --sheet-section-border: rgba(148, 163, 184, 0.3);
+      --sheet-section-bg: linear-gradient(180deg, rgba(20, 28, 40, 0.88), rgba(14, 22, 32, 0.84));
+      --sheet-header-grad: linear-gradient(145deg, #475569 0%, #334155 52%, #1f2937 100%);
+      --sheet-soft-bg: rgba(100, 116, 139, 0.18);
+      --sheet-soft-border: rgba(148, 163, 184, 0.32);
+      --sheet-soft-text: #e2e8f0;
+      --sheet-button-grad: linear-gradient(145deg, #475569 0%, #334155 52%, #1f2937 100%);
+      --sheet-button-shadow: 0 18px 36px rgba(51, 65, 85, 0.3);
+    }
+
+    body.page-doc-status.sheet-theme-blue .main-card,
+    body.page-doc-status.sheet-theme-pink .main-card,
+    body.page-doc-status.sheet-theme-green .main-card,
+    body.page-doc-status.sheet-theme-other .main-card {
+      border-color: var(--sheet-card-border) !important;
+      background: var(--sheet-card-bg) !important;
+      box-shadow: var(--sheet-card-shadow) !important;
+    }
+
+    body.page-doc-status.sheet-theme-blue .header-bg,
+    body.page-doc-status.sheet-theme-pink .header-bg,
+    body.page-doc-status.sheet-theme-green .header-bg,
+    body.page-doc-status.sheet-theme-other .header-bg {
+      background: var(--sheet-header-grad) !important;
+    }
+
+    body.page-doc-status.sheet-theme-blue .status-body,
+    body.page-doc-status.sheet-theme-pink .status-body,
+    body.page-doc-status.sheet-theme-green .status-body,
+    body.page-doc-status.sheet-theme-other .status-body {
+      background: var(--sheet-body-bg) !important;
+    }
+
+    body.page-doc-status.sheet-theme-blue .status-body #stepsWrap > .form-section,
+    body.page-doc-status.sheet-theme-pink .status-body #stepsWrap > .form-section,
+    body.page-doc-status.sheet-theme-green .status-body #stepsWrap > .form-section,
+    body.page-doc-status.sheet-theme-other .status-body #stepsWrap > .form-section,
+    body.page-doc-status.sheet-theme-blue .status-field.remark-field,
+    body.page-doc-status.sheet-theme-pink .status-field.remark-field,
+    body.page-doc-status.sheet-theme-green .status-field.remark-field,
+    body.page-doc-status.sheet-theme-other .status-field.remark-field {
+      border-color: var(--sheet-section-border) !important;
+      background: var(--sheet-section-bg) !important;
+      box-shadow: var(--sheet-section-shadow) !important;
+    }
+
+    body.page-doc-status.sheet-theme-blue .history-popup-btn,
+    body.page-doc-status.sheet-theme-pink .history-popup-btn,
+    body.page-doc-status.sheet-theme-green .history-popup-btn,
+    body.page-doc-status.sheet-theme-other .history-popup-btn,
+    body.page-doc-status.sheet-theme-blue .toolbar-btn.primary,
+    body.page-doc-status.sheet-theme-pink .toolbar-btn.primary,
+    body.page-doc-status.sheet-theme-green .toolbar-btn.primary,
+    body.page-doc-status.sheet-theme-other .toolbar-btn.primary,
+    body.page-doc-status.sheet-theme-blue .submit-btn,
+    body.page-doc-status.sheet-theme-pink .submit-btn,
+    body.page-doc-status.sheet-theme-green .submit-btn,
+    body.page-doc-status.sheet-theme-other .submit-btn {
+      border-color: var(--sheet-soft-border) !important;
+      background: var(--sheet-button-grad) !important;
+      box-shadow: var(--sheet-button-shadow) !important;
+      color: #fff !important;
+    }
+
+    body.page-doc-status.sheet-theme-blue .status-step-card.active,
+    body.page-doc-status.sheet-theme-pink .status-step-card.active,
+    body.page-doc-status.sheet-theme-green .status-step-card.active,
+    body.page-doc-status.sheet-theme-other .status-step-card.active,
+    body.page-doc-status.sheet-theme-blue .step-index-badge,
+    body.page-doc-status.sheet-theme-pink .step-index-badge,
+    body.page-doc-status.sheet-theme-green .step-index-badge,
+    body.page-doc-status.sheet-theme-other .step-index-badge,
+    body.page-doc-status.sheet-theme-blue .step-count-chip,
+    body.page-doc-status.sheet-theme-pink .step-count-chip,
+    body.page-doc-status.sheet-theme-green .step-count-chip,
+    body.page-doc-status.sheet-theme-other .step-count-chip,
+    body.page-doc-status.sheet-theme-blue .history-popup-btn,
+    body.page-doc-status.sheet-theme-pink .history-popup-btn,
+    body.page-doc-status.sheet-theme-green .history-popup-btn,
+    body.page-doc-status.sheet-theme-other .history-popup-btn {
+      border-color: var(--sheet-soft-border) !important;
+      background: var(--sheet-soft-bg) !important;
+      color: var(--sheet-soft-text) !important;
+    }
+
+    body.page-doc-status.sheet-theme-blue .history-popup-block,
+    body.page-doc-status.sheet-theme-pink .history-popup-block,
+    body.page-doc-status.sheet-theme-green .history-popup-block,
+    body.page-doc-status.sheet-theme-other .history-popup-block {
+      border-color: var(--sheet-section-border) !important;
+      background: var(--sheet-section-bg) !important;
+      box-shadow: var(--sheet-section-shadow) !important;
     }
 
     .submit-btn:disabled {
@@ -685,8 +1028,8 @@
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      border: 3px solid rgba(10, 132, 255, 0.22);
-      border-top-color: var(--primary-color);
+      border: 3px solid var(--sheet-soft-border);
+      border-top-color: var(--sheet-soft-text);
       animation: spin 0.72s linear infinite;
       margin-bottom: 8px;
     }
@@ -866,9 +1209,10 @@
 
     <div id="mainCard" class="main-card" style="display:none;">
       <div class="header-bg">
-        <i class="bi bi-list-check"></i>
+        <i class="bi bi-list-check header-hero-icon"></i>
         <h3>จัดการสถานะการดำเนินการ</h3>
         <small id="docHead">กำลังโหลด...</small>
+        <div id="headerBadges" class="header-badges"></div>
       </div>
 
       <div class="status-body">
@@ -900,7 +1244,7 @@
   </div>
 
   <script src="./config.js"></script>
-  <script src="./api-client.js?v=20260317-1"></script>
+  <script src="./api-client.js?v=20260318-2"></script>
   <script src="./theme-legacy.js?v=20260221-3"></script>
   <script src="./app-common.js?v=20260317-1"></script>
   <script>
@@ -938,6 +1282,7 @@
         errBox: document.getElementById('errBox'),
         mainCard: document.getElementById('mainCard'),
         docHead: document.getElementById('docHead'),
+        headerBadges: document.getElementById('headerBadges'),
         btnEnableAll: document.getElementById('btnEnableAll'),
         btnDisableAll: document.getElementById('btnDisableAll'),
         stepsWrap: document.getElementById('stepsWrap'),
@@ -1006,6 +1351,82 @@
           map[name.toLowerCase()] = img;
         }
         return map;
+      }
+
+      function normalizeSheetColorLabel(value) {
+        var raw = C.safeTrim(value || '');
+        if (!raw) return '';
+        var compact = raw.toLowerCase().replace(/\s+/g, '').replace(/[.]/g, '');
+        if (compact === 'ใบฟ้า' || compact === 'ฟ้า' || compact === 'ใบสีฟ้า' || compact === 'blue' || compact === 'lightblue') return 'ใบฟ้า';
+        if (compact === 'ใบชมพู' || compact === 'ชมพู' || compact === 'ใบสีชมพู' || compact === 'pink') return 'ใบชมพู';
+        if (compact === 'ใบเขียว' || compact === 'เขียว' || compact === 'ใบสีเขียว' || compact === 'green') return 'ใบเขียว';
+        if (compact === 'อื่นๆ' || compact === 'อื่น' || compact === 'other') return 'อื่น ๆ';
+        return raw;
+      }
+
+      function themeKeyFromSheetColor(value) {
+        var label = normalizeSheetColorLabel(value);
+        if (label === 'ใบชมพู') return 'pink';
+        if (label === 'ใบเขียว') return 'green';
+        if (label === 'อื่น ๆ') return 'other';
+        return 'blue';
+      }
+
+      function applySheetTheme(value) {
+        var body = document.body;
+        var themes = ['sheet-theme-blue', 'sheet-theme-pink', 'sheet-theme-green', 'sheet-theme-other'];
+        for (var i = 0; i < themes.length; i++) {
+          body.classList.remove(themes[i]);
+        }
+        body.classList.add('sheet-theme-' + themeKeyFromSheetColor(value));
+      }
+
+      function sheetTypeBadge(label) {
+        var normalized = normalizeSheetColorLabel(label);
+        if (!normalized) return '';
+        return '<span class="h-badge sheet-' + themeKeyFromSheetColor(normalized) + '"><i class="bi bi-file-earmark-text"></i>' + C.escapeHtml(normalized) + '</span>';
+      }
+
+      function sheetThemeConfirmColor() {
+        var key = themeKeyFromSheetColor(state.doc && state.doc.sheetColor || '');
+        if (key === 'pink') return '#db2777';
+        if (key === 'green') return '#16a34a';
+        if (key === 'other') return '#475569';
+        return '#1f79f0';
+      }
+
+      function sheetThemeDenyColor() {
+        var key = themeKeyFromSheetColor(state.doc && state.doc.sheetColor || '');
+        if (key === 'pink') return '#9d174d';
+        if (key === 'green') return '#166534';
+        if (key === 'other') return '#334155';
+        return '#1e40af';
+      }
+
+      function themedSwal(options) {
+        var opts = options || {};
+        var key = themeKeyFromSheetColor(state.doc && state.doc.sheetColor || '');
+        var customClass = opts.customClass || {};
+        var popupClass = 'sheet-popup-' + key;
+        var popup = customClass.popup ? (customClass.popup + ' ' + popupClass) : popupClass;
+        var mergedCustomClass = {};
+        for (var k in customClass) {
+          if (Object.prototype.hasOwnProperty.call(customClass, k)) mergedCustomClass[k] = customClass[k];
+        }
+        mergedCustomClass.popup = popup;
+
+        var out = {};
+        for (var keyName in opts) {
+          if (Object.prototype.hasOwnProperty.call(opts, keyName)) out[keyName] = opts[keyName];
+        }
+        out.customClass = mergedCustomClass;
+        if (!Object.prototype.hasOwnProperty.call(out, 'confirmButtonColor')) {
+          out.confirmButtonColor = sheetThemeConfirmColor();
+        }
+        if (out.showDenyButton && !Object.prototype.hasOwnProperty.call(out, 'denyButtonColor')) {
+          out.denyButtonColor = sheetThemeDenyColor();
+        }
+        return out;
       }
 
       function isIsoDateText(value) {
@@ -1227,14 +1648,13 @@
         }
         html += '</div>';
 
-        await Swal.fire({
+        await Swal.fire(themedSwal({
           icon: 'info',
           title: 'สรุปประวัติสถานะทั้งหมด',
           html: html,
           width: 820,
-          confirmButtonText: 'ปิด',
-          confirmButtonColor: '#0A84FF'
-        });
+          confirmButtonText: 'ปิด'
+        }));
       }
 
       function renderStatusLogHistory() {
@@ -1499,12 +1919,11 @@
         var statusData = collectStatusData();
         var invalidMessage = validateStatusData(statusData);
         if (invalidMessage) {
-          await Swal.fire({
+          await Swal.fire(themedSwal({
             icon: 'warning',
             title: 'ข้อมูลไม่ครบ',
-            text: invalidMessage,
-            confirmButtonColor: '#007AFF'
-          });
+            text: invalidMessage
+          }));
           return;
         }
 
@@ -1517,7 +1936,11 @@
             throw new Error((saveResult && saveResult.error) ? saveResult.error : 'ไม่สามารถบันทึกสถานะได้');
           }
         } catch (err) {
-          await Swal.fire('เกิดข้อผิดพลาด', (err && err.message) ? err.message : 'บันทึกไม่สำเร็จ', 'error');
+          await Swal.fire(themedSwal({
+            icon: 'error',
+            title: 'เกิดข้อผิดพลาด',
+            text: (err && err.message) ? err.message : 'บันทึกไม่สำเร็จ'
+          }));
           return;
         } finally {
           setSaving(false);
@@ -1550,17 +1973,15 @@
         }).join(' | ');
         if (!savedSummary) savedSummary = 'บันทึกสถานะที่เลือกแล้ว';
 
-        var action = await Swal.fire({
+        var action = await Swal.fire(themedSwal({
           icon: 'success',
           title: 'บันทึกสถานะสำเร็จ',
           text: savedSummary,
           confirmButtonText: 'บันทึกต่อ',
           showDenyButton: true,
           denyButtonText: 'ดูรายละเอียดเอกสาร',
-          confirmButtonColor: '#007AFF',
-          denyButtonColor: '#64748B',
           allowOutsideClick: false
-        });
+        }));
 
         if (action && action.isDenied) {
           C.redirect('document-view.html', { id: nextDocId }, true);
@@ -1602,6 +2023,7 @@
         state.memberImgMap = mapMemberImages(state.members);
         state.statusDraftData = buildEmptyStatusDraft();
         updateBrowserTitle(state.doc.docId || docId);
+        applySheetTheme(state.doc.sheetColor || '');
 
         if (state.user.isReadOnly || state.user.canEdit === false) {
           C.redirect('access-denied.html', {
@@ -1612,6 +2034,7 @@
 
         var headText = (state.doc.docId || '-') + ' | เลขรับ ' + (state.doc.receiveNo || '-');
         els.docHead.textContent = headText;
+        if (els.headerBadges) els.headerBadges.innerHTML = sheetTypeBadge(state.doc.sheetColor || '');
 
         renderStatusLogHistory();
         renderSteps();

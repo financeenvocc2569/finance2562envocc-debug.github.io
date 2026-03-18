@@ -26,6 +26,17 @@
       flex-wrap: wrap;
     }
 
+    .page-doc-form {
+      --sheet-card-border: rgba(59, 130, 246, 0.36);
+      --sheet-card-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(246, 251, 255, 0.62));
+      --sheet-card-shadow: 0 30px 56px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      --sheet-body-bg: linear-gradient(180deg, rgba(235, 245, 255, 0.32), rgba(235, 245, 255, 0.16));
+      --sheet-section-border: rgba(59, 130, 246, 0.24);
+      --sheet-section-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(250, 253, 255, 0.7));
+      --sheet-section-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82), 0 12px 26px rgba(15, 23, 42, 0.06);
+      --sheet-header-grad: linear-gradient(145deg, #66baff 0%, #3196fb 42%, #1f79f0 100%);
+    }
+
     .back-btn {
       border: 1px solid var(--input-border);
       background: var(--card-bg);
@@ -50,13 +61,13 @@
 
     .page-doc-form .main-card {
       overflow: hidden;
-      border: 1px solid rgba(148, 163, 184, 0.34) !important;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(246, 251, 255, 0.62)) !important;
-      box-shadow: 0 30px 56px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.8) !important;
+      border: 1px solid var(--sheet-card-border) !important;
+      background: var(--sheet-card-bg) !important;
+      box-shadow: var(--sheet-card-shadow) !important;
     }
 
     .header-bg {
-      background: linear-gradient(145deg, #66baff 0%, #3196fb 42%, #1f79f0 100%);
+      background: var(--sheet-header-grad);
       color: #fff;
       text-align: center;
       padding: 24px 16px 26px;
@@ -128,15 +139,15 @@
       padding: 16px;
       display: grid;
       gap: 12px;
-      background: linear-gradient(180deg, rgba(235, 245, 255, 0.32), rgba(235, 245, 255, 0.16));
+      background: var(--sheet-body-bg);
     }
 
     .form-section {
       padding: 14px;
       border-radius: 18px;
-      border: 1px solid rgba(148, 163, 184, 0.3);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(250, 253, 255, 0.7));
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.82), 0 12px 26px rgba(15, 23, 42, 0.06);
+      border: 1px solid var(--sheet-section-border);
+      background: var(--sheet-section-bg);
+      box-shadow: var(--sheet-section-shadow);
     }
 
     .form-section-title {
@@ -268,20 +279,295 @@
       line-height: 1.45;
     }
 
+    body.dark-mode.page-doc-form {
+      --sheet-card-border: rgba(56, 189, 248, 0.35);
+      --sheet-card-bg: linear-gradient(180deg, rgba(16, 26, 40, 0.78), rgba(12, 20, 32, 0.68));
+      --sheet-card-shadow: 0 34px 64px rgba(2, 8, 20, 0.56), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      --sheet-body-bg: linear-gradient(180deg, rgba(16, 26, 40, 0.28), rgba(16, 26, 40, 0.14));
+      --sheet-section-border: rgba(56, 189, 248, 0.28);
+      --sheet-section-bg: linear-gradient(180deg, rgba(19, 30, 45, 0.82), rgba(15, 24, 36, 0.7));
+      --sheet-section-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 16px 34px rgba(2, 8, 20, 0.34);
+      --sheet-header-grad: linear-gradient(145deg, #2b6fc9 0%, #1e58ac 68%, #16468e 100%);
+    }
+
     body.dark-mode .page-doc-form .main-card {
-      border-color: rgba(148, 163, 184, 0.4) !important;
-      background: linear-gradient(180deg, rgba(16, 26, 40, 0.78), rgba(12, 20, 32, 0.68)) !important;
-      box-shadow: 0 34px 64px rgba(2, 8, 20, 0.56), inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+      border-color: var(--sheet-card-border) !important;
+      background: var(--sheet-card-bg) !important;
+      box-shadow: var(--sheet-card-shadow) !important;
     }
 
     body.dark-mode .page-doc-form .card-body {
-      background: linear-gradient(180deg, rgba(16, 26, 40, 0.28), rgba(16, 26, 40, 0.14));
+      background: var(--sheet-body-bg);
     }
 
     body.dark-mode .page-doc-form .form-section {
-      border-color: rgba(148, 163, 184, 0.32);
-      background: linear-gradient(180deg, rgba(19, 30, 45, 0.82), rgba(15, 24, 36, 0.7));
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 16px 34px rgba(2, 8, 20, 0.34);
+      border-color: var(--sheet-section-border);
+      background: var(--sheet-section-bg);
+      box-shadow: var(--sheet-section-shadow);
+    }
+
+    .page-doc-form.sheet-theme-blue {
+      --sheet-card-border: rgba(59, 130, 246, 0.36);
+      --sheet-card-bg: linear-gradient(180deg, rgba(236, 248, 255, 0.9), rgba(219, 234, 254, 0.72));
+      --sheet-body-bg: linear-gradient(180deg, rgba(219, 234, 254, 0.46), rgba(191, 219, 254, 0.28));
+      --sheet-section-border: rgba(59, 130, 246, 0.24);
+      --sheet-section-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(239, 246, 255, 0.78));
+      --sheet-header-grad: linear-gradient(145deg, #66baff 0%, #3196fb 42%, #1f79f0 100%);
+    }
+
+    .page-doc-form.sheet-theme-pink {
+      --sheet-card-border: rgba(244, 114, 182, 0.4);
+      --sheet-card-bg: linear-gradient(180deg, rgba(253, 232, 243, 0.92), rgba(251, 207, 232, 0.7));
+      --sheet-body-bg: linear-gradient(180deg, rgba(252, 231, 243, 0.54), rgba(249, 168, 212, 0.26));
+      --sheet-section-border: rgba(244, 114, 182, 0.28);
+      --sheet-section-bg: linear-gradient(180deg, rgba(255, 245, 251, 0.94), rgba(252, 231, 243, 0.8));
+      --sheet-header-grad: linear-gradient(145deg, #f472b6 0%, #ec4899 52%, #db2777 100%);
+    }
+
+    .page-doc-form.sheet-theme-green {
+      --sheet-card-border: rgba(34, 197, 94, 0.36);
+      --sheet-card-bg: linear-gradient(180deg, rgba(220, 252, 231, 0.9), rgba(187, 247, 208, 0.72));
+      --sheet-body-bg: linear-gradient(180deg, rgba(220, 252, 231, 0.48), rgba(134, 239, 172, 0.26));
+      --sheet-section-border: rgba(34, 197, 94, 0.26);
+      --sheet-section-bg: linear-gradient(180deg, rgba(240, 253, 244, 0.92), rgba(220, 252, 231, 0.8));
+      --sheet-header-grad: linear-gradient(145deg, #34d399 0%, #22c55e 52%, #16a34a 100%);
+    }
+
+    .page-doc-form.sheet-theme-other {
+      --sheet-card-border: rgba(148, 163, 184, 0.45);
+      --sheet-card-bg: linear-gradient(180deg, rgba(241, 245, 249, 0.92), rgba(226, 232, 240, 0.78));
+      --sheet-body-bg: linear-gradient(180deg, rgba(226, 232, 240, 0.52), rgba(203, 213, 225, 0.32));
+      --sheet-section-border: rgba(148, 163, 184, 0.3);
+      --sheet-section-bg: linear-gradient(180deg, rgba(248, 250, 252, 0.92), rgba(226, 232, 240, 0.82));
+      --sheet-header-grad: linear-gradient(145deg, #94a3b8 0%, #64748b 55%, #475569 100%);
+    }
+
+    body.dark-mode.page-doc-form.sheet-theme-blue {
+      --sheet-card-border: rgba(56, 189, 248, 0.38);
+      --sheet-card-bg: linear-gradient(180deg, rgba(16, 30, 48, 0.9), rgba(12, 22, 36, 0.88));
+      --sheet-body-bg: linear-gradient(180deg, rgba(15, 28, 46, 0.55), rgba(12, 22, 36, 0.38));
+      --sheet-section-border: rgba(56, 189, 248, 0.28);
+      --sheet-section-bg: linear-gradient(180deg, rgba(16, 32, 48, 0.9), rgba(12, 24, 38, 0.84));
+      --sheet-header-grad: linear-gradient(145deg, #1e3a8a 0%, #1e40af 52%, #1d4ed8 100%);
+    }
+
+    body.dark-mode.page-doc-form.sheet-theme-pink {
+      --sheet-card-border: rgba(244, 114, 182, 0.42);
+      --sheet-card-bg: linear-gradient(180deg, rgba(52, 20, 36, 0.92), rgba(34, 12, 24, 0.9));
+      --sheet-body-bg: linear-gradient(180deg, rgba(52, 20, 36, 0.58), rgba(34, 12, 24, 0.4));
+      --sheet-section-border: rgba(244, 114, 182, 0.28);
+      --sheet-section-bg: linear-gradient(180deg, rgba(52, 22, 38, 0.9), rgba(32, 14, 26, 0.86));
+      --sheet-header-grad: linear-gradient(145deg, #9d174d 0%, #be185d 52%, #db2777 100%);
+    }
+
+    body.dark-mode.page-doc-form.sheet-theme-green {
+      --sheet-card-border: rgba(34, 197, 94, 0.4);
+      --sheet-card-bg: linear-gradient(180deg, rgba(16, 38, 28, 0.92), rgba(12, 28, 20, 0.88));
+      --sheet-body-bg: linear-gradient(180deg, rgba(16, 38, 28, 0.56), rgba(12, 28, 20, 0.4));
+      --sheet-section-border: rgba(34, 197, 94, 0.3);
+      --sheet-section-bg: linear-gradient(180deg, rgba(18, 40, 30, 0.9), rgba(12, 30, 22, 0.86));
+      --sheet-header-grad: linear-gradient(145deg, #166534 0%, #15803d 52%, #16a34a 100%);
+    }
+
+    body.dark-mode.page-doc-form.sheet-theme-other {
+      --sheet-card-border: rgba(148, 163, 184, 0.4);
+      --sheet-card-bg: linear-gradient(180deg, rgba(20, 28, 40, 0.9), rgba(14, 20, 30, 0.86));
+      --sheet-body-bg: linear-gradient(180deg, rgba(20, 28, 40, 0.56), rgba(14, 20, 30, 0.4));
+      --sheet-section-border: rgba(148, 163, 184, 0.3);
+      --sheet-section-bg: linear-gradient(180deg, rgba(20, 28, 40, 0.88), rgba(14, 22, 32, 0.84));
+      --sheet-header-grad: linear-gradient(145deg, #475569 0%, #334155 52%, #1f2937 100%);
+    }
+
+    body.page-doc-form.sheet-theme-blue .main-card,
+    body.page-doc-form.sheet-theme-pink .main-card,
+    body.page-doc-form.sheet-theme-green .main-card,
+    body.page-doc-form.sheet-theme-other .main-card {
+      border-color: var(--sheet-card-border) !important;
+      background: var(--sheet-card-bg) !important;
+      box-shadow: var(--sheet-card-shadow) !important;
+    }
+
+    body.page-doc-form.sheet-theme-blue .card-body,
+    body.page-doc-form.sheet-theme-pink .card-body,
+    body.page-doc-form.sheet-theme-green .card-body,
+    body.page-doc-form.sheet-theme-other .card-body {
+      background: var(--sheet-body-bg) !important;
+    }
+
+    body.page-doc-form.sheet-theme-blue .form-section,
+    body.page-doc-form.sheet-theme-pink .form-section,
+    body.page-doc-form.sheet-theme-green .form-section,
+    body.page-doc-form.sheet-theme-other .form-section {
+      border-color: var(--sheet-section-border) !important;
+      background: var(--sheet-section-bg) !important;
+      box-shadow: var(--sheet-section-shadow) !important;
+    }
+
+    body.page-doc-form.sheet-theme-blue .header-bg,
+    body.page-doc-form.sheet-theme-pink .header-bg,
+    body.page-doc-form.sheet-theme-green .header-bg,
+    body.page-doc-form.sheet-theme-other .header-bg {
+      background: var(--sheet-header-grad) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.28) !important;
+    }
+
+    .sheet-color-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 22000;
+    }
+
+    .sheet-color-modal.show {
+      display: flex;
+    }
+
+    .sheet-color-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.3);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+    }
+
+    .sheet-color-panel {
+      position: relative;
+      z-index: 1;
+      width: min(720px, 92vw);
+      border-radius: 24px;
+      padding: 22px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgba(248, 250, 255, 0.92));
+      border: 1px solid var(--input-border);
+      box-shadow: 0 24px 50px rgba(15, 23, 42, 0.18);
+      display: grid;
+      gap: 18px;
+    }
+
+    .sheet-color-head h3 {
+      margin: 0;
+      font-size: 1.28rem;
+      font-weight: 860;
+      color: var(--text-color);
+    }
+
+    .sheet-color-head p {
+      margin: 4px 0 0;
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .sheet-color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 14px;
+    }
+
+    .sheet-color-card {
+      border-radius: 18px;
+      border: 1.5px solid rgba(148, 163, 184, 0.36);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.9));
+      padding: 16px 12px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 138px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+    }
+
+    .sheet-color-card span {
+      font-weight: 760;
+      color: var(--text-color);
+      font-size: 1rem;
+    }
+
+    .sheet-color-swatch {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(15, 23, 42, 0.25);
+    }
+
+    .sheet-color-card[data-color="blue"] {
+      --sheet-card-accent: #3b82f6;
+    }
+
+    .sheet-color-card[data-color="blue"] .sheet-color-swatch {
+      background: linear-gradient(145deg, #93c5fd, #3b82f6);
+    }
+
+    .sheet-color-card[data-color="pink"] {
+      --sheet-card-accent: #ec4899;
+    }
+
+    .sheet-color-card[data-color="pink"] .sheet-color-swatch {
+      background: linear-gradient(145deg, #f9a8d4, #ec4899);
+    }
+
+    .sheet-color-card[data-color="green"] {
+      --sheet-card-accent: #22c55e;
+    }
+
+    .sheet-color-card[data-color="green"] .sheet-color-swatch {
+      background: linear-gradient(145deg, #86efac, #22c55e);
+    }
+
+    .sheet-color-card[data-color="other"] {
+      --sheet-card-accent: #64748b;
+    }
+
+    .sheet-color-card[data-color="other"] .sheet-color-swatch {
+      background: linear-gradient(145deg, #cbd5f5, #64748b);
+    }
+
+    .sheet-color-card.is-selected {
+      border-color: var(--sheet-card-accent, rgba(59, 130, 246, 0.6));
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.16), 0 0 0 2px rgba(59, 130, 246, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .sheet-color-card:hover {
+      border-color: rgba(59, 130, 246, 0.35);
+      box-shadow: 0 12px 26px rgba(15, 23, 42, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .sheet-color-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .sheet-color-confirm {
+      min-width: 120px;
+    }
+
+    body.dark-mode .sheet-color-panel {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.96), rgba(12, 20, 36, 0.94));
+      border-color: rgba(148, 163, 184, 0.36);
+    }
+
+    body.dark-mode .sheet-color-card {
+      background: linear-gradient(180deg, rgba(17, 25, 39, 0.9), rgba(12, 20, 32, 0.86));
+      border-color: rgba(148, 163, 184, 0.34);
+    }
+
+    body.dark-mode .sheet-color-card span {
+      color: #e2e8f0;
     }
 
     body.dark-mode .page-doc-form .form-control,
@@ -502,6 +788,37 @@
 
     <div id="errBox" class="error-box"></div>
 
+    <div id="sheetColorModal" class="sheet-color-modal" aria-hidden="true">
+      <div class="sheet-color-backdrop"></div>
+      <div class="sheet-color-panel" role="dialog" aria-modal="true" aria-labelledby="sheetColorTitle">
+        <div class="sheet-color-head">
+          <h3 id="sheetColorTitle">เลือกสีของใบงานเอกสาร</h3>
+          <p>เลือกใบงานเพื่อกรองวัตถุประสงค์ให้ตรงกับเอกสาร</p>
+        </div>
+        <div class="sheet-color-grid">
+          <button type="button" class="sheet-color-card" data-color="blue">
+            <div class="sheet-color-swatch"><i class="bi bi-file-earmark-text"></i></div>
+            <span>ใบฟ้า</span>
+          </button>
+          <button type="button" class="sheet-color-card" data-color="pink">
+            <div class="sheet-color-swatch"><i class="bi bi-file-earmark-text"></i></div>
+            <span>ใบชมพู</span>
+          </button>
+          <button type="button" class="sheet-color-card" data-color="green">
+            <div class="sheet-color-swatch"><i class="bi bi-file-earmark-text"></i></div>
+            <span>ใบเขียว</span>
+          </button>
+          <button type="button" class="sheet-color-card" data-color="other">
+            <div class="sheet-color-swatch"><i class="bi bi-file-earmark-text"></i></div>
+            <span>อื่น ๆ</span>
+          </button>
+        </div>
+        <div class="sheet-color-actions">
+          <button id="sheetColorConfirm" type="button" class="submit-btn sheet-color-confirm" disabled>ตกลง</button>
+        </div>
+      </div>
+    </div>
+
     <div class="main-card" id="mainCard" style="display:none;">
       <div class="header-bg">
         <i id="pageIcon" class="bi bi-plus-circle"></i>
@@ -574,8 +891,8 @@
           </div>
 
           <div style="margin-bottom:10px;">
-            <label class="form-label">ชื่อผู้ส่ง/ผู้ยืม/ผู้ใช้หนี้/ผู้ประสานงาน <span class="text-danger">*</span></label>
-            <input type="text" id="sender" class="form-control" placeholder="ชื่อผู้ส่ง/ผู้ยืม/ผู้ใช้หนี้/ผู้ประสานงาน">
+            <label class="form-label">ชื่อผู้ส่งเบิก/ผู้ยืม/ผู้ใช้หนี้/ผู้จัดทำ <span class="text-danger">*</span></label>
+            <input type="text" id="sender" class="form-control" placeholder="ชื่อผู้ส่งเบิก/ผู้ยืม/ผู้ใช้หนี้/ผู้จัดทำ">
           </div>
 
           <div>
@@ -610,11 +927,11 @@
           <div class="form-section-title"><i class="bi bi-cash-stack"></i>จำนวนเงิน</div>
           <div class="row two">
             <div>
-              <label class="form-label">จำนวนเบิก/ยืม/คืน <span class="text-danger">*</span></label>
+              <label class="form-label">จำนวนเงินเบิก/ยืม/คืน <span class="text-danger">*</span></label>
               <input type="number" id="amount" class="form-control" step="0.01" placeholder="0.00">
             </div>
             <div>
-              <label class="form-label">ส่วนต่าง/เงินเหลือคืน <span class="text-danger">*</span></label>
+              <label class="form-label">เงินเหลือคืน <span class="text-danger">*</span></label>
               <input type="number" id="difference" class="form-control" step="0.01" placeholder="0.00">
             </div>
           </div>
@@ -651,11 +968,11 @@
           <div class="form-section-title"><i class="bi bi-wallet2"></i>ประเภทค่าใช้จ่ายและเกณฑ์คืนเงิน</div>
           <div class="row two">
             <div>
-              <label class="form-label">ประเภทค่าใช้จ่าย</label>
+              <label class="form-label">ประเภทค่าใช้จ่าย <span class="text-danger">*</span></label>
               <select id="loanExpenseType" class="form-select"></select>
             </div>
             <div>
-              <label class="form-label">แหล่งเงินยืม</label>
+              <label class="form-label">แหล่งเงินยืม <span class="text-danger">*</span></label>
               <select id="loanFundingSource" class="form-select"></select>
             </div>
           </div>
@@ -711,7 +1028,7 @@
   </div>
 
   <script src="./config.js"></script>
-  <script src="./api-client.js?v=20260317-1"></script>
+  <script src="./api-client.js?v=20260318-2"></script>
   <script src="./theme-legacy.js?v=20260221-3"></script>
   <script src="./app-common.js?v=20260317-1"></script>
   <script>
@@ -731,6 +1048,18 @@
         'ยืมเงินทดรองราชการ',
         'ยืมเงินนอกงบประมาณ'
       ];
+      var SHEET_COLOR_OPTIONS = [
+        { key: 'blue', label: 'ใบฟ้า', themeClass: 'sheet-theme-blue' },
+        { key: 'pink', label: 'ใบชมพู', themeClass: 'sheet-theme-pink' },
+        { key: 'green', label: 'ใบเขียว', themeClass: 'sheet-theme-green' },
+        { key: 'other', label: 'อื่น ๆ', themeClass: 'sheet-theme-other' }
+      ];
+      var SHEET_COLOR_ALIASES = {
+        blue: ['ใบฟ้า', 'ฟ้า', 'ใบสีฟ้า', 'blue', 'lightblue'],
+        pink: ['ใบชมพู', 'ชมพู', 'ใบสีชมพู', 'pink'],
+        green: ['ใบเขียว', 'เขียว', 'ใบสีเขียว', 'green'],
+        other: ['อื่น ๆ', 'อื่นๆ', 'อื่น', 'other']
+      };
 
       var state = {
         settings: null,
@@ -740,11 +1069,15 @@
         loanOptions: null,
         nextNos: {},
         doc: null,
-        copyDoc: null
+        copyDoc: null,
+        sheetColorKey: '',
+        sheetColorLabel: ''
       };
 
       var els = {
         mainCard: document.getElementById('mainCard'),
+        sheetColorModal: document.getElementById('sheetColorModal'),
+        sheetColorConfirm: document.getElementById('sheetColorConfirm'),
         errBox: document.getElementById('errBox'),
         btnBack: document.getElementById('btnBack'),
         pageIcon: document.getElementById('pageIcon'),
@@ -949,6 +1282,14 @@
         var purpose = C.safeTrim(els.purpose.value || '');
         var show = isLoanPurpose(purpose);
         els.loanExtraSection.style.display = show ? 'block' : 'none';
+        if (els.loanExpenseType) {
+          els.loanExpenseType.required = show;
+          els.loanExpenseType.setAttribute('aria-required', show ? 'true' : 'false');
+        }
+        if (els.loanFundingSource) {
+          els.loanFundingSource.required = show;
+          els.loanFundingSource.setAttribute('aria-required', show ? 'true' : 'false');
+        }
         if (!show) {
           clearLoanExtraFields();
           return;
@@ -961,11 +1302,216 @@
         updateLoanExpenseRuleFields();
       }
 
+      function normalizeColorLabel(value) {
+        return String(value == null ? '' : value)
+          .toLowerCase()
+          .replace(/\s+/g, '')
+          .replace(/[.]/g, '');
+      }
+
+      function getSheetColorOption(key) {
+        for (var i = 0; i < SHEET_COLOR_OPTIONS.length; i++) {
+          if (SHEET_COLOR_OPTIONS[i].key === key) return SHEET_COLOR_OPTIONS[i];
+        }
+        return null;
+      }
+
+      function resolveSheetColorKeyByLabel(label) {
+        var target = normalizeColorLabel(label);
+        if (!target) return '';
+        for (var i = 0; i < SHEET_COLOR_OPTIONS.length; i++) {
+          if (normalizeColorLabel(SHEET_COLOR_OPTIONS[i].label) === target) {
+            return SHEET_COLOR_OPTIONS[i].key;
+          }
+        }
+        return '';
+      }
+
+      function applySheetTheme(key) {
+        var body = document.body;
+        for (var i = 0; i < SHEET_COLOR_OPTIONS.length; i++) {
+          body.classList.remove(SHEET_COLOR_OPTIONS[i].themeClass);
+        }
+        var opt = getSheetColorOption(key);
+        if (opt) body.classList.add(opt.themeClass);
+      }
+
+      function getPurposeListForColor(label) {
+        var data = (state.options && state.options.data) ? state.options.data : null;
+        if (!data || !data.purposeByColor) return null;
+        if (data.purposeByColor[label]) return data.purposeByColor[label];
+        var target = normalizeColorLabel(label);
+        if (!target) return null;
+        for (var key in data.purposeByColor) {
+          if (!Object.prototype.hasOwnProperty.call(data.purposeByColor, key)) continue;
+          if (normalizeColorLabel(key) === target) return data.purposeByColor[key];
+        }
+        var aliasKey = state.sheetColorKey || '';
+        var aliases = aliasKey && SHEET_COLOR_ALIASES[aliasKey] ? SHEET_COLOR_ALIASES[aliasKey] : [];
+        if (aliases && aliases.length) {
+          for (var k in data.purposeByColor) {
+            if (!Object.prototype.hasOwnProperty.call(data.purposeByColor, k)) continue;
+            var normalizedKey = normalizeColorLabel(k);
+            for (var a = 0; a < aliases.length; a++) {
+              if (normalizeColorLabel(aliases[a]) === normalizedKey) return data.purposeByColor[k];
+            }
+          }
+        }
+        return null;
+      }
+
+      function applyPurposeOptions(keepCurrent) {
+        if (!els.purpose) return;
+        var info = (state.options && state.options.data) ? state.options.data : { purposes: [] };
+        var purposes = Array.isArray(info.purposes) ? info.purposes : [];
+        var selectedBefore = keepCurrent ? C.safeTrim(els.purpose.value || '') : '';
+        var filtered = purposes;
+        if (state.sheetColorLabel) {
+          var byColor = getPurposeListForColor(state.sheetColorLabel);
+          if (Array.isArray(byColor) && byColor.length) filtered = byColor;
+        }
+
+        var html = '<option value="">เลือกวัตถุประสงค์...</option>';
+        for (var p = 0; p < filtered.length; p++) {
+          var value = C.safeTrim(filtered[p] || '');
+          if (!value) continue;
+          html += '<option value="' + C.escapeHtml(value) + '">' + C.escapeHtml(value) + '</option>';
+        }
+        els.purpose.innerHTML = html;
+
+        if (selectedBefore) {
+          var allowed = false;
+          for (var j = 0; j < filtered.length; j++) {
+            if (C.safeTrim(filtered[j] || '') === selectedBefore) {
+              allowed = true;
+              break;
+            }
+          }
+          if (allowed) {
+            els.purpose.value = selectedBefore;
+          } else {
+            els.purpose.value = '';
+          }
+        }
+        updateLoanExtraSection();
+      }
+
+      function setSheetColor(key) {
+        var opt = getSheetColorOption(key);
+        if (!opt) return;
+        state.sheetColorKey = opt.key;
+        state.sheetColorLabel = opt.label;
+        applySheetTheme(opt.key);
+        applyPurposeOptions(true);
+      }
+
+      function resolveColorLabelFromPurpose(purpose) {
+        var value = C.safeTrim(purpose || '');
+        if (!value) return '';
+        var data = (state.options && state.options.data) ? state.options.data : null;
+        var map = (data && data.colorByPurpose && typeof data.colorByPurpose === 'object') ? data.colorByPurpose : {};
+        if (map[value]) return map[value];
+        var target = value.replace(/\s+/g, '').toLowerCase();
+        for (var key in map) {
+          if (!Object.prototype.hasOwnProperty.call(map, key)) continue;
+          if (key.replace(/\s+/g, '').toLowerCase() === target) return map[key];
+        }
+        if (data && data.purposeByColor) {
+          for (var colorKey in data.purposeByColor) {
+            if (!Object.prototype.hasOwnProperty.call(data.purposeByColor, colorKey)) continue;
+            var list = data.purposeByColor[colorKey] || [];
+            for (var i = 0; i < list.length; i++) {
+              if (C.safeTrim(list[i] || '') === value) return colorKey;
+            }
+          }
+        }
+        return '';
+      }
+
+      function applySheetColorFromPurpose(purpose) {
+        var colorLabel = resolveColorLabelFromPurpose(purpose);
+        if (!colorLabel) return false;
+        var key = resolveSheetColorKeyByLabel(colorLabel);
+        if (!key) return false;
+        setSheetColor(key);
+        return true;
+      }
+
+      function applySheetColorFromDoc(doc) {
+        var record = doc || {};
+        var explicitColor = C.safeTrim(record.sheetColor || record.sheetType || record.colorSheet || record.docColor || '');
+        if (explicitColor) {
+          var explicitKey = resolveSheetColorKeyByLabel(explicitColor);
+          if (explicitKey) {
+            setSheetColor(explicitKey);
+            return true;
+          }
+        }
+        return applySheetColorFromPurpose(record.purpose || '');
+      }
+
+      function openSheetColorModal(preselectKey) {
+        if (!els.sheetColorModal) return Promise.resolve('');
+        return new Promise(function (resolve) {
+          var modal = els.sheetColorModal;
+          var confirmBtn = els.sheetColorConfirm;
+          var cards = Array.prototype.slice.call(modal.querySelectorAll('.sheet-color-card'));
+          var selectedKey = '';
+
+          function cleanup() {
+            confirmBtn.removeEventListener('click', onConfirm);
+            cards.forEach(function (card) {
+              card.removeEventListener('click', onCardClick);
+            });
+          }
+
+          function setSelected(key) {
+            selectedKey = key;
+            cards.forEach(function (card) {
+              var cardKey = card.getAttribute('data-color');
+              if (cardKey === key) {
+                card.classList.add('is-selected');
+              } else {
+                card.classList.remove('is-selected');
+              }
+            });
+            confirmBtn.disabled = !selectedKey;
+          }
+
+          function onCardClick(evt) {
+            var card = evt.currentTarget;
+            var key = card ? card.getAttribute('data-color') : '';
+            if (!key) return;
+            setSelected(key);
+          }
+
+          function onConfirm() {
+            if (!selectedKey) return;
+            setSheetColor(selectedKey);
+            modal.classList.remove('show');
+            modal.setAttribute('aria-hidden', 'true');
+            cleanup();
+            resolve(selectedKey);
+          }
+
+          modal.classList.add('show');
+          modal.setAttribute('aria-hidden', 'false');
+          confirmBtn.disabled = true;
+          cards.forEach(function (card) {
+            card.classList.remove('is-selected');
+            card.addEventListener('click', onCardClick);
+          });
+          confirmBtn.addEventListener('click', onConfirm);
+
+          var initKey = preselectKey || state.sheetColorKey || '';
+          if (initKey) setSelected(initKey);
+        });
+      }
+
       function fillOptions() {
         var info = (state.options && state.options.data) ? state.options.data : { fiscalYears: [], groups: [], purposes: [] };
         var fiscalYears = Array.isArray(info.fiscalYears) ? info.fiscalYears : [];
         var groups = Array.isArray(info.groups) ? info.groups : [];
-        var purposes = Array.isArray(info.purposes) ? info.purposes : [];
 
         var fiscalHtml = '<option value="" selected disabled>เลือกปีงบประมาณ...</option>';
         for (var i = 0; i < fiscalYears.length; i++) {
@@ -978,12 +1524,7 @@
           groupHtml += '<option value="' + C.escapeHtml(groups[g]) + '">' + C.escapeHtml(groups[g]) + '</option>';
         }
         els.group.innerHTML = groupHtml;
-
-        var purposeHtml = '<option value="">เลือกวัตถุประสงค์...</option>';
-        for (var p = 0; p < purposes.length; p++) {
-          purposeHtml += '<option value="' + C.escapeHtml(purposes[p]) + '">' + C.escapeHtml(purposes[p]) + '</option>';
-        }
-        els.purpose.innerHTML = purposeHtml;
+        applyPurposeOptions(false);
 
         var budgetTypes = ['กองทุน ววน.', 'กองทุนเงินทดแทน', 'เงินบำรุง', 'เงินงบประมาณ'];
         var budgetHtml = '<option value="" selected disabled>เลือกประเภทเงินงบประมาณ...</option>';
@@ -1193,15 +1734,15 @@
         if (!formData.subjectL) return 'กรุณากรอกวัน/เดือน/ปี';
         if (!formData.subjectN) return 'กรุณากรอกสถานที่';
         if (!formData.docNoSdh) return 'กรุณากรอกเลขที่ สธ. (กอง/กลุ่ม)';
-        if (!formData.sender) return 'กรุณากรอกชื่อผู้ส่ง/ผู้ยืม/ผู้ใช้หนี้/ผู้ประสานงาน';
+        if (!formData.sender) return 'กรุณากรอกชื่อผู้ส่งเบิก/ผู้ยืม/ผู้ใช้หนี้/ผู้จัดทำ';
         if (!formData.purpose) return 'กรุณาเลือกวัตถุประสงค์';
         if (!formData.budgetType) return 'กรุณาเลือกประเภทเงินงบประมาณ';
 
         if (!formData.amount || isNaN(parseFloat(formData.amount))) {
-          return 'กรุณากรอกจำนวนเบิก/ยืม/คืน (ตัวเลข)';
+          return 'กรุณากรอกจำนวนเงินเบิก/ยืม/คืน (ตัวเลข)';
         }
         if (!formData.difference || isNaN(parseFloat(formData.difference))) {
-          return 'กรุณากรอกส่วนต่าง/เงินเหลือคืน (ตัวเลข)';
+          return 'กรุณากรอกเงินเหลือคืน (ตัวเลข)';
         }
 
         var needPlan = formData.budgetType === 'เงินงบประมาณ';
@@ -1215,6 +1756,14 @@
           formData.mainAct = '';
           formData.subProject = '';
           formData.activity = '';
+        }
+
+        if (isLoanPurpose(formData.purpose)) {
+          if (!formData.expenseType) return 'กรุณาเลือกประเภทค่าใช้จ่าย';
+          if (!formData.fundingSource) return 'กรุณาเลือกแหล่งเงินยืม';
+        } else {
+          formData.expenseType = '';
+          formData.fundingSource = '';
         }
 
         return '';
@@ -1480,17 +2029,23 @@
 
             if (isEdit && state.doc) {
               setFormData(state.doc);
+              applySheetColorFromDoc(state.doc);
             } else {
               updateReceiveNo();
               setDefaultDates();
               if (isCopy && state.copyDoc) {
                 setCopyFormData(state.copyDoc);
+                applySheetColorFromDoc(state.copyDoc);
               }
             }
 
             togglePlanFields();
-            updateLoanExtraSection();
             refreshDateDisplays();
+            if (!isEdit) {
+              endInitLoading();
+              await openSheetColorModal(state.sheetColorKey);
+            }
+            updateLoanExtraSection();
             els.mainCard.style.display = 'block';
           } catch (err) {
             showError((err && err.message) ? err.message : 'โหลดข้อมูลฟอร์มไม่สำเร็จ');
