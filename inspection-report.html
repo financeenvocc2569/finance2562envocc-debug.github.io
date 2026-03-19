@@ -625,7 +625,7 @@
 
     .purpose-summary-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
     }
 
@@ -633,10 +633,10 @@
       border-radius: 18px;
       border: 1px solid rgba(148, 163, 184, 0.24);
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(248, 252, 255, 0.72));
-      padding: 15px 16px;
+      padding: 12px 13px;
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.84);
       display: grid;
-      gap: 10px;
+      gap: 8px;
     }
 
     .purpose-card.sheet-blue {
@@ -662,8 +662,8 @@
     .purpose-card-head {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 14px;
+      align-items: start;
+      gap: 10px;
     }
 
     .purpose-card-main {
@@ -675,28 +675,28 @@
       align-items: center;
       gap: 8px;
       flex-wrap: wrap;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .purpose-card-title {
       margin: 0;
-      font-size: 0.98rem;
-      line-height: 1.45;
+      font-size: 0.88rem;
+      line-height: 1.4;
       font-weight: 820;
       color: var(--text-color);
       word-break: break-word;
     }
 
     .purpose-card-stat {
-      min-width: 92px;
+      min-width: 62px;
       text-align: right;
       display: grid;
-      gap: 4px;
+      gap: 2px;
       align-content: center;
     }
 
     .purpose-card-count {
-      font-size: 1.76rem;
+      font-size: 1.4rem;
       line-height: 1;
       font-weight: 900;
       color: var(--text-color);
@@ -708,7 +708,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 8px;
+      gap: 6px;
       margin-top: 2px;
       flex-wrap: wrap;
     }
@@ -742,7 +742,7 @@
     }
 
     .purpose-percent {
-      font-size: 0.79rem;
+      font-size: 0.72rem;
       font-weight: 760;
       color: var(--text-muted);
     }
@@ -1339,9 +1339,12 @@
       }
 
       .dashboard-summary-grid,
-      .dashboard-layout,
-      .purpose-summary-grid {
+      .dashboard-layout {
         grid-template-columns: 1fr;
+      }
+
+      .purpose-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .dashboard-top-shell {
@@ -1437,9 +1440,12 @@
 
       .dashboard-summary-grid,
       .dashboard-layout,
-      .dashboard-flow-grid,
-      .purpose-summary-grid {
+      .dashboard-flow-grid {
         grid-template-columns: 1fr;
+      }
+
+      .purpose-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .purpose-card-head {
@@ -2307,13 +2313,13 @@
           + '.print-top-count{font-size:22px;line-height:1;font-weight:900;color:#1d4ed8}'
           + '.print-purpose-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px}'
           + '.print-panel-title{font-size:12px;line-height:1.25;font-weight:800;color:#0f172a}'
-          + '.print-purpose-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}'
-          + '.print-purpose-card{border:1px solid #dbe4f0;border-radius:14px;background:#fff;padding:8px;display:grid;gap:6px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.82)}'
+          + '.print-purpose-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}'
+          + '.print-purpose-card{border:1px solid #dbe4f0;border-radius:14px;background:#fff;padding:7px;display:grid;gap:5px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.82)}'
           + '.print-purpose-card.sheet-blue{background:#eff6ff}.print-purpose-card.sheet-pink{background:#fdf2f8}.print-purpose-card.sheet-green{background:#f0fdf4}.print-purpose-card.sheet-other{background:#f8fafc}'
           + '.print-purpose-pill-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}'
-          + '.print-purpose-card-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:start}'
-          + '.print-purpose-title{font-size:10px;line-height:1.3;font-weight:800;color:#0f172a}'
-          + '.print-purpose-count{font-size:16px;line-height:1;font-weight:900;color:#0f172a}'
+          + '.print-purpose-card-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;align-items:start}'
+          + '.print-purpose-title{font-size:9px;line-height:1.26;font-weight:800;color:#0f172a}'
+          + '.print-purpose-count{font-size:14px;line-height:1;font-weight:900;color:#0f172a}'
           + '.print-purpose-progress{width:100%;height:5px;border-radius:999px;background:#fff;border:1px solid #dbe4f0;overflow:hidden}'
           + '.print-purpose-progress-bar{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#3b82f6,#1d4ed8)}'
           + '.print-purpose-card.sheet-pink .print-purpose-progress-bar{background:linear-gradient(90deg,#ec4899,#be185d)}'
