@@ -862,6 +862,63 @@
       border: 1px solid rgba(34, 197, 94, 0.3);
     }
 
+    .step-history-btn {
+      width: 100%;
+      min-height: 30px;
+      border-radius: 999px;
+      border: 1px solid var(--sheet-soft-border);
+      background: var(--sheet-soft-bg);
+      color: var(--sheet-strong-text);
+      font: inherit;
+      font-size: 0.72rem;
+      font-weight: 760;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 0 10px;
+      cursor: pointer;
+      margin-top: 2px;
+    }
+
+    .step-history-btn:hover {
+      border-color: var(--sheet-hover-border);
+      transform: translateY(-1px);
+    }
+
+    .history-popup-content {
+      text-align: left;
+      display: grid;
+      gap: 8px;
+      max-height: 60vh;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .history-popup-block {
+      border: 1px solid var(--sheet-section-border);
+      border-radius: 12px;
+      background: var(--sheet-section-bg);
+      box-shadow: var(--sheet-section-shadow);
+      padding: 10px 12px;
+    }
+
+    .history-popup-title {
+      margin: 0 0 4px;
+      color: var(--text-color);
+      font-size: 0.84rem;
+      font-weight: 780;
+      line-height: 1.35;
+    }
+
+    .history-popup-line {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.77rem;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
     .readonly-box,
     .notice-box {
       text-align: center;
@@ -1370,10 +1427,22 @@
       color: #d2e6ff;
     }
 
+    body.dark-mode .step-history-btn {
+      color: #dbeafe;
+      border-color: rgba(96, 165, 250, 0.34);
+      background: rgba(59, 130, 246, 0.16);
+    }
+
     body.dark-mode .step-user-chip .fallback {
       background: rgba(64, 129, 213, 0.28);
       border-color: rgba(139, 191, 250, 0.58);
       color: #d9ecff;
+    }
+
+    body.dark-mode .history-popup-block {
+      border-color: rgba(96, 165, 250, 0.26);
+      background: rgba(15, 28, 46, 0.52);
+      box-shadow: none;
     }
 
     body.dark-mode .storage-form,
@@ -1643,12 +1712,21 @@
       var isLegacyPublicQrRequest = !qrToken && legacyQrHint;
       var isPublicQrRequest = !!qrToken || qrMode === '1' || qrMode === 'true' || qrMode === 'qr' || qrMode === 'public' || isLegacyPublicQrRequest;
       var APP_BROWSER_NAME = 'ระบบทะเบียนคุมเอกสาร';
+      var STATUS_STEPS = [
+        { key: 'return', label: 'ส่งกลับแก้ไข', icon: 'bi-arrow-return-right' },
+        { key: 'receiveBack', label: 'รับคืนเอกสาร', icon: 'bi-box-arrow-in-down' },
+        { key: 'verify', label: 'ตรวจสอบ', icon: 'bi-search' },
+        { key: 'boss', label: 'หัวหน้าผ่านงาน', icon: 'bi-person-check' },
+        { key: 'sign', label: 'เสนอลงนาม', icon: 'bi-pen' }
+      ];
 
       var state = {
         settings: null,
         api: null,
         doc: null,
         statusData: null,
+        statusStepLogs: [],
+        statusStepStats: {},
         members: [],
         info: { locations: [], fiscalYears: [] },
         memberImgMap: {},
@@ -1787,6 +1865,136 @@
 
         state.memberImgMap = imgMap;
         state.memberPosMap = posMap;
+      }
+
+      function formatStatusLogTimestamp(isoText) {
+        var iso = C.safeTrim(isoText || '');
+        if (!iso) return 'ไม่ระบุเวลา';
+
+        var normalized = iso;
+        var isDateOnlyInput = false;
+        var ymd = normalized.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (ymd) {
+          isDateOnlyInput = true;
+          var yOnly = Number(ymd[1]);
+          if (yOnly > 2400) yOnly -= 543;
+          normalized = String(yOnly).padStart(4, '0') + '-' + ymd[2] + '-' + ymd[3] + 'T00:00:00+07:00';
+        } else {
+          var yearPrefix = normalized.match(/^(\d{4})([\s\S]*)$/);
+          if (yearPrefix) {
+            var y = Number(yearPrefix[1]);
+            if (y > 2400) normalized = String(y - 543) + yearPrefix[2];
+          }
+          if (/^\d{4}-\d{2}-\d{2}T/.test(normalized) && !/(Z|[+\-]\d{2}:?\d{2})$/.test(normalized)) {
+            normalized += '+07:00';
+          }
+        }
+
+        var d = new Date(normalized);
+        if (isNaN(d.getTime())) return iso;
+
+        var dateText = new Intl.DateTimeFormat('th-TH-u-ca-buddhist', {
+          timeZone: 'Asia/Bangkok',
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        }).format(d);
+
+        if (isDateOnlyInput) return dateText + ' เวลาไม่ระบุ';
+
+        var timeText = new Intl.DateTimeFormat('th-TH', {
+          timeZone: 'Asia/Bangkok',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        }).format(d);
+
+        return dateText + ' เวลา ' + timeText + ' น.';
+      }
+
+      function getStatusStepDef(stepKey) {
+        var key = C.safeTrim(stepKey || '');
+        for (var i = 0; i < STATUS_STEPS.length; i++) {
+          if (STATUS_STEPS[i].key === key) return STATUS_STEPS[i];
+        }
+        return null;
+      }
+
+      function getStatusStepSavedCount(stepKey) {
+        var stats = (state.statusStepStats && typeof state.statusStepStats === 'object') ? state.statusStepStats : {};
+        var count = Number(stats[stepKey] || 0);
+        if (!isFinite(count) || count < 0) count = 0;
+        return Math.floor(count);
+      }
+
+      function getStatusStepLogsGrouped() {
+        var grouped = {};
+        var logs = Array.isArray(state.statusStepLogs) ? state.statusStepLogs : [];
+        for (var i = 0; i < STATUS_STEPS.length; i++) grouped[STATUS_STEPS[i].key] = [];
+        for (var j = 0; j < logs.length; j++) {
+          var item = logs[j] || {};
+          var key = C.safeTrim(item.stepKey || '');
+          if (!key) continue;
+          if (!grouped[key]) grouped[key] = [];
+          grouped[key].push(item);
+        }
+        for (var k = 0; k < STATUS_STEPS.length; k++) {
+          var stepKey = STATUS_STEPS[k].key;
+          grouped[stepKey] = grouped[stepKey].sort(function (a, b) {
+            var sa = Number(a && a.seqNo || 0);
+            var sb = Number(b && b.seqNo || 0);
+            if (sa !== sb) return sb - sa;
+            var ta = String(a && a.createdAtIso || '');
+            var tb = String(b && b.createdAtIso || '');
+            return tb.localeCompare(ta);
+          });
+        }
+        return grouped;
+      }
+
+      function buildStatusHistoryPopupBlock(step, grouped) {
+        var list = Array.isArray(grouped && grouped[step.key]) ? grouped[step.key] : [];
+        var savedCount = getStatusStepSavedCount(step.key);
+        var html = '';
+        if (savedCount < list.length) savedCount = list.length;
+        html += '<div class="history-popup-block">';
+        html += '<p class="history-popup-title"><i class="bi ' + C.escapeHtml(step.icon) + '"></i> ' + C.escapeHtml(step.label) + ' • บันทึกแล้ว ' + String(savedCount) + ' ครั้ง</p>';
+        if (!list.length) {
+          html += '<p class="history-popup-line">ยังไม่เคยบันทึกสถานะนี้</p>';
+        } else {
+          for (var i = 0; i < list.length; i++) {
+            var item = list[i] || {};
+            var seq = Number(item.seqNo || (list.length - i));
+            if (!isFinite(seq) || seq < 1) seq = (list.length - i);
+            var eventDate = C.safeTrim(item.stepDateDisplay || '') || C.safeTrim(item.stepDateIso || '') || '-';
+            var eventUser = C.safeTrim(item.stepUser || '') || '-';
+            var recordedAtText = formatStatusLogTimestamp(item.createdAtIso || item.stepDateIso || '');
+            var recordedBy = C.safeTrim(item.recordedBy || '');
+            html += '<p class="history-popup-line">ครั้งที่ ' + String(seq) + ' • วันที่: ' + C.escapeHtml(eventDate) + ' • ผู้ดำเนินการ: ' + C.escapeHtml(eventUser) + '</p>';
+            html += '<p class="history-popup-line">บันทึกเมื่อ: ' + C.escapeHtml(recordedAtText) + (recordedBy ? (' • ผู้บันทึก: ' + C.escapeHtml(recordedBy)) : '') + '</p>';
+            var note = C.safeTrim(item.statusRemark || '');
+            if (note) {
+              html += '<p class="history-popup-line">หมายเหตุ: ' + C.escapeHtml(note.replace(/\s+/g, ' ')) + '</p>';
+            }
+          }
+        }
+        html += '</div>';
+        return html;
+      }
+
+      async function showStatusStepHistory(stepKey) {
+        var step = getStatusStepDef(stepKey);
+        if (!step) return;
+        var html = '<div class="history-popup-content">' + buildStatusHistoryPopupBlock(step, getStatusStepLogsGrouped()) + '</div>';
+        await Swal.fire(themedSwal({
+          icon: 'info',
+          title: 'ประวัติสถานะ: ' + step.label,
+          html: html,
+          width: 720,
+          confirmButtonText: 'ปิด'
+        }));
       }
 
       function normalizeSheetColorLabel(value) {
@@ -2084,18 +2292,22 @@
       }
 
       function renderStepTrack(statusData) {
-        var steps = [
-          { key: 'return', label: 'ส่งกลับแก้ไข', done: !!statusData.returnCheck, date: statusData.returnDateDisplay, user: statusData.returnUser },
-          { key: 'receiveBack', label: 'รับคืนเอกสาร', done: !!statusData.receiveBackCheck, date: statusData.receiveBackDateDisplay, user: statusData.receiveBackUser },
-          { key: 'verify', label: 'ตรวจสอบ', done: !!statusData.verifyCheck, date: statusData.verifyDateDisplay, user: statusData.verifyUser },
-          { key: 'boss', label: 'หัวหน้าผ่านงาน', done: !!statusData.bossCheck, date: statusData.bossDateDisplay, user: statusData.bossUser },
-          { key: 'sign', label: 'เสนอลงนาม', done: !!statusData.signCheck, date: statusData.signDateDisplay, user: statusData.signUser }
-        ];
-
+        var groupedLogs = getStatusStepLogsGrouped();
         var html = '';
 
-        for (var i = 0; i < steps.length; i++) {
-          var s = steps[i];
+        for (var i = 0; i < STATUS_STEPS.length; i++) {
+          var stepDef = STATUS_STEPS[i];
+          var s = {
+            key: stepDef.key,
+            label: stepDef.label,
+            icon: stepDef.icon,
+            done: !!statusData[stepDef.key + 'Check'],
+            date: statusData[stepDef.key + 'DateDisplay'],
+            user: statusData[stepDef.key + 'User']
+          };
+          var stepLogs = Array.isArray(groupedLogs[s.key]) ? groupedLogs[s.key] : [];
+          var stepSavedCount = getStatusStepSavedCount(s.key);
+          if (stepSavedCount < stepLogs.length) stepSavedCount = stepLogs.length;
           html += '<div class="step-item ' + (s.done ? 'done' : '') + '">';
           html += s.done ? '<i class="bi bi-check-circle-fill"></i>' : '<i class="bi bi-circle"></i>';
           html += '<div>' + C.escapeHtml(s.label) + '</div>';
@@ -2110,6 +2322,12 @@
               html += '</span>';
             }
           }
+
+          html += '<button type="button" class="step-history-btn" data-step-history="' + C.escapeHtml(s.key) + '"><i class="bi bi-clock-history"></i>เช็กประวัติ';
+          if (stepSavedCount > 0) {
+            html += ' (' + C.escapeHtml(String(stepSavedCount)) + ')';
+          }
+          html += '</button>';
 
           html += '</div>';
         }
@@ -2552,14 +2770,16 @@
             if (canAttemptLegacyPublicFallback) {
               var fallbackRes = await tryLegacyPublicDetail();
               if (fallbackRes) {
-                applyResolvedViewMode('public');
-                state.currentUser = null;
-                state.doc = fallbackRes.doc;
-                state.statusData = fallbackRes.statusData || {};
-                state.members = [];
-                state.info = { locations: [], fiscalYears: [] };
-                syncDocRouteId((state.doc && state.doc.docId) || docId);
-                renderDocument();
+              applyResolvedViewMode('public');
+              state.currentUser = null;
+              state.doc = fallbackRes.doc;
+              state.statusData = fallbackRes.statusData || {};
+              state.statusStepLogs = Array.isArray(fallbackRes.statusStepLogs) ? fallbackRes.statusStepLogs : [];
+              state.statusStepStats = (fallbackRes.statusStepStats && typeof fallbackRes.statusStepStats === 'object') ? fallbackRes.statusStepStats : {};
+              state.members = [];
+              state.info = { locations: [], fiscalYears: [] };
+              syncDocRouteId((state.doc && state.doc.docId) || docId);
+              renderDocument();
                 els.mainCard.style.display = 'block';
                 return true;
               }
@@ -2576,6 +2796,8 @@
               state.currentUser = null;
               state.doc = legacyRes.doc;
               state.statusData = legacyRes.statusData || {};
+              state.statusStepLogs = Array.isArray(legacyRes.statusStepLogs) ? legacyRes.statusStepLogs : [];
+              state.statusStepStats = (legacyRes.statusStepStats && typeof legacyRes.statusStepStats === 'object') ? legacyRes.statusStepStats : {};
               state.members = [];
               state.info = { locations: [], fiscalYears: [] };
               syncDocRouteId((state.doc && state.doc.docId) || docId);
@@ -2603,6 +2825,8 @@
         state.currentUser = meRes.user;
         state.doc = detailRes.doc;
         state.statusData = detailRes.statusData || {};
+        state.statusStepLogs = Array.isArray(detailRes.statusStepLogs) ? detailRes.statusStepLogs : [];
+        state.statusStepStats = (detailRes.statusStepStats && typeof detailRes.statusStepStats === 'object') ? detailRes.statusStepStats : {};
         state.members = Array.isArray(membersRes.data) ? membersRes.data : [];
         state.info = (infoRes && infoRes.data && typeof infoRes.data === 'object') ? infoRes.data : { locations: [], fiscalYears: [] };
         syncDocRouteId((state.doc && state.doc.docId) || docId);
@@ -2616,6 +2840,20 @@
       function bindEvents() {
         els.btnBack.addEventListener('click', function () {
           C.redirect('index.html');
+        });
+
+        els.stepTrack.addEventListener('click', function (event) {
+          var node = event && event.target;
+          while (node && node !== els.stepTrack) {
+            if (node.getAttribute) {
+              var stepKey = node.getAttribute('data-step-history');
+              if (stepKey) {
+                showStatusStepHistory(stepKey);
+                return;
+              }
+            }
+            node = node.parentNode;
+          }
         });
 
         els.btnPrintSticker.addEventListener('click', printDocSticker);
