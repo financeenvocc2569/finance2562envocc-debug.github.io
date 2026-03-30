@@ -174,6 +174,22 @@
     return safeTrim(scriptUrl || '').split('#')[0].split('?')[0].toLowerCase();
   }
 
+  function normalizeIntervalMs(value, fallback, min, max) {
+    var num = Number(value);
+    var base = Number(fallback);
+    var lower = Number(min || 1000);
+    var upper = Number(max || (24 * 60 * 60 * 1000));
+    if (!isFinite(base) || base <= 0) base = lower;
+    if (!isFinite(num) || num <= 0) num = base;
+    if (isFinite(lower) && num < lower) num = lower;
+    if (isFinite(upper) && upper > 0 && num > upper) num = upper;
+    return Math.round(num);
+  }
+
+  var DEFAULT_KEEPALIVE_INTERVAL_MS = 10 * 60 * 1000;
+  var DEFAULT_KEEPALIVE_RETRY_MS = 2 * 60 * 1000;
+  var DEFAULT_KEEPALIVE_HIDDEN_GRACE_MS = 10 * 60 * 1000;
+
   function DocumentControlApi(options) {
     options = options || {};
     this.scriptUrl = normalizeScriptUrl(options.scriptUrl || '');
@@ -188,7 +204,185 @@
     }
     this.clientContext = buildClientContext();
     this.cachePrefix = 'docControlApiCacheV1:' + normalizeCachePrefix(this.scriptUrl);
+    this.keepAliveIntervalMs = normalizeIntervalMs(options.keepAliveIntervalMs, DEFAULT_KEEPALIVE_INTERVAL_MS, 60 * 1000, 30 * 60 * 1000);
+    this.keepAliveRetryMs = normalizeIntervalMs(options.keepAliveRetryMs, DEFAULT_KEEPALIVE_RETRY_MS, 30 * 1000, 10 * 60 * 1000);
+    this.keepAliveHiddenGraceMs = normalizeIntervalMs(options.keepAliveHiddenGraceMs, DEFAULT_KEEPALIVE_HIDDEN_GRACE_MS, 60 * 1000, 60 * 60 * 1000);
+    this._sessionKeepAlive = null;
   }
+
+  DocumentControlApi.prototype._ensureKeepAliveState = function () {
+    if (this._sessionKeepAlive) return this._sessionKeepAlive;
+    this._sessionKeepAlive = {
+      authenticated: false,
+      bound: false,
+      inFlight: false,
+      lastActivityAt: Date.now(),
+      timerId: 0
+    };
+    return this._sessionKeepAlive;
+  };
+
+  DocumentControlApi.prototype._touchSessionActivity = function () {
+    var state = this._ensureKeepAliveState();
+    state.lastActivityAt = Date.now();
+    return state;
+  };
+
+  DocumentControlApi.prototype._bindSessionKeepAliveListeners = function () {
+    var state = this._ensureKeepAliveState();
+    if (state.bound) return state;
+    state.bound = true;
+
+    var self = this;
+
+    function markActivity() {
+      self._touchSessionActivity();
+    }
+
+    function resumeKeepAlive() {
+      self._touchSessionActivity();
+      self._scheduleSessionKeepAlive(1000);
+    }
+
+    state.onActivity = markActivity;
+    state.onVisibilityChange = function () {
+      if (!global.document || global.document.visibilityState !== 'hidden') {
+        resumeKeepAlive();
+      }
+    };
+    state.onFocus = resumeKeepAlive;
+    state.onPageShow = resumeKeepAlive;
+    state.onOnline = function () {
+      self._scheduleSessionKeepAlive(2000);
+    };
+    state.onPageHide = function () {
+      self._stopSessionKeepAlive(false);
+    };
+
+    if (global.document && global.document.addEventListener) {
+      global.document.addEventListener('pointerdown', state.onActivity, true);
+      global.document.addEventListener('keydown', state.onActivity, true);
+      global.document.addEventListener('input', state.onActivity, true);
+      global.document.addEventListener('visibilitychange', state.onVisibilityChange);
+    }
+    if (global.addEventListener) {
+      global.addEventListener('focus', state.onFocus, true);
+      global.addEventListener('pageshow', state.onPageShow);
+      global.addEventListener('online', state.onOnline);
+      global.addEventListener('pagehide', state.onPageHide);
+    }
+
+    return state;
+  };
+
+  DocumentControlApi.prototype._shouldRunSessionKeepAlive = function () {
+    var state = this._ensureKeepAliveState();
+    if (!state.authenticated) return false;
+    if (global.navigator && global.navigator.onLine === false) return false;
+    if (global.document && global.document.visibilityState === 'hidden') {
+      return (Date.now() - state.lastActivityAt) <= this.keepAliveHiddenGraceMs;
+    }
+    return true;
+  };
+
+  DocumentControlApi.prototype._scheduleSessionKeepAlive = function (delayMs) {
+    var state = this._ensureKeepAliveState();
+    if (state.timerId && typeof global.clearTimeout === 'function') {
+      global.clearTimeout(state.timerId);
+      state.timerId = 0;
+    }
+    if (!state.authenticated || typeof global.setTimeout !== 'function') return;
+
+    var waitMs = Number(delayMs);
+    if (!isFinite(waitMs) || waitMs < 0) waitMs = this.keepAliveIntervalMs;
+    if (waitMs < 1000) waitMs = 1000;
+    if (waitMs > 60 * 60 * 1000) waitMs = 60 * 60 * 1000;
+
+    var self = this;
+    state.timerId = global.setTimeout(function () {
+      self._runSessionKeepAlive();
+    }, Math.round(waitMs));
+  };
+
+  DocumentControlApi.prototype._stopSessionKeepAlive = function (clearAuth) {
+    var state = this._ensureKeepAliveState();
+    if (state.timerId && typeof global.clearTimeout === 'function') {
+      global.clearTimeout(state.timerId);
+      state.timerId = 0;
+    }
+    state.inFlight = false;
+    if (clearAuth) state.authenticated = false;
+  };
+
+  DocumentControlApi.prototype._handleSessionAuthSuccess = function () {
+    var state = this._ensureKeepAliveState();
+    state.authenticated = true;
+    this._touchSessionActivity();
+    this._bindSessionKeepAliveListeners();
+    this._scheduleSessionKeepAlive(this.keepAliveIntervalMs);
+  };
+
+  DocumentControlApi.prototype._handleSessionAuthFailure = function () {
+    this._cacheClear('auth.me');
+    this._stopSessionKeepAlive(true);
+  };
+
+  DocumentControlApi.prototype._isSessionAuthError = function (err) {
+    var code = safeTrim(err && (err.code || err.errorCode) || '').toLowerCase();
+    if (code === 'not_logged_in' || code === 'invalid_session' || code === 'missing_device_key') {
+      return true;
+    }
+
+    var message = safeTrim(err && err.message || '').toLowerCase();
+    return (
+      message.indexOf('not_logged_in') !== -1 ||
+      message.indexOf('invalid_session') !== -1 ||
+      message.indexOf('missing_device_key') !== -1 ||
+      message.indexOf('session ไม่ถูกต้อง') !== -1 ||
+      message.indexOf('กรุณาเข้าสู่ระบบก่อน') !== -1 ||
+      message.indexOf('กรุณาระบุ devicekey') !== -1
+    );
+  };
+
+  DocumentControlApi.prototype._runSessionKeepAlive = function () {
+    var state = this._ensureKeepAliveState();
+    state.timerId = 0;
+    if (!state.authenticated) return Promise.resolve(false);
+
+    if (!this._shouldRunSessionKeepAlive()) {
+      this._scheduleSessionKeepAlive(this.keepAliveIntervalMs);
+      return Promise.resolve(false);
+    }
+
+    if (state.inFlight) {
+      this._scheduleSessionKeepAlive(this.keepAliveRetryMs);
+      return Promise.resolve(false);
+    }
+
+    state.inFlight = true;
+    var self = this;
+    return this.me({
+      noPageLoader: true,
+      forceRefresh: true,
+      timeoutMs: Math.min(this.timeoutMs || 15000, 15000)
+    }).then(function (res) {
+      state.inFlight = false;
+      if (res && res.success && res.user) {
+        self._handleSessionAuthSuccess();
+        return true;
+      }
+      self._handleSessionAuthFailure();
+      return false;
+    }).catch(function (err) {
+      state.inFlight = false;
+      if (self._isSessionAuthError(err)) {
+        self._handleSessionAuthFailure();
+        return false;
+      }
+      self._scheduleSessionKeepAlive(self.keepAliveRetryMs);
+      return false;
+    });
+  };
 
   DocumentControlApi.prototype._buildPayload = function (action, payload, opts) {
     var normalizedPayload = payload && typeof payload === 'object' ? payload : {};
@@ -521,9 +715,19 @@
     }
 
     return requestPromise.then(function (response) {
+      if (response && response.success !== false) {
+        if ((action === 'auth.login' || action === 'auth.me') && response.user) {
+          self._handleSessionAuthSuccess();
+        } else if (self._sessionKeepAlive && self._sessionKeepAlive.authenticated) {
+          self._touchSessionActivity();
+        }
+      }
       self._stopGlobalLoader(loaderTicket);
       return response;
     }, function (err) {
+      if (self._isSessionAuthError(err)) {
+        self._handleSessionAuthFailure();
+      }
       self._stopGlobalLoader(loaderTicket);
       throw err;
     });
@@ -546,13 +750,16 @@
       if (res && res.success && safeTrim(res.deviceKey)) {
         self.defaultDeviceKey = safeTrim(res.deviceKey);
       }
-      if (res && res.success && res.user) self._cacheWrite('auth.me', res);
+      if (res && res.success && res.user) {
+        self._cacheWrite('auth.me', res);
+      }
       return res;
     });
   };
 
   DocumentControlApi.prototype.logout = function (opts) {
     var self = this;
+    this._stopSessionKeepAlive(true);
     return this.call('auth.logout', {
       deviceKey: this.defaultDeviceKey,
       clientMachineKey: this.defaultMachineKey
@@ -571,6 +778,7 @@
   DocumentControlApi.prototype.me = function (opts) {
     var cached = (opts && opts.forceRefresh) ? null : this._cacheRead('auth.me', 20000);
     if (cached && cached.success && cached.user) {
+      this._handleSessionAuthSuccess();
       return Promise.resolve(cached);
     }
 
@@ -579,7 +787,9 @@
       deviceKey: this.defaultDeviceKey,
       clientMachineKey: this.defaultMachineKey
     }, opts).then(function (res) {
-      if (res && res.success && res.user) self._cacheWrite('auth.me', res);
+      if (res && res.success && res.user) {
+        self._cacheWrite('auth.me', res);
+      }
       return res;
     });
   };
