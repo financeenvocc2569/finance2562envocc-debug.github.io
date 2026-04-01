@@ -940,6 +940,16 @@
     }, opts);
   };
 
+  DocumentControlApi.prototype.loanPublicSelfDashboard = function (params, opts) {
+    params = params || {};
+    return this.call('loan.public_self_dashboard', {
+      deviceKey: this.defaultDeviceKey,
+      clientMachineKey: this.defaultMachineKey,
+      searchQuery: safeTrim(params.searchQuery || params.borrowerName || ''),
+      maxRecords: Number(params.maxRecords || 80)
+    }, opts);
+  };
+
   DocumentControlApi.prototype.loanDetail = function (recordId, opts) {
     return this.call('loan.detail', {
       deviceKey: this.defaultDeviceKey,

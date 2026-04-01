@@ -1,0 +1,1349 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ตรวจสอบสัญญาเงินยืมของตนเอง</title>
+  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Seal_of_the_Ministry_of_Public_Health_of_Thailand.svg/500px-Seal_of_the_Ministry_of_Public_Health_of_Thailand.svg.png">
+  <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Seal_of_the_Ministry_of_Public_Health_of_Thailand.svg/500px-Seal_of_the_Ministry_of_Public_Health_of_Thailand.svg.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #eef5ff;
+      --bg-soft: #f7faff;
+      --bg-deep: #e6f0fe;
+      --panel: rgba(255, 255, 255, 0.92);
+      --panel-strong: rgba(255, 255, 255, 0.98);
+      --line: rgba(148, 163, 184, 0.28);
+      --line-strong: rgba(100, 116, 139, 0.38);
+      --text: #122033;
+      --text-sub: #5b6b82;
+      --text-faint: #7b8ba3;
+      --blue: #2563eb;
+      --blue-soft: rgba(37, 99, 235, 0.12);
+      --violet: #7c3aed;
+      --violet-soft: rgba(124, 58, 237, 0.12);
+      --amber: #d97706;
+      --amber-soft: rgba(217, 119, 6, 0.14);
+      --rose: #dc2626;
+      --rose-soft: rgba(220, 38, 38, 0.12);
+      --emerald: #059669;
+      --emerald-soft: rgba(5, 150, 105, 0.12);
+      --bg-glow-a: rgba(66, 199, 255, 0.18);
+      --bg-glow-b: rgba(24, 95, 255, 0.14);
+      --bg-glow-c: rgba(255, 255, 255, 0.58);
+      --bg-glow-d: rgba(148, 163, 184, 0.1);
+      --table-head-bg-start: rgba(216, 227, 242, 0.98);
+      --table-head-bg-end: rgba(202, 216, 235, 0.98);
+      --table-head-top: rgba(255, 255, 255, 0.62);
+      --table-head-bottom: rgba(119, 140, 170, 0.24);
+      --table-head-shadow: rgba(15, 23, 42, 0.08);
+      --table-head-text: #17253c;
+      --shadow: 0 18px 48px rgba(15, 23, 42, 0.1);
+      --accent: linear-gradient(135deg, #42c7ff 0%, #1989ff 56%, #185fff 100%);
+    }
+
+    body.dark-mode {
+      color-scheme: dark;
+      --bg: #08111e;
+      --bg-soft: #0d1828;
+      --bg-deep: #06101b;
+      --panel: rgba(15, 24, 39, 0.92);
+      --panel-strong: rgba(15, 24, 39, 0.98);
+      --line: rgba(148, 163, 184, 0.16);
+      --line-strong: rgba(148, 163, 184, 0.28);
+      --text: #edf4ff;
+      --text-sub: #c1d0e4;
+      --text-faint: #97aac4;
+      --blue-soft: rgba(37, 99, 235, 0.18);
+      --violet-soft: rgba(124, 58, 237, 0.18);
+      --amber-soft: rgba(217, 119, 6, 0.2);
+      --rose-soft: rgba(220, 38, 38, 0.18);
+      --emerald-soft: rgba(5, 150, 105, 0.18);
+      --bg-glow-a: rgba(45, 95, 168, 0.24);
+      --bg-glow-b: rgba(82, 46, 180, 0.18);
+      --bg-glow-c: rgba(11, 19, 32, 0.18);
+      --bg-glow-d: rgba(148, 163, 184, 0.05);
+      --table-head-bg-start: rgba(36, 53, 76, 0.98);
+      --table-head-bg-end: rgba(23, 35, 52, 0.98);
+      --table-head-top: rgba(255, 255, 255, 0.08);
+      --table-head-bottom: rgba(5, 10, 18, 0.42);
+      --table-head-shadow: rgba(2, 8, 20, 0.28);
+      --table-head-text: #edf4ff;
+      --shadow: 0 22px 56px rgba(2, 8, 20, 0.34);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+
+    body {
+      margin: 0;
+      position: relative;
+      overflow-x: hidden;
+      isolation: isolate;
+      font-family: "IBM Plex Sans Thai", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1180px 760px at -14% -18%, var(--bg-glow-a), rgba(66, 199, 255, 0) 56%),
+        radial-gradient(940px 640px at 112% -12%, var(--bg-glow-b), rgba(24, 95, 255, 0) 58%),
+        radial-gradient(860px 520px at 50% 18%, var(--bg-glow-c), rgba(255, 255, 255, 0) 72%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 46%, var(--bg-deep) 100%);
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    body::before {
+      background:
+        radial-gradient(620px 420px at 14% 28%, var(--bg-glow-c), rgba(255, 255, 255, 0) 72%),
+        radial-gradient(760px 480px at 84% 72%, var(--bg-glow-d), rgba(148, 163, 184, 0) 70%);
+      opacity: 0.95;
+    }
+
+    body::after {
+      background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0) 34%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0) 24%);
+      mix-blend-mode: soft-light;
+      opacity: 0.75;
+    }
+
+    .page {
+      width: min(1760px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: calc(12px + env(safe-area-inset-top, 0px)) 0 calc(20px + env(safe-area-inset-bottom, 0px));
+      display: grid;
+      gap: 10px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.56);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px) saturate(150%);
+      -webkit-backdrop-filter: blur(16px) saturate(150%);
+    }
+
+    .header-panel {
+      position: sticky;
+      top: calc(env(safe-area-inset-top, 0px) + 8px);
+      z-index: 24;
+      align-self: start;
+      overflow: hidden;
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .header-row {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .title {
+      margin: 0;
+      font-size: clamp(1.28rem, 2.4vw, 2rem);
+      line-height: 1.02;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+    }
+
+    .theme-btn,
+    .ghost-btn,
+    .search-btn,
+    .refresh-btn {
+      appearance: none;
+      min-height: 44px;
+      padding: 0 14px;
+      border-radius: 14px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      transition: transform 0.18s ease, filter 0.18s ease, opacity 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      white-space: nowrap;
+    }
+
+    .theme-btn {
+      min-width: 44px;
+      width: 44px;
+      padding: 0;
+      flex: 0 0 44px;
+    }
+
+    .theme-btn,
+    .ghost-btn,
+    .refresh-btn {
+      border: 1px solid var(--line-strong);
+      background: var(--panel-strong);
+      color: var(--text);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
+    }
+
+    .search-btn {
+      position: relative;
+      overflow: hidden;
+      border: none;
+      color: #fff;
+      background: var(--accent);
+      box-shadow: 0 8px 20px rgba(24, 95, 255, 0.14);
+    }
+
+    .theme-btn:hover,
+    .ghost-btn:hover,
+    .search-btn:hover,
+    .refresh-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.02);
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.08);
+    }
+
+    .theme-btn:disabled,
+    .ghost-btn:disabled,
+    .search-btn:disabled,
+    .refresh-btn:disabled {
+      opacity: 0.72;
+      cursor: wait;
+      transform: none;
+      filter: none;
+    }
+
+    .privacy-banner {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+      align-items: start;
+      border-radius: 18px;
+      padding: 12px 14px;
+      border: 1px solid rgba(220, 38, 38, 0.24);
+      background: linear-gradient(180deg, rgba(255, 244, 244, 0.98) 0%, rgba(255, 233, 233, 0.96) 100%);
+      color: #b91c1c;
+      box-shadow: 0 10px 22px rgba(220, 38, 38, 0.08);
+    }
+
+    body.dark-mode .privacy-banner {
+      border-color: rgba(248, 113, 113, 0.26);
+      background: linear-gradient(180deg, rgba(78, 22, 22, 0.9) 0%, rgba(61, 17, 17, 0.94) 100%);
+      color: #fecaca;
+      box-shadow: 0 12px 24px rgba(2, 8, 20, 0.24);
+    }
+
+    .privacy-banner i {
+      font-size: 1.1rem;
+      line-height: 1;
+      margin-top: 2px;
+    }
+
+    .privacy-banner-text {
+      font-size: 0.92rem;
+      line-height: 1.55;
+      font-weight: 900;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .search-controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 8px;
+      align-items: center;
+      min-width: 0;
+    }
+
+    .search-field {
+      position: relative;
+      min-width: 0;
+    }
+
+    .search-leading-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-faint);
+      font-size: 0.95rem;
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      min-height: 44px;
+      border-radius: 14px;
+      border: 1px solid var(--line-strong);
+      background: var(--panel-strong);
+      color: var(--text);
+      padding: 0 14px 0 40px;
+      font: inherit;
+      font-size: 0.9rem;
+      font-weight: 800;
+      outline: none;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .search-input::placeholder {
+      color: var(--text-faint);
+      font-weight: 700;
+    }
+
+    .search-input:focus {
+      border-color: rgba(37, 99, 235, 0.46);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+    }
+
+    .content-panel {
+      padding: 0 8px;
+      display: grid;
+      gap: 10px;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
+
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .summary-item {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 12px;
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+      background: var(--panel-strong);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
+    }
+
+    .summary-item.awaiting {
+      border-color: rgba(124, 58, 237, 0.24);
+      background: var(--violet-soft);
+    }
+
+    .summary-item.due_soon {
+      border-color: rgba(217, 119, 6, 0.24);
+      background: var(--amber-soft);
+    }
+
+    .summary-item.unpaid {
+      border-color: rgba(37, 99, 235, 0.24);
+      background: var(--blue-soft);
+    }
+
+    .summary-item.overdue {
+      border-color: rgba(220, 38, 38, 0.24);
+      background: var(--rose-soft);
+    }
+
+    .summary-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .summary-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+      font-size: 0.9rem;
+      font-weight: 900;
+      line-height: 1.4;
+    }
+
+    .summary-item.awaiting .summary-label,
+    .summary-item.awaiting .summary-value { color: var(--violet); }
+    .summary-item.due_soon .summary-label,
+    .summary-item.due_soon .summary-value { color: var(--amber); }
+    .summary-item.unpaid .summary-label,
+    .summary-item.unpaid .summary-value { color: var(--blue); }
+    .summary-item.overdue .summary-label,
+    .summary-item.overdue .summary-value { color: var(--rose); }
+
+    .summary-value {
+      font-size: clamp(1.4rem, 2.4vw, 2rem);
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      white-space: nowrap;
+    }
+
+    .summary-sub {
+      font-size: 0.82rem;
+      line-height: 1.45;
+      font-weight: 750;
+      color: var(--text-sub);
+    }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px 12px;
+      flex-wrap: wrap;
+      color: var(--text-sub);
+      font-size: 0.86rem;
+      line-height: 1.5;
+      font-weight: 700;
+      padding: 0 2px;
+    }
+
+    .table-top-note {
+      overflow: hidden;
+      border-radius: 18px;
+      border: 1px solid rgba(217, 119, 6, 0.42);
+      background: linear-gradient(180deg, rgba(255, 247, 214, 0.99) 0%, rgba(255, 234, 167, 0.98) 100%);
+      color: #92400e;
+      padding: 12px 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      box-shadow: 0 14px 28px rgba(217, 119, 6, 0.18);
+    }
+
+    .table-top-note i {
+      font-size: 1.05rem;
+      line-height: 1;
+      margin-top: 2px;
+      flex: 0 0 auto;
+    }
+
+    .table-top-note-text {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      font-weight: 900;
+      text-align: left;
+    }
+
+    body.dark-mode .table-top-note {
+      border-color: rgba(251, 191, 36, 0.36);
+      background: linear-gradient(180deg, rgba(94, 55, 10, 0.94) 0%, rgba(69, 40, 8, 0.96) 100%);
+      color: #fde68a;
+      box-shadow: 0 16px 30px rgba(2, 8, 20, 0.28);
+    }
+
+    .table-wrap {
+      overflow: hidden;
+      border: 1px solid var(--line-strong);
+      border-radius: 22px;
+      background: var(--panel-strong);
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    }
+
+    .desktop-table { display: block; }
+    .mobile-list { display: none; gap: 10px; }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      color: var(--text);
+      table-layout: fixed;
+    }
+
+    .table col.col-index { width: 6%; }
+    .table col.col-contract { width: 14%; }
+    .table col.col-group { width: 21%; }
+    .table col.col-expense { width: 13%; }
+    .table col.col-funding { width: 13%; }
+    .table col.col-amount { width: 12%; }
+    .table col.col-status { width: 11%; }
+    .table col.col-due { width: 10%; }
+
+    .table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      padding: 11px 8px;
+      border-right: 1px solid var(--line-strong);
+      border-bottom: 1px solid var(--line-strong);
+      background: linear-gradient(180deg, var(--table-head-bg-start) 0%, var(--table-head-bg-end) 100%);
+      color: var(--table-head-text);
+      text-align: center;
+      font-size: 0.88rem;
+      font-weight: 900;
+      line-height: 1.35;
+      box-shadow:
+        inset 0 1px 0 var(--table-head-top),
+        inset 0 -1px 0 var(--table-head-bottom),
+        0 8px 16px var(--table-head-shadow);
+    }
+
+    .table thead th:last-child,
+    .table tbody td:last-child {
+      border-right: none;
+    }
+
+    .table tbody td {
+      padding: 10px 8px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      font-size: 0.86rem;
+      line-height: 1.45;
+      font-weight: 700;
+      vertical-align: middle;
+      background: rgba(255, 255, 255, 0.78);
+      word-break: break-word;
+    }
+
+    body.dark-mode .table tbody td {
+      background: rgba(11, 19, 32, 0.88);
+    }
+
+    .table tbody tr:nth-child(even) td {
+      background: rgba(246, 249, 255, 0.96);
+    }
+
+    body.dark-mode .table tbody tr:nth-child(even) td {
+      background: rgba(16, 25, 40, 0.96);
+    }
+
+    .table tbody tr.row-awaiting td:first-child { box-shadow: inset 4px 0 0 rgba(124, 58, 237, 0.86); }
+    .table tbody tr.row-due_soon td:first-child { box-shadow: inset 4px 0 0 rgba(217, 119, 6, 0.86); }
+    .table tbody tr.row-unpaid td:first-child { box-shadow: inset 4px 0 0 rgba(37, 99, 235, 0.86); }
+    .table tbody tr.row-overdue td:first-child { box-shadow: inset 4px 0 0 rgba(220, 38, 38, 0.86); }
+
+    .cell-center { text-align: center; }
+    .cell-index { font-size: 0.78rem; font-weight: 800; }
+    .cell-contract { text-align: center; font-weight: 900; white-space: nowrap; }
+    .cell-group { white-space: normal; line-height: 1.45; }
+    .cell-funding { white-space: nowrap; font-size: 0.82rem; }
+    .cell-amount { text-align: right; font-weight: 900; white-space: nowrap; color: var(--blue); }
+    .cell-due { white-space: nowrap; font-size: 0.8rem; }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 32px;
+      padding: 0 8px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 0.78rem;
+      font-weight: 900;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+
+    .status-pill.awaiting { color: var(--violet); background: var(--violet-soft); border-color: rgba(124, 58, 237, 0.24); }
+    .status-pill.due_soon { color: var(--amber); background: var(--amber-soft); border-color: rgba(217, 119, 6, 0.24); }
+    .status-pill.unpaid { color: var(--blue); background: var(--blue-soft); border-color: rgba(37, 99, 235, 0.24); }
+    .status-pill.overdue { color: var(--rose); background: var(--rose-soft); border-color: rgba(220, 38, 38, 0.24); }
+
+    .muted-text { color: var(--text-faint); font-weight: 700; }
+
+    .mobile-card {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--panel-strong);
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04);
+    }
+
+    .mobile-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: transparent;
+    }
+
+    .mobile-card.awaiting::before { background: rgba(124, 58, 237, 0.82); }
+    .mobile-card.due_soon::before { background: rgba(217, 119, 6, 0.82); }
+    .mobile-card.unpaid::before { background: rgba(37, 99, 235, 0.82); }
+    .mobile-card.overdue::before { background: rgba(220, 38, 38, 0.82); }
+
+    .mobile-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .mobile-contract {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .mobile-index {
+      font-size: 0.78rem;
+      color: var(--text-faint);
+      font-weight: 800;
+    }
+
+    .mobile-contract-no {
+      font-size: 1rem;
+      font-weight: 900;
+      line-height: 1.35;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    .mobile-group {
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--text-sub);
+      font-weight: 750;
+    }
+
+    .mobile-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .mobile-item {
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.58);
+      padding: 10px;
+      display: grid;
+      gap: 4px;
+    }
+
+    body.dark-mode .mobile-item {
+      background: rgba(17, 27, 42, 0.72);
+    }
+
+    .mobile-item-label {
+      font-size: 0.76rem;
+      color: var(--text-faint);
+      font-weight: 800;
+      line-height: 1.35;
+    }
+
+    .mobile-item-value {
+      font-size: 0.86rem;
+      color: var(--text);
+      font-weight: 800;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .state {
+      padding: 28px 20px;
+      text-align: center;
+      display: grid;
+      justify-items: center;
+      gap: 10px;
+    }
+
+    .state-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+    }
+
+    .state.intro .state-icon { background: var(--blue-soft); color: var(--blue); }
+    .state.loading .state-icon { background: var(--amber-soft); color: var(--amber); }
+    .state.error .state-icon { background: var(--rose-soft); color: var(--rose); }
+    .state.empty .state-icon { background: var(--emerald-soft); color: var(--emerald); }
+
+    #loadingState {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      padding: 8px 0 2px;
+    }
+
+    #loadingState .state-icon {
+      width: auto;
+      height: auto;
+      border-radius: 0;
+      background: transparent;
+      color: var(--amber);
+      font-size: 1rem;
+    }
+
+    #loadingState.state.loading .state-icon {
+      background: transparent;
+      color: var(--amber);
+    }
+
+    .state h2 {
+      margin: 0;
+      font-size: 1.4rem;
+      line-height: 1.2;
+      font-weight: 900;
+    }
+
+    .state p {
+      margin: 0;
+      max-width: 760px;
+      font-size: 0.96rem;
+      line-height: 1.75;
+      color: var(--text-sub);
+      font-weight: 700;
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 3px solid rgba(217, 119, 6, 0.22);
+      border-top-color: var(--amber);
+      animation: spin 0.9s linear infinite;
+    }
+
+    .brand-footer {
+      margin-top: 8px;
+      padding: 14px 2px 0;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      color: var(--text-sub);
+      text-align: center;
+    }
+
+    .brand-footer img {
+      width: 58px;
+      height: auto;
+      display: block;
+      flex: 0 0 auto;
+    }
+
+    .brand-footer-text {
+      font-size: 0.92rem;
+      line-height: 1.55;
+      font-weight: 800;
+      text-align: center;
+      max-width: 100%;
+    }
+
+    .hidden { display: none !important; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .theme-btn,
+      .ghost-btn,
+      .search-btn,
+      .refresh-btn {
+        transition: none;
+      }
+    }
+
+    @media (max-width: 1120px) {
+      .summary-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 860px) {
+      .page {
+        width: min(100vw - 18px, 100%);
+        padding-top: calc(12px + env(safe-area-inset-top, 0px));
+      }
+
+      .panel { border-radius: 22px; }
+      .header-panel {
+        top: calc(env(safe-area-inset-top, 0px) + 6px);
+      }
+
+      .toolbar,
+      .search-controls,
+      .summary-strip,
+      .mobile-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .desktop-table { display: none; }
+      .mobile-list { display: grid; }
+
+      .ghost-btn,
+      .search-btn,
+      .refresh-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="panel header-panel">
+      <div class="header-row">
+        <div>
+          <h1 class="title">ตรวจสอบสัญญาเงินยืมของตนเอง</h1>
+        </div>
+        <button id="btnTheme" class="theme-btn" type="button" aria-label="สลับเป็นโหมดกลางคืน" title="สลับเป็นโหมดกลางคืน"><i class="bi bi-moon-stars"></i></button>
+      </div>
+
+      <div class="privacy-banner" role="note" aria-label="ประกาศการคุ้มครองข้อมูลส่วนบุคคล">
+        <i class="bi bi-shield-lock-fill" aria-hidden="true"></i>
+        <div class="privacy-banner-text">กรณีมีชื่อผู้ยืมในทะเบียนจะไม่สามารถยืมเงินซ้ำได้</div>
+      </div>
+
+      <div class="toolbar">
+        <div class="search-controls">
+          <label class="search-field" for="searchInput">
+            <i class="bi bi-search search-leading-icon"></i>
+            <input id="searchInput" class="search-input" type="text" placeholder="กรอกชื่อ-สกุลผู้ยืมเพื่อค้นหาสัญญาคงค้างของตนเอง" autocomplete="name" spellcheck="false">
+          </label>
+          <button id="btnSearch" class="search-btn" type="button"><i class="bi bi-search"></i>ค้นหา</button>
+          <button id="btnReset" class="ghost-btn" type="button"><i class="bi bi-eraser"></i>ล้างชื่อ</button>
+        </div>
+        <button id="btnRefresh" class="refresh-btn" type="button"><i class="bi bi-arrow-clockwise"></i>รีเฟรชผลล่าสุด</button>
+      </div>
+    </section>
+
+    <section id="introState" class="panel state intro">
+      <div class="state-icon"><i class="bi bi-person-vcard"></i></div>
+      <h2>เริ่มตรวจสอบด้วยชื่อ-สกุลของผู้ยืม</h2>
+      <p id="introText">กรอกชื่อ-สกุลของผู้ยืมในช่องค้นหาด้านบน แล้วกดค้นหา ระบบจะแสดงเฉพาะสัญญาเงินยืมที่ยังอยู่ในสถานะต้องติดตามของชื่อนั้นเท่านั้น</p>
+    </section>
+
+    <section id="loadingState" class="panel state loading hidden" aria-live="polite">
+      <div class="state-icon"><div class="spinner" aria-hidden="true"></div></div>
+      <h2>กำลังค้นหาข้อมูลเงินยืม</h2>
+      <p>ระบบกำลังตรวจสอบเฉพาะสัญญาคงค้างของชื่อที่ระบุ และเรียงวันครบกำหนดจากเก่าไปใหม่</p>
+    </section>
+
+    <section id="errorState" class="panel state error hidden" aria-live="assertive">
+      <div class="state-icon"><i class="bi bi-exclamation-octagon"></i></div>
+      <h2>ไม่สามารถโหลดข้อมูลได้</h2>
+      <p id="errorText">เกิดข้อผิดพลาดในการเชื่อมต่อระบบ</p>
+    </section>
+
+    <section id="emptyState" class="panel state empty hidden">
+      <div class="state-icon"><i class="bi bi-search"></i></div>
+      <h2 id="emptyTitle">ไม่พบรายการที่ต้องติดตาม</h2>
+      <p id="emptyText">ไม่พบรายการที่ตรงกับเงื่อนไขการค้นหา</p>
+    </section>
+
+    <section id="contentPanel" class="content-panel hidden">
+      <div id="summaryStrip" class="summary-strip"></div>
+
+      <div id="metaRow" class="meta-row"></div>
+
+      <div class="table-top-note" role="note" aria-label="หมายเหตุการอัปเดทสถานะ">
+        <i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i>
+        <div class="table-top-note-text">อัพเดทสถานะเมื่อ กองฯ (เงินทดรอง) หรือกองบริหารการคลัง (เงินกรม) ดำเนินการออกใบรับใบสำคัญ/ใบเสร็จรับเงินให้เรียบร้อยแล้ว</div>
+      </div>
+
+      <div class="desktop-table">
+        <div class="table-wrap">
+          <table class="table" aria-label="ตารางรายการสัญญาเงินยืมคงค้างของผู้ค้นหา">
+            <colgroup>
+              <col class="col-index">
+              <col class="col-contract">
+              <col class="col-group">
+              <col class="col-expense">
+              <col class="col-funding">
+              <col class="col-amount">
+              <col class="col-status">
+              <col class="col-due">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>ลำดับ</th>
+                <th>เลขที่สัญญา</th>
+                <th>กลุ่ม/ศูนย์</th>
+                <th>ประเภทค่าใช้จ่าย</th>
+                <th>แหล่งเงินยืม</th>
+                <th>ยอดเงินในสัญญา</th>
+                <th>สถานะ</th>
+                <th>วันครบกำหนด</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="mobileList" class="mobile-list"></div>
+
+      <div id="truncateNote" class="meta-row hidden"></div>
+
+      <div class="brand-footer">
+        <img src="https://ddc.moph.go.th/uploads/ckeditor2//files/logo-%E0%B8%81%E0%B8%A3%E0%B8%A1.png" alt="โลโก้กรมควบคุมโรค">
+        <div class="brand-footer-text">กองโรคจากการประกอบอาชีพและสิ่งแวดล้อม : กลุ่มบริหารทั่วไป งานการเงินและบัญชี</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./config.js"></script>
+  <script src="./api-client.js?v=20260318-3"></script>
+  <script src="./app-common.js?v=20260325-2"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var C = window.DocFrontendCommon || {};
+      var STATUS_ORDER = {
+        overdue: 1,
+        due_soon: 2,
+        unpaid: 3,
+        awaiting: 4
+      };
+      var STATUS_META = {
+        awaiting: { label: 'รอเพิ่มข้อมูล', icon: 'bi-pencil-square', cls: 'awaiting' },
+        due_soon: { label: 'ใกล้ครบกำหนด', icon: 'bi-alarm', cls: 'due_soon' },
+        unpaid: { label: 'ยังไม่ชำระ', icon: 'bi-hourglass-split', cls: 'unpaid' },
+        overdue: { label: 'เลยกำหนด', icon: 'bi-exclamation-octagon', cls: 'overdue' }
+      };
+
+      var state = {
+        api: null,
+        query: '',
+        lastUpdatedAt: null,
+        theme: 'light'
+      };
+
+      var els = {
+        body: document.body,
+        btnTheme: document.getElementById('btnTheme'),
+        searchInput: document.getElementById('searchInput'),
+        btnSearch: document.getElementById('btnSearch'),
+        btnReset: document.getElementById('btnReset'),
+        btnRefresh: document.getElementById('btnRefresh'),
+        introState: document.getElementById('introState'),
+        introText: document.getElementById('introText'),
+        loadingState: document.getElementById('loadingState'),
+        errorState: document.getElementById('errorState'),
+        errorText: document.getElementById('errorText'),
+        emptyState: document.getElementById('emptyState'),
+        emptyTitle: document.getElementById('emptyTitle'),
+        emptyText: document.getElementById('emptyText'),
+        contentPanel: document.getElementById('contentPanel'),
+        summaryStrip: document.getElementById('summaryStrip'),
+        metaRow: document.getElementById('metaRow'),
+        tableBody: document.getElementById('tableBody'),
+        mobileList: document.getElementById('mobileList'),
+        truncateNote: document.getElementById('truncateNote')
+      };
+
+      function safeTrim(value) {
+        if (typeof C.safeTrim === 'function') return C.safeTrim(value || '');
+        return String(value == null ? '' : value).trim();
+      }
+
+      function escapeHtml(value) {
+        if (typeof C.escapeHtml === 'function') return C.escapeHtml(value == null ? '' : value);
+        return String(value == null ? '' : value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function formatMoney(value) {
+        if (typeof C.fmtMoney === 'function') return C.fmtMoney(value == null ? 0 : value);
+        return Number(value || 0).toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      function formatDateTimeThai(value) {
+        var date = value instanceof Date ? value : new Date(value);
+        if (!(date instanceof Date) || isNaN(date.getTime())) return '-';
+        return new Intl.DateTimeFormat('th-TH', {
+          day: 'numeric',
+          month: 'numeric',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        }).format(date);
+      }
+
+      function parseDateInput(value) {
+        var text = safeTrim(value);
+        if (!text) return null;
+        var match = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (match) return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+        var parsed = new Date(text);
+        return isNaN(parsed.getTime()) ? null : parsed;
+      }
+
+      function getStatusMeta(key) {
+        return STATUS_META[safeTrim(key).toLowerCase()] || STATUS_META.unpaid;
+      }
+
+      function filterTrackingRecords(records) {
+        return (Array.isArray(records) ? records : []).filter(function (item) {
+          return Object.prototype.hasOwnProperty.call(STATUS_META, safeTrim(item && item.statusKey).toLowerCase());
+        });
+      }
+
+      function sortRecords(records) {
+        var list = Array.isArray(records) ? records.slice() : [];
+        list.sort(function (a, b) {
+          var aDue = parseDateInput(a && a.dueDateInput);
+          var bDue = parseDateInput(b && b.dueDateInput);
+          if (aDue && bDue) {
+            var dueDiff = aDue.getTime() - bDue.getTime();
+            if (dueDiff !== 0) return dueDiff;
+          } else if (aDue && !bDue) {
+            return -1;
+          } else if (!aDue && bDue) {
+            return 1;
+          }
+
+          var aWeight = STATUS_ORDER[safeTrim(a && a.statusKey).toLowerCase()] || 9;
+          var bWeight = STATUS_ORDER[safeTrim(b && b.statusKey).toLowerCase()] || 9;
+          if (aWeight !== bWeight) return aWeight - bWeight;
+
+          return safeTrim(a && a.contractNo).localeCompare(safeTrim(b && b.contractNo), 'th');
+        });
+        return list;
+      }
+
+      function normalizeStatusSummary(list) {
+        var lookup = {};
+        var incoming = Array.isArray(list) ? list : [];
+        var i;
+        for (i = 0; i < incoming.length; i++) {
+          var item = incoming[i] || {};
+          var key = safeTrim(item.key).toLowerCase();
+          if (!key) continue;
+          lookup[key] = {
+            key: key,
+            label: safeTrim(item.label) || getStatusMeta(key).label,
+            count: Number(item.count || 0),
+            amount: Number(item.amount || 0)
+          };
+        }
+        return ['awaiting', 'due_soon', 'unpaid', 'overdue'].map(function (key) {
+          return lookup[key] || {
+            key: key,
+            label: getStatusMeta(key).label,
+            count: 0,
+            amount: 0
+          };
+        });
+      }
+
+      function applyTheme(theme) {
+        var nextTheme = theme === 'dark' ? 'dark' : 'light';
+        state.theme = nextTheme;
+        els.body.classList.toggle('dark-mode', nextTheme === 'dark');
+        if (els.btnTheme) {
+          var label = nextTheme === 'dark' ? 'สลับเป็นโหมดสว่าง' : 'สลับเป็นโหมดกลางคืน';
+          els.btnTheme.innerHTML = nextTheme === 'dark'
+            ? '<i class="bi bi-sun"></i>'
+            : '<i class="bi bi-moon-stars"></i>';
+          els.btnTheme.setAttribute('aria-label', label);
+          els.btnTheme.setAttribute('title', label);
+        }
+      }
+
+      function setLoading(loading, showPanel) {
+        if (els.loadingState) els.loadingState.classList.toggle('hidden', !loading || !showPanel);
+        if (loading && showPanel) {
+          if (els.introState) els.introState.classList.add('hidden');
+          if (els.emptyState) els.emptyState.classList.add('hidden');
+          if (els.contentPanel) els.contentPanel.classList.add('hidden');
+        }
+        if (els.btnSearch) {
+          els.btnSearch.disabled = !!loading;
+          els.btnSearch.innerHTML = loading
+            ? '<div class="spinner" aria-hidden="true"></div><span>กำลังค้นหา</span>'
+            : '<i class="bi bi-search"></i>ค้นหา';
+        }
+        if (els.btnReset) els.btnReset.disabled = !!loading;
+        if (els.btnRefresh) els.btnRefresh.disabled = !!loading;
+        if (els.btnTheme) els.btnTheme.disabled = !!loading;
+      }
+
+      function hideError() {
+        if (els.errorState) els.errorState.classList.add('hidden');
+      }
+
+      function showError(message) {
+        if (els.errorText) els.errorText.textContent = message || 'เกิดข้อผิดพลาดในการเชื่อมต่อระบบ';
+        if (els.errorState) els.errorState.classList.remove('hidden');
+      }
+
+      function hideEmpty() {
+        if (els.emptyState) els.emptyState.classList.add('hidden');
+      }
+
+      function showEmpty(title, text) {
+        if (els.emptyTitle) els.emptyTitle.textContent = title || 'ไม่พบข้อมูล';
+        if (els.emptyText) els.emptyText.textContent = text || 'ไม่พบรายการที่ตรงกับเงื่อนไข';
+        if (els.emptyState) els.emptyState.classList.remove('hidden');
+        if (els.contentPanel) els.contentPanel.classList.add('hidden');
+      }
+
+      function showIntro(message) {
+        if (els.introText && message) els.introText.textContent = message;
+        if (els.introState) els.introState.classList.remove('hidden');
+        if (els.contentPanel) els.contentPanel.classList.add('hidden');
+        hideEmpty();
+      }
+
+      function hideIntro() {
+        if (els.introState) els.introState.classList.add('hidden');
+      }
+
+      function renderSummary(statusSummary) {
+        if (!els.summaryStrip) return;
+        var list = normalizeStatusSummary(statusSummary);
+        var html = '';
+        var i;
+        for (i = 0; i < list.length; i++) {
+          var item = list[i];
+          var meta = getStatusMeta(item.key);
+          html += '<article class="summary-item ' + meta.cls + '">';
+          html += '<div class="summary-top"><div class="summary-label"><i class="bi ' + meta.icon + '"></i><span>' + escapeHtml(item.label) + '</span></div><div class="summary-value">' + escapeHtml(item.count) + '</div></div>';
+          html += '<div class="summary-sub">ยอดเงินรวม ' + escapeHtml(formatMoney(item.amount)) + ' บาท</div>';
+          html += '</article>';
+        }
+        els.summaryStrip.innerHTML = html;
+      }
+
+      function buildStatusPill(item) {
+        var meta = getStatusMeta(item && item.statusKey);
+        return '<span class="status-pill ' + meta.cls + '"><i class="bi ' + meta.icon + '"></i>' + escapeHtml(item && item.statusLabel || meta.label) + '</span>';
+      }
+
+      function getDueDisplay(item) {
+        var dueDisplay = safeTrim(item && item.dueDateDisplay || '');
+        if (!dueDisplay && safeTrim(item && item.statusKey) === 'awaiting') dueDisplay = 'ยังไม่มีข้อมูลวันครบกำหนด';
+        return dueDisplay || '-';
+      }
+
+      function renderTable(records, totalMatched, truncated) {
+        if (!els.tableBody) return;
+        var list = Array.isArray(records) ? records : [];
+        var html = '';
+        var i;
+        for (i = 0; i < list.length; i++) {
+          var item = list[i] || {};
+          var dueDisplay = getDueDisplay(item);
+          html += '<tr class="row-' + escapeHtml(safeTrim(item.statusKey).toLowerCase()) + '">';
+          html += '<td class="cell-center cell-index">' + escapeHtml(i + 1) + '</td>';
+          html += '<td class="cell-contract">' + escapeHtml(item.contractNo || '-') + '</td>';
+          html += '<td class="cell-group">' + escapeHtml(item.groupCenter || '-') + '</td>';
+          html += '<td>' + escapeHtml(item.expenseType || '-') + '</td>';
+          html += '<td class="cell-funding">' + escapeHtml(item.fundingSource || '-') + '</td>';
+          html += '<td class="cell-amount">' + escapeHtml(formatMoney(item.amount || 0)) + '</td>';
+          html += '<td class="cell-center">' + buildStatusPill(item) + '</td>';
+          html += '<td class="cell-center cell-due">' + (dueDisplay === 'ยังไม่มีข้อมูลวันครบกำหนด' ? '<span class="muted-text">' + escapeHtml(dueDisplay) + '</span>' : escapeHtml(dueDisplay)) + '</td>';
+          html += '</tr>';
+        }
+        els.tableBody.innerHTML = html;
+
+        if (els.truncateNote) {
+          if (truncated) {
+            els.truncateNote.textContent = 'ระบบแสดง ' + list.length + ' จากทั้งหมด ' + totalMatched + ' รายการ เนื่องจากตั้งค่าขีดจำกัดการแสดงผลไว้';
+            els.truncateNote.classList.remove('hidden');
+          } else {
+            els.truncateNote.textContent = '';
+            els.truncateNote.classList.add('hidden');
+          }
+        }
+      }
+
+      function renderMobileList(records) {
+        if (!els.mobileList) return;
+        var list = Array.isArray(records) ? records : [];
+        var html = '';
+        var i;
+        for (i = 0; i < list.length; i++) {
+          var item = list[i] || {};
+          var meta = getStatusMeta(item.statusKey);
+          var dueDisplay = getDueDisplay(item);
+          html += '<article class="mobile-card ' + meta.cls + '">';
+          html += '<div class="mobile-card-head">';
+          html += '<div class="mobile-contract">';
+          html += '<div class="mobile-index">ลำดับ ' + escapeHtml(i + 1) + '</div>';
+          html += '<div class="mobile-contract-no">' + escapeHtml(item.contractNo || '-') + '</div>';
+          html += '<div class="mobile-group">' + escapeHtml(item.groupCenter || '-') + '</div>';
+          html += '</div>';
+          html += buildStatusPill(item);
+          html += '</div>';
+          html += '<div class="mobile-grid">';
+          html += '<div class="mobile-item"><div class="mobile-item-label">ประเภทค่าใช้จ่าย</div><div class="mobile-item-value">' + escapeHtml(item.expenseType || '-') + '</div></div>';
+          html += '<div class="mobile-item"><div class="mobile-item-label">แหล่งเงินยืม</div><div class="mobile-item-value">' + escapeHtml(item.fundingSource || '-') + '</div></div>';
+          html += '<div class="mobile-item"><div class="mobile-item-label">ยอดเงินในสัญญา</div><div class="mobile-item-value">' + escapeHtml(formatMoney(item.amount || 0)) + ' บาท</div></div>';
+          html += '<div class="mobile-item"><div class="mobile-item-label">วันครบกำหนด</div><div class="mobile-item-value">' + (dueDisplay === 'ยังไม่มีข้อมูลวันครบกำหนด' ? '<span class="muted-text">' + escapeHtml(dueDisplay) + '</span>' : escapeHtml(dueDisplay)) + '</div></div>';
+          html += '</div>';
+          html += '</article>';
+        }
+        els.mobileList.innerHTML = html;
+      }
+
+      function renderMeta(totalContracts, totalAmount) {
+        if (!els.metaRow) return;
+        var parts = [];
+        parts.push('พบสัญญาคงค้าง ' + totalContracts + ' รายการ');
+        parts.push('ยอดเงินในสัญญารวม ' + formatMoney(totalAmount) + ' บาท');
+        parts.push('ค้นหาด้วยชื่อ: ' + state.query);
+        parts.push('อัปเดตเมื่อ: ' + formatDateTimeThai(state.lastUpdatedAt || new Date()));
+        els.metaRow.innerHTML =
+          '<span>' + escapeHtml(parts[0]) + '</span>' +
+          '<span>' + escapeHtml(parts[1]) + '</span>' +
+          '<span>' + escapeHtml(parts[2]) + '</span>' +
+          '<span>' + escapeHtml(parts[3]) + '</span>';
+      }
+
+      function renderContent(data, preparedRecords) {
+        var payload = data || {};
+        var records = Array.isArray(preparedRecords) ? preparedRecords : [];
+        var totalContracts = Number(payload.totalMatchedRecords == null ? records.length : payload.totalMatchedRecords);
+        var totalAmount = Number(payload.summary && payload.summary.totalAmount || 0);
+        renderSummary(payload.statusSummary || []);
+        renderMeta(totalContracts, totalAmount);
+        renderTable(records, totalContracts, payload.truncated);
+        renderMobileList(records);
+        hideIntro();
+        hideEmpty();
+        if (els.contentPanel) els.contentPanel.classList.remove('hidden');
+      }
+
+      function initApi() {
+        if (typeof C.getStoredSettings !== 'function' || typeof C.createApiClient !== 'function') {
+          throw new Error('ไม่พบการตั้งค่าระบบสำหรับเชื่อมต่อ API');
+        }
+        state.api = C.createApiClient(C.getStoredSettings());
+      }
+
+      async function loadDashboard() {
+        if (!state.api || typeof state.api.loanPublicSelfDashboard !== 'function') {
+          showError('ไม่พบการตั้งค่าระบบสำหรับเชื่อมต่อ API');
+          return;
+        }
+
+        hideError();
+        hideEmpty();
+        state.query = safeTrim(els.searchInput && els.searchInput.value || '');
+
+        if (!state.query) {
+          showIntro('กรอกชื่อ-สกุลของผู้ยืมในช่องค้นหาด้านบน แล้วกดค้นหา ระบบจะไม่แสดงข้อมูลใด ๆ หากยังไม่ได้ระบุชื่อเพื่อช่วยลดการเปิดเผยข้อมูลส่วนบุคคล');
+          state.lastUpdatedAt = null;
+          return;
+        }
+
+        setLoading(true, true);
+
+        try {
+          var response = await state.api.loanPublicSelfDashboard({
+            searchQuery: state.query,
+            maxRecords: 1000
+          }, { noPageLoader: true });
+          var data = response && response.success && response.data && typeof response.data === 'object' ? response.data : null;
+          if (!data) throw new Error('ไม่พบข้อมูลที่สามารถแสดงผลได้');
+
+          if (data.searched === false) {
+            showIntro(safeTrim(data.message) || 'กรุณากรอกชื่อ-สกุลของผู้ยืมก่อนตรวจสอบข้อมูล');
+            return;
+          }
+
+          state.lastUpdatedAt = new Date();
+          var filtered = sortRecords(filterTrackingRecords(data.records || []));
+          if (!filtered.length) {
+            showEmpty(
+              'ไม่พบสัญญาเงินยืมคงค้าง',
+              safeTrim(data.message) || 'ไม่พบสัญญาเงินยืมที่ยังต้องติดตามของชื่อที่ค้นหา กรุณาตรวจสอบการสะกดชื่อ-สกุลอีกครั้ง'
+            );
+            return;
+          }
+
+          renderContent(data, filtered);
+        } catch (err) {
+          if (els.contentPanel) els.contentPanel.classList.add('hidden');
+          showError(err && err.message ? err.message : 'เกิดข้อผิดพลาดในการเชื่อมต่อระบบ');
+        } finally {
+          setLoading(false, false);
+        }
+      }
+
+      function resetSearch() {
+        if (els.searchInput) els.searchInput.value = '';
+        state.query = '';
+        state.lastUpdatedAt = null;
+        hideError();
+        if (els.contentPanel) els.contentPanel.classList.add('hidden');
+        showIntro('กรอกชื่อ-สกุลของผู้ยืมในช่องค้นหาด้านบน แล้วกดค้นหา ระบบจะแสดงเฉพาะสัญญาเงินยืมที่ยังอยู่ในสถานะต้องติดตามของชื่อนั้นเท่านั้น');
+      }
+
+      function refreshSearch() {
+        if (!safeTrim(els.searchInput && els.searchInput.value || '')) {
+          showIntro('ยังไม่ได้ระบุชื่อผู้ยืมสำหรับการค้นหา กรุณากรอกชื่อ-สกุลก่อนจึงจะสามารถรีเฟรชผลได้');
+          return;
+        }
+        loadDashboard();
+      }
+
+      function bindEvents() {
+        if (els.btnTheme) {
+          els.btnTheme.addEventListener('click', function () {
+            applyTheme(state.theme === 'dark' ? 'light' : 'dark');
+          });
+        }
+        if (els.btnSearch) els.btnSearch.addEventListener('click', loadDashboard);
+        if (els.btnReset) els.btnReset.addEventListener('click', resetSearch);
+        if (els.btnRefresh) els.btnRefresh.addEventListener('click', refreshSearch);
+        if (els.searchInput) {
+          els.searchInput.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+              event.preventDefault();
+              loadDashboard();
+            }
+          });
+        }
+      }
+
+      function init() {
+        applyTheme('light');
+        bindEvents();
+        try {
+          initApi();
+        } catch (err) {
+          showEmpty('ยังไม่พร้อมใช้งาน', 'กรุณาตรวจสอบการตั้งค่า scriptUrl ของระบบก่อนเปิดใช้งานหน้าเว็บสาธารณะ');
+          showError(err && err.message ? err.message : 'ไม่พบการตั้งค่าระบบสำหรับเชื่อมต่อ API');
+          return;
+        }
+        showIntro('กรอกชื่อ-สกุลของผู้ยืมในช่องค้นหาด้านบน แล้วกดค้นหา ระบบจะแสดงเฉพาะสัญญาเงินยืมที่ยังอยู่ในสถานะต้องติดตามของชื่อนั้นเท่านั้น');
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>
