@@ -1147,6 +1147,8 @@
         totalItems: 0,
         lastTotalPages: 1,
         searchText: '',
+        loadRequestSeq: 0,
+        activeLoadRequestId: 0,
         currentFilter: 'all',
         selectedStatusFilters: [],
         selectedExpenseTypes: [],
@@ -1368,7 +1370,6 @@
           els.btnCloseFilter,
           els.btnResetFilter,
           els.btnApplyFilter,
-          els.searchInput,
           els.itemsPerPage,
           els.filterLoanUnpaid,
           els.filterLoanDueSoon,
@@ -2125,7 +2126,12 @@
         if (!state.api) return Promise.reject(new Error('ยังไม่ได้ตั้งค่า API'));
 
         if (els.itemsPerPage) state.itemsPerPage = parseInt(els.itemsPerPage.value, 10) || 20;
-        state.searchText = C.safeTrim(els.searchInput ? els.searchInput.value : (state.searchText || ''));
+        var requestId = ++state.loadRequestSeq;
+        var requestedPage = state.page;
+        var requestedItemsPerPage = state.itemsPerPage;
+        var requestedSearchText = C.safeTrim(els.searchInput ? els.searchInput.value : (state.searchText || ''));
+        state.activeLoadRequestId = requestId;
+        state.searchText = requestedSearchText;
 
         setLoading(true);
         showError('');
@@ -2134,25 +2140,30 @@
 
         if (hasAdvancedFilter()) {
           return ensureAllLoanDocs(false).then(function (allDocs) {
-            var filtered = buildFilteredLoanDocs(allDocs, state.searchText);
+            if (requestId !== state.activeLoadRequestId) return null;
+
+            var filtered = buildFilteredLoanDocs(allDocs, requestedSearchText);
             var stats = buildLoanStatsFromDocs(filtered);
 
             var totalItems = filtered.length;
-            var totalPages = Math.max(1, Math.ceil(totalItems / state.itemsPerPage));
-            if (state.page > totalPages) state.page = totalPages;
-            if (state.page < 1) state.page = 1;
+            var totalPages = Math.max(1, Math.ceil(totalItems / requestedItemsPerPage));
+            var nextPage = requestedPage;
+            if (nextPage > totalPages) nextPage = totalPages;
+            if (nextPage < 1) nextPage = 1;
 
-            var startIndex = (state.page - 1) * state.itemsPerPage;
-            var pageDocs = filtered.slice(startIndex, startIndex + state.itemsPerPage);
+            var startIndex = (nextPage - 1) * requestedItemsPerPage;
+            var pageDocs = filtered.slice(startIndex, startIndex + requestedItemsPerPage);
 
             state.totalPages = totalPages;
             state.totalItems = totalItems;
+            state.page = nextPage;
 
             renderStats(stats);
             renderList(pageDocs);
             syncPagination();
             setLoading(false);
           }).catch(function (err) {
+            if (requestId !== state.activeLoadRequestId) return null;
             setLoading(false);
             renderStats({});
             if (els.docsList) {
@@ -2164,13 +2175,14 @@
         }
 
         return state.api.loanList({
-          page: state.page,
-          itemsPerPage: state.itemsPerPage,
-          searchQuery: state.searchText
+          page: requestedPage,
+          itemsPerPage: requestedItemsPerPage,
+          searchQuery: requestedSearchText
         }, {
           loaderMessage: showLoader ? 'กำลังโหลดข้อมูล...' : '',
           noPageLoader: !showLoader
         }).then(function (res) {
+          if (requestId !== state.activeLoadRequestId) return null;
           if (!res || res.success === false) {
             throw new Error((res && res.error) ? res.error : 'โหลดข้อมูลไม่สำเร็จ');
           }
@@ -2185,6 +2197,7 @@
           syncPagination();
           setLoading(false);
         }).catch(function (err) {
+          if (requestId !== state.activeLoadRequestId) return null;
           setLoading(false);
           renderStats({});
           if (els.docsList) {
